@@ -1,0 +1,50 @@
+{
+  "APP_SETTINGS": {
+    "port": 8082,
+    "wssPort": 8083,
+    "wssPingInterval": 3000,
+    "wssPingTimeout": 10000,
+    "bodyLimit": "50mb",
+    "bodyParameterLimit": 50000
+  },
+  "LOGGER_SETTINGS": {
+    "level": "info",
+    "silence": [
+      "healthz"
+    ]
+  },
+  "DB_SETTINGS": {
+    "host": "localhost",
+    "port": 5432,
+    "username": "postgres",
+    "password": "postgres",
+    "database": "tl_project_back_v2",
+    "logging": "all",
+    "synchronize": true
+  },
+  "CORS_SETTINGS": {
+    "allowedOrigins": [],
+    "allowedUrls": [],
+    "allowedMethods": [
+      "GET",
+      "POST",
+      "PUT",
+      "PATCH",
+      "DELETE",
+      "OPTIONS"
+    ],
+    "allowedCredentials": false,
+    "allowedHeaders": []
+  },
+  "GRAPHQL_SETTINGS": {
+    "playground": true,
+    "debug": true,
+    "introspection": true,
+    "installSubscriptionHandlers": true
+  },
+  "JWT_SETTINGS": {
+    "secretKey": "key",
+    "algorithm": "RS512",
+    "tokenExpiresIn": 20
+  }
+}
