@@ -54,14 +54,14 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
+import { useRoute } from "vue-router";
 
 const route = useRoute();
 
 function onSignUp(event: Event) {
   event.preventDefault();
 
-  console.log(route.meta)
+  console.log(route.meta);
 }
 </script>
 

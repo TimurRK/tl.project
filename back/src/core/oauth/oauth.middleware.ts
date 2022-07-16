@@ -4,8 +4,8 @@ import { NextFunction, Request, Response } from 'express';
 import config from 'config';
 import { verify } from 'jsonwebtoken';
 
-import { account_blocked, jwt_token_expired, unauthorized } from '../errors';
-import { IJwtPayload } from '../core/oauth/user/user.entity';
+import { account_blocked, jwt_token_expired, unauthorized } from '../../errors';
+import { IJwtPayload } from './user/user.entity';
 
 const jwt_settings = config.get<IJwtSettings>('JWT_SETTINGS');
 

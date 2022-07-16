@@ -10,27 +10,27 @@ const auth_routes: RouteRecordRaw[] = [
     path: "/auth/sign-in",
     component: () => import("../views/auth/SignIn.vue"),
     meta: {
-      name: 'Пользователь',
-      icon: 'person'
-    }
+      name: "Пользователь",
+      icon: "person",
+    },
   },
   {
     name: "VSignUp",
     path: "/auth/sign-up",
     component: () => import("../views/auth/SignUp.vue"),
     meta: {
-      name: 'Пользователь',
-      icon: 'person'
-    }
+      name: "Пользователь",
+      icon: "person",
+    },
   },
   {
     name: "VChangePassword",
     path: "/auth/change-password",
     component: () => import("../views/auth/ChangePassword.vue"),
     meta: {
-      name: 'Пользователь',
-      icon: 'person'
-    }
+      name: "Пользователь",
+      icon: "person",
+    },
   },
 ];
 

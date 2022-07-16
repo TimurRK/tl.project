@@ -103,15 +103,15 @@
 
 <script setup lang="ts">
 import { onMounted, ref, type Ref } from "vue";
-import { useRoute } from 'vue-router';
+import { useRoute } from "vue-router";
 import { Modal } from "bootstrap";
 
 const route = useRoute();
 
-let use_cookie_modal_ref: Ref<HTMLDivElement | null> = ref(null);
+const use_cookie_modal_ref: Ref<HTMLDivElement | null> = ref(null);
 let use_cookie_modal_value: Modal | null = null;
 
-let accept_cookie: Ref<boolean> = ref(false);
+const accept_cookie: Ref<boolean> = ref(false);
 
 onMounted(() => {
   if (use_cookie_modal_ref.value instanceof HTMLDivElement) {
