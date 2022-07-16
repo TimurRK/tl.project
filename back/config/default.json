@@ -1,11 +1,11 @@
 {
   "APP_SETTINGS": {
     "port": 8082,
-    "wssPort": 8083,
-    "wssPingInterval": 3000,
-    "wssPingTimeout": 10000,
-    "bodyLimit": "50mb",
-    "bodyParameterLimit": 50000
+    "wss_port": 8083,
+    "wss_ping_interval": 3000,
+    "wss_ping_timeout": 10000,
+    "body_limit": "50mb",
+    "body_parameter_limit": 50000
   },
   "LOGGER_SETTINGS": {
     "level": "info",
@@ -23,9 +23,9 @@
     "synchronize": true
   },
   "CORS_SETTINGS": {
-    "allowedOrigins": [],
-    "allowedUrls": [],
-    "allowedMethods": [
+    "allowed_origins": [],
+    "allowed_paths": [],
+    "allowed_methods": [
       "GET",
       "POST",
       "PUT",
@@ -33,8 +33,8 @@
       "DELETE",
       "OPTIONS"
     ],
-    "allowedCredentials": false,
-    "allowedHeaders": []
+    "allowed_credentials": false,
+    "allowed_headers": []
   },
   "GRAPHQL_SETTINGS": {
     "playground": true,
@@ -43,8 +43,9 @@
     "installSubscriptionHandlers": true
   },
   "JWT_SETTINGS": {
-    "secretKey": "key",
-    "algorithm": "RS512",
-    "tokenExpiresIn": 20
+    "secret_key": "key",
+    "algorithm": "HS512",
+    "access_token_expires_in": 20,
+    "refresh_token_expires_in": 10080
   }
 }

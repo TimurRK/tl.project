@@ -7,7 +7,7 @@ import { GraphQLError, GraphQLSchema } from 'graphql';
 import config from 'config';
 import { Request } from 'express';
 
-import { corsOptionsDelegate } from '../cors.options';
+import { cors_options_delegate } from '../cors.options';
 import { LoggerStore } from '../logger/logger.store';
 import { DataSource } from 'typeorm';
 
@@ -31,9 +31,9 @@ export class GraphqlOptions implements GqlOptionsFactory {
         logger_store: req.logger_store,
         data_source: this.dataSource,
       }),
-      cors: corsOptionsDelegate,
+      cors: cors_options_delegate,
       bodyParserConfig: {
-        limit: appSettings.bodyLimit,
+        limit: appSettings.body_limit,
       },
       transformSchema: (schema: GraphQLSchema) => {
         return schema;

@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'nestjs-graphql-easy';
-import { BeforeInsert, Index, JoinColumn, ManyToOne } from 'typeorm';
+import { Index, JoinColumn, ManyToOne } from 'typeorm';
 
 import { User } from '../user/user.entity';
 
@@ -7,12 +7,6 @@ import { User } from '../user/user.entity';
 export class RefreshToken {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
-
-  @Column({
-    nullable: false,
-    type: 'timestamp without time zone',
-  })
-  public expires_at: Date;
 
   @Index()
   @Column('uuid', { nullable: false })
@@ -33,9 +27,4 @@ export class RefreshToken {
     default: () => 'CURRENT_TIMESTAMP',
   })
   public updated_at: Date;
-
-  @BeforeInsert()
-  protected generateTokenExpiresAt() {
-    this.expires_at = new Date(new Date().setDate(new Date().getDate() + 7));
-  }
 }

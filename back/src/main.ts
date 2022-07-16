@@ -10,7 +10,7 @@ import helmet from 'helmet';
 import { json, urlencoded } from 'body-parser';
 
 import { AppModule } from './app.module';
-import { corsOptionsDelegate } from './cors.options';
+import { cors_options_delegate } from './cors.options';
 
 const appSettings = config.get<IAppSettings>('APP_SETTINGS');
 
@@ -21,13 +21,13 @@ async function bootstrap() {
     bodyParser: true,
   });
 
-  app.use(json({ limit: appSettings.bodyLimit }));
+  app.use(json({ limit: appSettings.body_limit }));
 
   app.use(
     urlencoded({
       extended: true,
-      limit: appSettings.bodyLimit,
-      parameterLimit: appSettings.bodyParameterLimit,
+      limit: appSettings.body_limit,
+      parameterLimit: appSettings.body_parameter_limit,
     })
   );
 
@@ -39,7 +39,7 @@ async function bootstrap() {
 
   app.use(cookieParser());
 
-  app.enableCors(corsOptionsDelegate);
+  app.enableCors(cors_options_delegate);
 
   app.useGlobalPipes(
     new ValidationPipe({
