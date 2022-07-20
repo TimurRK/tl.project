@@ -4,6 +4,18 @@ import {
   type RouteRecordRaw,
 } from "vue-router";
 
+const dashboard_routes: RouteRecordRaw[] = [
+  {
+    name: "VDashboard",
+    path: "/",
+    component: () => import("../views/Dashboard.vue"),
+    meta: {
+      name: "Главная",
+      icon: "house-door",
+    },
+  },
+];
+
 const auth_routes: RouteRecordRaw[] = [
   {
     name: "VSignIn",
@@ -36,7 +48,7 @@ const auth_routes: RouteRecordRaw[] = [
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [...auth_routes],
+  routes: [...auth_routes, ...dashboard_routes],
 });
 
 export default router;

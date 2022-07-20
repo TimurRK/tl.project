@@ -1,5 +1,4 @@
 <template>
-  <!-- <div id="VChangePassword"> -->
   <div class="row justify-content-md-center">
     <div class="col-lg-4 col-md-6 col-12 md-auto">
       <h1>Восстановление</h1>
@@ -18,6 +17,7 @@
             class="form-control"
             id="input-recovery-key"
             aria-describedby="input-recovery-key-help"
+            autocomplete="off"
           />
           <div id="input-recovery-key-help" class="form-text">
             Ключ восстановления не чувствителен к регистру
@@ -33,6 +33,7 @@
             class="form-control"
             id="input-password"
             aria-describedby="input-password-help"
+            autocomplete="off"
           />
           <div id="input-password-help" class="form-text">
             Пароль чувствителен к регистру
@@ -56,7 +57,6 @@
       </router-link>
     </div>
   </div>
-  <!-- </div> -->
 </template>
 
 <script setup lang="ts">

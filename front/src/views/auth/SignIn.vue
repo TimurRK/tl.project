@@ -1,5 +1,4 @@
 <template>
-  <!-- <div id="VSignIn"> -->
   <div class="row justify-content-md-center">
     <div class="col-lg-4 col-md-6 col-12 md-auto">
       <h1>Авторизация</h1>
@@ -8,10 +7,12 @@
         <div class="mb-3">
           <label for="input-login" class="form-label">Введите логин</label>
           <input
+            v-model="login"
             type="text"
             class="form-control"
             id="input-login"
             aria-describedby="input-login-help"
+            autocomplete="off"
           />
           <div id="input-login-help" class="form-text">
             Логин не чувствителен к регистру
@@ -21,10 +22,12 @@
         <div class="mb-3">
           <label for="input-password" class="form-label">Введите пароль</label>
           <input
+            v-model="password"
             type="password"
             class="form-control"
             id="input-password"
             aria-describedby="input-password-help"
+            autocomplete="off"
           />
           <div id="input-password-help" class="form-text">
             Пароль чувствителен к регистру
@@ -98,18 +101,23 @@
       </div>
     </div>
   </div>
-  <!-- </div> -->
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, type Ref } from "vue";
-import { useRoute } from "vue-router";
 import { Modal } from "bootstrap";
+import { onMounted, ref, type Ref } from "vue";
+import { useToast } from "vue-toastification";
 
-const route = useRoute();
+import { useApi } from "@/api/api";
+
+const api = useApi();
+const toast = useToast();
 
 const use_cookie_modal_ref: Ref<HTMLDivElement | null> = ref(null);
 let use_cookie_modal_value: Modal | null = null;
+
+const login: Ref<string | null> = ref(null);
+const password: Ref<string | null> = ref(null);
 
 const accept_cookie: Ref<boolean> = ref(false);
 
@@ -149,8 +157,18 @@ function refuseCookie() {
   }
 }
 
-function onSignIn(event: Event) {
+async function onSignIn(event: Event) {
   event.preventDefault();
+
+  if (login.value && password.value) {
+    try {
+      await api.signIn(login.value, password.value, !!accept_cookie.value);
+    } catch (error: any) {
+      toast.error(error.error, {
+        timeout: 2500,
+      });
+    }
+  }
 }
 </script>
 

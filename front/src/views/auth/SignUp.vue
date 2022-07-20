@@ -1,5 +1,4 @@
 <template>
-  <!-- <div id="VSignUp" class="container"> -->
   <div class="row justify-content-md-center">
     <div class="col-lg-4 col-md-6 col-12 md-auto">
       <h1>Регистрация</h1>
@@ -12,6 +11,7 @@
             class="form-control"
             id="input-login"
             aria-describedby="input-login-help"
+            autocomplete="off"
           />
           <div id="input-login-help" class="form-text">
             Логин не чувствителен к регистру
@@ -25,6 +25,7 @@
             class="form-control"
             id="input-password"
             aria-describedby="input-password-help"
+            autocomplete="off"
           />
           <div id="input-password-help" class="form-text">
             Пароль чувствителен к регистру
@@ -50,7 +51,6 @@
       </router-link>
     </div>
   </div>
-  <!-- </div> -->
 </template>
 
 <script setup lang="ts">
