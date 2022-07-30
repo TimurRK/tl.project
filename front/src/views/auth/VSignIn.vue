@@ -162,7 +162,14 @@ async function onSignIn(event: Event) {
 
   if (login.value && password.value) {
     try {
-      await api.signIn(login.value, password.value, !!accept_cookie.value);
+      await api.signIn(
+        {
+          username: login.value,
+          password: password.value,
+          grand_type: "password",
+        },
+        !!accept_cookie.value
+      );
     } catch (error: any) {
       toast.error(error.error, {
         timeout: 2500,

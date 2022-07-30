@@ -100,7 +100,7 @@ current_user_store.$subscribe((_mutation, state) => {
 });
 
 function signOut() {
-  api.signOut();
+  api.signOut(true);
 }
 </script>
 

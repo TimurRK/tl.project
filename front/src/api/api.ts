@@ -4,13 +4,14 @@ import type { Router } from "vue-router";
 import type { AxiosInstance, AxiosRequestHeaders } from "axios";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
+import { stringify } from "qs";
 
 import type {
   ICurrentUser,
   TUserStore,
   TUserStoreDefinition,
 } from "@/stores/current-user";
-import { clearCookie, setCookie } from "@/helpers/cookie.helper";
+import { clearCookie, getCookie, setCookie } from "@/helpers/cookie.helper";
 
 const api_endpoint = import.meta.env.VITE_APP_API;
 const api_key = "api";
@@ -59,22 +60,16 @@ class ApiService {
         switch (data.error) {
           case "UNAUTHORIZED":
           case "REFRESH_TOKEN_EXPIRED":
-            /**
-             * redirect to sign-in
-             */
+            this.signOut();
+            this.router.push({ name: "VSignIn" });
+
             break;
           case "ACCESS_TOKEN_EXPIRED":
-            /**
-             * refresh
-             */
+            await this.refreshAccessToken();
+
             break;
           case "AUTHORIZATION_FAILED":
-            if (this.current_user_store) {
-              this.current_user_store.setCurrentUser(null);
-              this.current_user_store.setTokens(null);
-            }
-
-            clearCookie();
+            this.signOut();
 
             break;
         }
@@ -143,11 +138,11 @@ class ApiService {
     return res;
   }
 
-  public async signIn(login: string, password: string, use_cookie = false) {
-    clearCookie();
+  public async signIn(data: Record<string, unknown>, use_cookie = false) {
+    clearCookie(["accept_cookie"]);
 
     const { data: res }: { data: IAuthResponse } = await this.post(
-      `/oauth/token?username=${login}&password=${password}&grand_type=password`,
+      `/oauth/token?${stringify(data)}`,
       {}
     );
 
@@ -156,6 +151,8 @@ class ApiService {
     );
 
     if (use_cookie) {
+      setCookie("accept_cookie", "true");
+
       setCookie("access_token", res.access_token, res.access_token_expires_at);
       setCookie(
         "access_token_expires_at",
@@ -172,6 +169,8 @@ class ApiService {
         res.refresh_token_expires_at,
         res.refresh_token_expires_at
       );
+    } else {
+      setCookie("accept_cookie", "false");
     }
 
     if (this.current_user_store) {
@@ -182,11 +181,67 @@ class ApiService {
     this.router.push({ name: "VDashboard" });
   }
 
-  public signOut() {
+  public signOut(redirect = false) {
     clearCookie();
 
-    this.current_user_store.setCurrentUser(null);
-    this.current_user_store.setTokens(null);
+    if (this.current_user_store) {
+      this.current_user_store.setCurrentUser(null);
+      this.current_user_store.setTokens(null);
+    }
+
+    if (redirect) {
+      this.router.push({ name: "VDashboard" });
+    }
+  }
+
+  public async refreshAccessToken() {
+    const accept_cookie = getCookie("accept_cookie");
+    const refresh_token = this.current_user_store.refreshToken;
+
+    if (refresh_token) {
+      try {
+        await this.signIn(
+          { refresh_token, grand_type: "refresh_token" },
+          accept_cookie === "true"
+        );
+      } catch (error) {
+        this.signOut();
+        this.router.push({ name: "VSignIn" });
+      }
+    }
+  }
+
+  public async restoreAuth() {
+    const accept_cookie = getCookie("accept_cookie");
+
+    if (accept_cookie === "true") {
+      const access_token = getCookie("access_token");
+      const access_token_expires_at = getCookie("access_token_expires_at");
+      const refresh_token = getCookie("refresh_token");
+      const refresh_token_expires_at = getCookie("refresh_token_expires_at");
+
+      if (
+        access_token?.length &&
+        access_token_expires_at?.length &&
+        refresh_token?.length &&
+        refresh_token_expires_at?.length
+      ) {
+        const { current_user }: { current_user: ICurrentUser } =
+          jwtDecode(access_token);
+
+        this.current_user_store.setCurrentUser(current_user);
+        this.current_user_store.setTokens({
+          access_token,
+          access_token_expires_at,
+          refresh_token,
+          refresh_token_expires_at,
+        });
+
+        await this.refreshAccessToken();
+      }
+    } else {
+      clearCookie();
+    }
   }
 }
 

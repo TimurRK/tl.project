@@ -30,12 +30,14 @@ export function getCookie(key: string) {
   return "";
 }
 
-export function clearCookie() {
+export function clearCookie(skip_cookies: string[] = []) {
   const cookies = document.cookie.split("; ");
 
   for (const cookie of cookies) {
     const kv_pair = cookie.split("=");
 
-    setCookie(kv_pair[0], "");
+    if (!skip_cookies.includes(kv_pair[0])) {
+      setCookie(kv_pair[0], "");
+    }
   }
 }
