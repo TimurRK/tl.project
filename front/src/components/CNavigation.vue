@@ -87,10 +87,12 @@ import { useRoute } from "vue-router";
 
 import { currentUserStore, type ICurrentUser } from "@/stores/current-user";
 import { useApi } from "@/api/api";
+import { useToast } from "vue-toastification";
 
 const route = useRoute();
 const current_user_store = currentUserStore();
 const api = useApi();
+const toast = useToast();
 
 const current_user: Ref<ICurrentUser | null> = ref(null);
 current_user.value = current_user_store.currentUser;
@@ -101,6 +103,10 @@ current_user_store.$subscribe((_mutation, state) => {
 
 function signOut() {
   api.signOut(true);
+
+  toast.success("SIGN_OUT_SUCCESS", {
+    timeout: 2500,
+  });
 }
 </script>
 

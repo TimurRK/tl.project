@@ -12,6 +12,7 @@ import type {
   TUserStoreDefinition,
 } from "@/stores/current-user";
 import { clearCookie, getCookie, setCookie } from "@/helpers/cookie.helper";
+import type { ToastInterface } from "vue-toastification";
 
 const api_endpoint = import.meta.env.VITE_APP_API;
 const api_key = "api";
@@ -44,7 +45,8 @@ class ApiService {
 
   constructor(
     currentUserStore: TUserStoreDefinition,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly toast: ToastInterface
   ) {
     this.http_client = axios.create({ baseURL: api_endpoint });
 
@@ -60,21 +62,33 @@ class ApiService {
         switch (data.error) {
           case "UNAUTHORIZED":
           case "REFRESH_TOKEN_EXPIRED":
+            this.toast.error(data.error, {
+              timeout: 2500,
+            });
+
             this.signOut();
             this.router.push({ name: "VSignIn" });
 
             break;
           case "ACCESS_TOKEN_EXPIRED":
+            this.toast.error(data.error, {
+              timeout: 2500,
+            });
+
             await this.refreshAccessToken();
 
             break;
           case "AUTHORIZATION_FAILED":
+            this.toast.error(data.error, {
+              timeout: 2500,
+            });
+
             this.signOut();
 
             break;
         }
 
-        return Promise.reject(error.response.data);
+        return await Promise.reject(data);
       }
     );
   }
@@ -138,7 +152,7 @@ class ApiService {
     return res;
   }
 
-  public async signIn(data: Record<string, unknown>, use_cookie = false) {
+  public async signIn(data: Record<string, unknown>, accept_cookie = false) {
     clearCookie(["accept_cookie"]);
 
     const { data: res }: { data: IAuthResponse } = await this.post(
@@ -150,7 +164,7 @@ class ApiService {
       res.access_token
     );
 
-    if (use_cookie) {
+    if (accept_cookie) {
       setCookie("accept_cookie", "true");
 
       setCookie("access_token", res.access_token, res.access_token_expires_at);
@@ -177,8 +191,15 @@ class ApiService {
       this.current_user_store.setCurrentUser(current_user);
       this.current_user_store.setTokens(res);
     }
+  }
 
-    this.router.push({ name: "VDashboard" });
+  public async signUp(login: string, password: string) {
+    const { data: res }: { data: string[] } = await this.post(
+      `/oauth/registration`,
+      { login, password }
+    );
+
+    return res;
   }
 
   public signOut(redirect = false) {
@@ -192,6 +213,15 @@ class ApiService {
     if (redirect) {
       this.router.push({ name: "VDashboard" });
     }
+  }
+
+  public async changePassword(recovery_key: string, new_password: string) {
+    const { data: res }: { data: string[] } = await this.post(
+      `/oauth/change_password`,
+      { recovery_key, new_password }
+    );
+
+    return res;
   }
 
   public async refreshAccessToken() {
@@ -252,9 +282,17 @@ export function useApi() {
 export default {
   install(
     app: App,
-    options: { currentUserStore: TUserStoreDefinition; router: Router }
+    options: {
+      currentUserStore: TUserStoreDefinition;
+      router: Router;
+      toast: ToastInterface;
+    }
   ) {
-    const api = new ApiService(options.currentUserStore, options.router);
+    const api = new ApiService(
+      options.currentUserStore,
+      options.router,
+      options.toast
+    );
 
     app.config.globalProperties.$api = api;
     app.provide(api_key, api);

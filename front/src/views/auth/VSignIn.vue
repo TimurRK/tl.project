@@ -108,6 +108,7 @@ import { Modal } from "bootstrap";
 import { onMounted, ref, type Ref } from "vue";
 import { useToast } from "vue-toastification";
 
+import router from "@/router";
 import { useApi } from "@/api/api";
 
 const api = useApi();
@@ -170,8 +171,14 @@ async function onSignIn(event: Event) {
         },
         !!accept_cookie.value
       );
+
+      toast.success("SIGN_IN_SUCCESS", {
+        timeout: 2500,
+      });
+
+      router.push({ name: "VDashboard" });
     } catch (error: any) {
-      toast.error(error.error, {
+      toast.error(error.message.join(", "), {
         timeout: 2500,
       });
     }

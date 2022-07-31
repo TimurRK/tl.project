@@ -1,6 +1,6 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-import Toast from "vue-toastification";
+import Toast, { useToast } from "vue-toastification";
 
 import "vue-toastification/dist/index.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -23,6 +23,8 @@ app.use(Toast, {
   newestOnTop: true,
 });
 
-app.use(api, { currentUserStore, router });
+const toast = useToast();
+
+app.use(api, { currentUserStore, router, toast });
 
 app.mount("#app");
