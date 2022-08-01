@@ -1,7 +1,11 @@
 import type { App, Plugin } from "vue";
 import { inject } from "vue";
 import type { Router } from "vue-router";
-import type { AxiosInstance, AxiosRequestHeaders } from "axios";
+import type {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosRequestHeaders,
+} from "axios";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { stringify } from "qs";
@@ -67,9 +71,8 @@ class ApiService {
             });
 
             this.signOut();
-            this.router.push({ name: "VSignIn" });
 
-            break;
+            return this.router.push({ name: "VSignIn" });
           case "ACCESS_TOKEN_EXPIRED":
             this.toast.error(data.error, {
               timeout: 2500,
@@ -77,7 +80,7 @@ class ApiService {
 
             await this.refreshAccessToken();
 
-            break;
+            return await this.retryReq(error.config);
           case "AUTHORIZATION_FAILED":
             this.toast.error(data.error, {
               timeout: 2500,
@@ -91,6 +94,17 @@ class ApiService {
         return await Promise.reject(data);
       }
     );
+  }
+
+  private async retryReq(config: AxiosRequestConfig) {
+    return await this.http_client?.request({
+      ...config,
+      ...{
+        headers: {
+          ...this.defaultHeaders,
+        },
+      },
+    });
   }
 
   private defaultHeaders() {
