@@ -89,12 +89,10 @@
 
 <script setup lang="ts">
 import { ref, type Ref } from "vue";
-import { useRoute } from "vue-router";
 import { useToast } from "vue-toastification";
 
 import { useApi } from "@/api/api";
 
-const route = useRoute();
 const api = useApi();
 const toast = useToast();
 

@@ -1,6 +1,6 @@
 import { Context, GraphQLExecutionContext, Parent, Resolver } from '@nestjs/graphql';
 
-import { ELoaderType, Loader, Mutation, ResolveField } from 'nestjs-graphql-easy';
+import { ELoaderType, Filter, Loader, Order, Pagination, Query, ResolveField } from 'nestjs-graphql-easy';
 
 import { User } from '../../oauth/user/user.entity';
 
@@ -10,9 +10,21 @@ import { Translator } from './translator.entity';
 
 @Resolver(() => Translator)
 export class TranslatorResolver {
-  @Mutation(() => Translator)
-  public async createTranslator() {
-    return new Translator();
+  @Query(() => [Translator])
+  public async translators(
+    @Loader({
+      loader_type: ELoaderType.MANY,
+      field_name: 'translators',
+      entity: () => Translator,
+      entity_fk_key: 'id',
+    })
+    field_alias: string,
+    @Filter(() => Translator) _filter: unknown,
+    @Order(() => Translator) _order: unknown,
+    @Pagination() _pagination: unknown,
+    @Context() ctx: GraphQLExecutionContext
+  ) {
+    return await ctx[field_alias];
   }
 
   @ResolveField(() => User, { nullable: false })

@@ -159,7 +159,10 @@ class ApiService {
     });
   }
 
-  public async graphql<T>(query: string, variables: Record<string, unknown>) {
+  public async graphql<T>(
+    query: string,
+    variables: Record<string, unknown> = {}
+  ) {
     const { data: res }: { data: { data: T; errors?: IGraphQLError[] } } =
       await this.post("/graphql", { query, variables });
 

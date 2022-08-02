@@ -64,6 +64,14 @@
               class="dropdown-menu dropdown-menu-end"
               aria-labelledby="navbarUserDropdownMenuLink"
             >
+              <li v-for="nav_route of user_nav_routers" :key="nav_route.name">
+                <router-link
+                  :to="{ name: nav_route.name }"
+                  class="dropdown-item"
+                >
+                  {{ nav_route.meta?.name }}
+                </router-link>
+              </li>
               <li>
                 <button class="dropdown-item" @click="signOut">Выйти</button>
               </li>
@@ -88,6 +96,7 @@ import { useRoute } from "vue-router";
 import { currentUserStore, type ICurrentUser } from "@/stores/current-user";
 import { useApi } from "@/api/api";
 import { useToast } from "vue-toastification";
+import { user_nav_routers } from "@/router";
 
 const route = useRoute();
 const current_user_store = currentUserStore();
