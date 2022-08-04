@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 
 import { DatabaseModule } from './database/database.module';
 import GraphQLModule from './graphql/graphql.module';
@@ -17,6 +17,8 @@ export class AppModule {
   public configure(consumer: MiddlewareConsumer): void | MiddlewareConsumer {
     consumer.apply(LoggerMiddleware).forRoutes('*');
 
-    consumer.apply(OAuthMiddleware).forRoutes('upload');
+    consumer
+      .apply(OAuthMiddleware)
+      .forRoutes({ path: 'uploads', method: RequestMethod.POST }, { path: 'uploads', method: RequestMethod.OPTIONS });
   }
 }

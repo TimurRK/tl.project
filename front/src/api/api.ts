@@ -9,6 +9,7 @@ import type {
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { stringify } from "qs";
+import { print, type DocumentNode } from "graphql";
 
 import type {
   ICurrentUser,
@@ -101,16 +102,21 @@ class ApiService {
       ...config,
       ...{
         headers: {
-          ...this.defaultHeaders,
+          ...this.defaultAuthHeaders(),
         },
       },
     });
   }
 
   private defaultHeaders() {
-    const headers: AxiosRequestHeaders = {
+    return {
       "Content-Type": "application/json; charset=utf-8",
-    };
+      ...this.defaultAuthHeaders()
+    } as AxiosRequestHeaders;
+  }
+
+  private defaultAuthHeaders() {
+    const headers: AxiosRequestHeaders = {}
 
     if (this.current_user_store?.accessToken) {
       headers.Authorization = this.current_user_store.accessToken;
@@ -122,15 +128,16 @@ class ApiService {
   public async get(url: string) {
     return await this.http_client!.get(url, {
       headers: {
-        ...this.defaultHeaders,
+        ...this.defaultHeaders(),
       },
     });
   }
 
-  public async post(url: string, body: Record<string, unknown>) {
+  public async post(url: string, body: Record<string, unknown> | FormData, headers: AxiosRequestHeaders = {}) {
     return await this.http_client!.post(url, body, {
       headers: {
-        ...this.defaultHeaders,
+        ...this.defaultHeaders(),
+        ...headers,
       },
     });
   }
@@ -138,7 +145,7 @@ class ApiService {
   public async put(url: string, body: Record<string, unknown>) {
     return await this.http_client!.put(url, body, {
       headers: {
-        ...this.defaultHeaders,
+        ...this.defaultHeaders(),
       },
     });
   }
@@ -146,7 +153,7 @@ class ApiService {
   public async patch(url: string, body: Record<string, unknown>) {
     return await this.http_client!.patch(url, body, {
       headers: {
-        ...this.defaultHeaders,
+        ...this.defaultHeaders(),
       },
     });
   }
@@ -154,17 +161,27 @@ class ApiService {
   public async delete(url: string) {
     return await this.http_client!.delete(url, {
       headers: {
-        ...this.defaultHeaders,
+        ...this.defaultHeaders(),
       },
     });
   }
 
-  public async graphql<T>(
-    query: string,
-    variables: Record<string, unknown> = {}
-  ) {
-    const { data: res }: { data: { data: T; errors?: IGraphQLError[] } } =
+  public async graphql<Q, V>(query: string | DocumentNode, variables?: V) {
+    if (typeof query !== 'string') {
+      query = print(query)
+    }
+
+    const { data: res }: { data: { data: Q; errors?: IGraphQLError[] } } =
       await this.post("/graphql", { query, variables });
+
+    return res;
+  }
+
+  public async upload(file: File) {
+    const formData = new FormData()
+    formData.append('file', file)
+
+    const { data: res } = await this.post('/uploads', formData, { 'Content-Type': 'multipart/form-data' })
 
     return res;
   }

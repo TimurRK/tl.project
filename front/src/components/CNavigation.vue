@@ -18,7 +18,7 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarToggler">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav me-auto mb-lg-0">
           <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"
@@ -41,7 +41,7 @@
           </li>
         </ul>
 
-        <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav ml-auto mb-lg-0">
           <li class="nav-item dropdown" v-if="current_user">
             <a
               class="nav-link dropdown-toggle p-0"

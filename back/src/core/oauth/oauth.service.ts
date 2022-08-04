@@ -6,7 +6,13 @@ import config from 'config';
 import { nanoid } from 'nanoid';
 
 import { checkPassword, passwordToHash } from '../../helpers/password.helper';
-import { access_token_expired_signature, account_blocked, authorization_failed, bad_request, refresh_token_expired_signature } from '../../errors';
+import {
+  access_token_expired_signature,
+  account_blocked,
+  authorization_failed,
+  bad_request,
+  refresh_token_expired_signature,
+} from '../../errors';
 
 import { IJwtPayload, User } from './user/user.entity';
 import { RecoveryKey } from './recovery-key/recovery-key.entity';
@@ -15,19 +21,19 @@ import { RefreshToken } from './refresh-token/refresh-token.entity';
 const jwt_settings = config.get<IJwtSettings>('JWT_SETTINGS');
 
 export interface IJwtToken {
-  iat: number,
-  exp: number,
+  iat: number;
+  exp: number;
   jti: string;
 }
 
 export interface IAccessToken extends IJwtToken {
-  current_user: IJwtPayload,
-  token_type: 'access'
+  current_user: IJwtPayload;
+  token_type: 'access';
 }
 
 export interface IRefreshToken extends IJwtToken {
-  current_user: { id: string },
-  token_type: 'refresh'
+  current_user: { id: string };
+  token_type: 'refresh';
 }
 
 @Injectable()
@@ -83,7 +89,7 @@ export class OAuthService {
         authorization_failed({ raise: true });
       }
 
-      const user = await entityManager.getRepository(User).findOne({ where: { id: current_user.id }});
+      const user = await entityManager.getRepository(User).findOne({ where: { id: current_user.id } });
 
       if (!user) {
         authorization_failed({ raise: true });
@@ -130,9 +136,13 @@ export class OAuthService {
 
     return {
       access_token,
-      access_token_expires_at: new Date(new Date().setMinutes(new Date().getMinutes() + jwt_settings.access_token_expires_in)).toISOString(),
+      access_token_expires_at: new Date(
+        new Date().setMinutes(new Date().getMinutes() + jwt_settings.access_token_expires_in)
+      ).toISOString(),
       refresh_token,
-      refresh_token_expires_at: new Date(new Date().setMinutes(new Date().getMinutes() + jwt_settings.refresh_token_expires_in)).toISOString(),
+      refresh_token_expires_at: new Date(
+        new Date().setMinutes(new Date().getMinutes() + jwt_settings.refresh_token_expires_in)
+      ).toISOString(),
     };
   }
 
@@ -148,12 +158,12 @@ export class OAuthService {
     return (await entityManager.getRepository(RecoveryKey).save(keys)).map((r) => r.id);
   }
 
-  public verifyToken<T>(jwt_token: string, is_access_token: boolean = true) {
+  public verifyToken<T>(jwt_token: string, is_access_token = true) {
     try {
       return verify(jwt_token, jwt_settings.secret_key) as T;
     } catch (error) {
       if (is_access_token) {
-        access_token_expired_signature({ raise: true })
+        access_token_expired_signature({ raise: true });
       } else {
         refresh_token_expired_signature({ raise: true });
       }

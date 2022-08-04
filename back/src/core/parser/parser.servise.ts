@@ -12,6 +12,8 @@ import { Section } from '../translate/section/section.entity';
 import { Item } from '../translate/item/item.entity';
 import { ItemImage } from '../translate/item-image/item-image.entity';
 import { ItemText } from '../translate/item-text/item-text.entity';
+import { IJwtPayload } from '../oauth/user/user.entity';
+import { Translator } from '../translate/translator/translator.entity';
 
 export type TImageSize = 'small' | 'normal';
 
@@ -30,8 +32,8 @@ export const IMAGE_SIZES = {
 export class ParserService {
   constructor(private readonly logger: LoggerService, private readonly dataSource: DataSource) {}
 
-  public async parse(file: IFile) {
-    const logger_store = new LoggerStore(this.logger, { file_name: file.originalname, mimetype: file.mimetype });
+  public async parse(file: IFile, logger_store: LoggerStore, current_user: IJwtPayload) {
+    logger_store.addBaseCtx({ file_name: file.originalname, mimetype: file.mimetype, current_user_id: current_user.id });
 
     logger_store.info('ParserService: parse: start');
 
@@ -55,6 +57,13 @@ export class ParserService {
       const { identifiers } = await entityManager.getRepository(Book).insert(book);
 
       book.id = identifiers[0].id as number;
+
+      const translator: DeepPartial<Translator> = {
+        book_id: book.id,
+        user_id: current_user.id,
+      };
+
+      await entityManager.getRepository(Translator).insert(translator);
 
       const sections: Array<DeepPartial<Section>> = [];
       const items: Array<DeepPartial<Item>> = [];
