@@ -1,20 +1,13 @@
 <template>
-  <CHr
-    :color="'dark'"
-    :title="(route.meta!.name as string)"
-  />
+  <CHr :color="'dark'" :title="(route.meta!.name as string)" />
 
   <CPreloader v-if="disable_upload" />
 
   <div class="row justify-content-md-center" v-else>
-    <form
-      @submit="onUploadFile"
-      autocomplete="off"
-      id="change-password-form"
-    >
+    <form @submit="onUploadFile" autocomplete="off" id="change-password-form">
       <div class="mb-3">
         <label for="ebook-file" class="form-label">eBook File</label>
-        <input 
+        <input
           type="file"
           ref="file_input"
           :state="Boolean(file)"
@@ -26,17 +19,21 @@
           id="ebook-file"
           aria-describedby="ebook-file-help"
           :disabled="disable_upload"
-        >
-        <div id="ebook-file-help" class="form-text">Электронная книга формата ePub</div>
+        />
+        <div id="ebook-file-help" class="form-text">
+          Электронная книга формата ePub
+        </div>
       </div>
 
-      <div class="mb-3">Выбранный файл: <b>{{ file ? file.name : '' }}</b></div>
+      <div class="mb-3">
+        Выбранный файл: <b>{{ file ? file.name : "" }}</b>
+      </div>
 
-      <button type="submit" class="btn btn-primary" :disabled="disable_upload">Загрузить</button>
+      <button type="submit" class="btn btn-primary" :disabled="disable_upload">
+        Загрузить
+      </button>
     </form>
   </div>
-
-    
 </template>
 
 <script setup lang="ts">
@@ -46,7 +43,7 @@ import { useToast } from "vue-toastification";
 
 import CHr from "@/components/CHr.vue";
 import CPreloader from "@/components/CPreloader.vue";
-import router from '@/router'
+import router from "@/router";
 
 import { useApi } from "@/api/api";
 
@@ -60,7 +57,7 @@ const disable_upload: Ref<boolean> = ref(false);
 
 function changeFile() {
   if (file_input.value?.files) {
-    file.value = file_input.value.files[0]
+    file.value = file_input.value.files[0];
   } else {
     file.value = null;
   }
@@ -79,7 +76,7 @@ async function onUploadFile(event: Event) {
         timeout: 2500,
       });
 
-      router.push({ name: 'VBookList' })
+      router.push({ name: "VBookList" });
     } catch (error: any) {
       toast.error(error.message, {
         timeout: 2500,

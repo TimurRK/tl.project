@@ -36,7 +36,7 @@ current_user_store.$subscribe((_mutation, state) => {
 });
 
 function newBook() {
-  router.push({ name: 'VBookNew' })
+  router.push({ name: "VBookNew" });
 }
 
 onBeforeMount(async () => {

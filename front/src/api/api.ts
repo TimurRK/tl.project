@@ -111,12 +111,12 @@ class ApiService {
   private defaultHeaders() {
     return {
       "Content-Type": "application/json; charset=utf-8",
-      ...this.defaultAuthHeaders()
+      ...this.defaultAuthHeaders(),
     } as AxiosRequestHeaders;
   }
 
   private defaultAuthHeaders() {
-    const headers: AxiosRequestHeaders = {}
+    const headers: AxiosRequestHeaders = {};
 
     if (this.current_user_store?.accessToken) {
       headers.Authorization = this.current_user_store.accessToken;
@@ -133,7 +133,11 @@ class ApiService {
     });
   }
 
-  public async post(url: string, body: Record<string, unknown> | FormData, headers: AxiosRequestHeaders = {}) {
+  public async post(
+    url: string,
+    body: Record<string, unknown> | FormData,
+    headers: AxiosRequestHeaders = {}
+  ) {
     return await this.http_client!.post(url, body, {
       headers: {
         ...this.defaultHeaders(),
@@ -167,8 +171,8 @@ class ApiService {
   }
 
   public async graphql<Q, V>(query: string | DocumentNode, variables?: V) {
-    if (typeof query !== 'string') {
-      query = print(query)
+    if (typeof query !== "string") {
+      query = print(query);
     }
 
     const { data: res }: { data: { data: Q; errors?: IGraphQLError[] } } =
@@ -178,10 +182,12 @@ class ApiService {
   }
 
   public async upload(file: File) {
-    const formData = new FormData()
-    formData.append('file', file)
+    const formData = new FormData();
+    formData.append("file", file);
 
-    const { data: res } = await this.post('/uploads', formData, { 'Content-Type': 'multipart/form-data' })
+    const { data: res } = await this.post("/uploads", formData, {
+      "Content-Type": "multipart/form-data",
+    });
 
     return res;
   }
