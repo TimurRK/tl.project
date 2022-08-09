@@ -67,7 +67,7 @@ export const user_nav_routers: RouteRecordRaw[] = [
 export const translation_routers: RouteRecordRaw[] = [
   {
     name: "VBookNew",
-    path: "/translations/books/new",
+    path: "/translations/new",
     props: true,
     component: () => import("../views/translations/books/VNew.vue"),
     meta: {
@@ -78,9 +78,20 @@ export const translation_routers: RouteRecordRaw[] = [
   },
   {
     name: "VBookEdit",
-    path: "/translations/books/:id",
+    path: "/translations/books/:book_id",
     props: true,
     component: () => import("../views/translations/books/VEdit.vue"),
+    meta: {
+      name: "Редактировать перевод",
+      icon: "book",
+      protected: true,
+    },
+  },
+  {
+    name: "VSectionEdit",
+    path: "/translations/books/:book_id/sections/:section_id",
+    props: true,
+    component: () => import("../views/translations/sections/VEdit.vue"),
     meta: {
       name: "Редактировать перевод",
       icon: "book",

@@ -1,0 +1,16 @@
+query BookSections($book_id: ID!, $user_id: ID!) {
+  books(WHERE: { id: { EQ: $book_id } }) {
+    id
+    title
+    author
+    sections(ORDER: { position: { SORT: ASC, NULLS: LAST  }}) {
+      id
+      position
+      title
+      created_at
+    }
+  }
+  translators(WHERE: { book_id: { EQ: $book_id }, user_id: { EQ: $user_id } }) {
+    id
+  }
+}

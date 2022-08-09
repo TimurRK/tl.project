@@ -446,8 +446,31 @@ export type Field_OrderInputType = {
   SORT: EOrderMethod;
 };
 
+export type BookSectionsQueryVariables = Exact<{
+  book_id: Scalars["ID"];
+  user_id: Scalars["ID"];
+}>;
+
+export type BookSectionsQuery = {
+  __typename?: "Query";
+  books: Array<{
+    __typename?: "Book";
+    id: string;
+    title: string;
+    author?: string | null;
+    sections?: Array<{
+      __typename?: "Section";
+      id: string;
+      position: number;
+      title: string;
+      created_at: any;
+    }> | null;
+  }>;
+  translators: Array<{ __typename?: "Translator"; id: string }>;
+};
+
 export type UserTranslationsQueryVariables = Exact<{
-  user_id?: InputMaybe<Scalars["ID"]>;
+  user_id: Scalars["ID"];
 }>;
 
 export type UserTranslationsQuery = {
@@ -460,6 +483,9 @@ export type UserTranslationsQuery = {
       __typename?: "Book";
       id: string;
       title: string;
+      author?: string | null;
+      cover?: string | null;
+      created_at: any;
       book_versions?: Array<{
         __typename?: "BookVersion";
         id: string;
@@ -469,8 +495,28 @@ export type UserTranslationsQuery = {
   }>;
 };
 
+export const BookSections = gql`
+  query BookSections($book_id: ID!, $user_id: ID!) {
+    books(WHERE: { id: { EQ: $book_id } }) {
+      id
+      title
+      author
+      sections(ORDER: { position: { SORT: ASC, NULLS: LAST } }) {
+        id
+        position
+        title
+        created_at
+      }
+    }
+    translators(
+      WHERE: { book_id: { EQ: $book_id }, user_id: { EQ: $user_id } }
+    ) {
+      id
+    }
+  }
+`;
 export const UserTranslations = gql`
-  query UserTranslations($user_id: ID) {
+  query UserTranslations($user_id: ID!) {
     translators(
       WHERE: { user_id: { EQ: $user_id } }
       ORDER: { created_at: { SORT: ASC, NULLS: LAST } }
@@ -480,6 +526,9 @@ export const UserTranslations = gql`
       book {
         id
         title
+        author
+        cover
+        created_at
         book_versions(WHERE: { is_main: { EQ: true } }) {
           id
           title

@@ -6,16 +6,90 @@
     @click-button="newBook"
   />
 
-  <!-- <div class="row justify-content-md-center mb-3"> -->
-  <!-- </div> -->
+  <div
+    class="row justify-content-md-center"
+    v-if="current_data?.translators?.length"
+  >
+    <div
+      class="card mb-2"
+      v-for="translator of current_data.translators"
+      :key="translator.id"
+    >
+      <div class="row g-0">
+        <div class="col-sm-12 col-md-2 text-center">
+          <template v-if="translator.book.cover">
+            <img
+              :src="translator.book.cover"
+              class="img-fluid rounded-start cover"
+              :alt="translator.book.title"
+              max-height="250px"
+            />
+          </template>
+          <template v-else>
+            <img
+              src="@/assets/missing_original.jpg"
+              class="img-fluid rounded-start cover"
+              :alt="translator.book.title"
+            />
+          </template>
+        </div>
+        <div class="col-sm-12 col-md-10">
+          <div class="card-header">
+            <h5 class="card-title">
+              {{ translator.book.title }}
+              <small class="text-muted">{{ translator.book.author }}</small>
+            </h5>
+            <h5
+              class="card-title"
+              v-if="translator.book.book_versions?.[0]?.title"
+            >
+              {{ translator.book.book_versions?.[0]?.title }}
+            </h5>
+          </div>
+          <div class="card-body">
+            <p class="card-text">
+              <small class="text-muted">
+                Стутус:
+                <CBadge :title="'Приватно'" :color="'dark'" />
+                <CBadge :title="'В процессе'" :color="'orange'" />
+                <CBadge :title="'Готово'" :color="'green'" />
+                <CBadge :title="'Приостановлено'" :color="'pink'" />
+                <CBadge :title="'Брошено'" :color="'red'" />
+                <CBadge :title="'В очереди'" :color="'indigo'" />
+              </small>
+            </p>
+            <p class="card-text">
+              <small class="text-muted"
+                >Создано:
+                {{ toBlogDateTime(translator.book.created_at) }}</small
+              >
+            </p>
+          </div>
+          <div class="card-footer text-muted">
+            <router-link
+              :to="{
+                name: 'VBookEdit',
+                params: { book_id: translator.book.id },
+              }"
+              class="btn btn-primary ml-rbase"
+            >
+              Переводить
+            </router-link>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { ref, type Ref, onBeforeMount } from "vue";
 
+import { toBlogDateTime } from "@/helpers/date.helper";
 import { useApi } from "@/api/api";
 import CHr from "@/components/CHr.vue";
+import CBadge from "@/components/CBadge.vue";
 import { currentUserStore, type ICurrentUser } from "@/stores/current-user";
 import {
   UserTranslations,
@@ -31,6 +105,8 @@ const current_user_store = currentUserStore();
 const current_user: Ref<ICurrentUser | null> = ref(null);
 current_user.value = current_user_store.currentUser;
 
+const current_data: Ref<UserTranslationsQuery | null> = ref(null);
+
 current_user_store.$subscribe((_mutation, state) => {
   current_user.value = state.current_user;
 });
@@ -43,10 +119,12 @@ onBeforeMount(async () => {
   const { data } = await api.graphql<
     UserTranslationsQuery,
     UserTranslationsQueryVariables
-  >(UserTranslations, { user_id: current_user.value?.id });
+  >(UserTranslations, { user_id: current_user.value!.id });
 
-  console.log(data);
+  current_data.value = data;
 });
 </script>
 
-<style></style>
+<style>
+@import "@/assets/main.css";
+</style>

@@ -1,4 +1,4 @@
-query UserTranslations($user_id: ID) {
+query UserTranslations($user_id: ID!) {
   translators(
     WHERE: { user_id: { EQ: $user_id }}
     ORDER: { created_at: { SORT: ASC, NULLS: LAST }}
@@ -8,6 +8,9 @@ query UserTranslations($user_id: ID) {
     book {
       id
       title
+      author
+      cover
+      created_at
       book_versions(WHERE: { is_main: { EQ: true } }) {
         id
         title
