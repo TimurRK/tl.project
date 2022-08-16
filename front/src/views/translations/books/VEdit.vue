@@ -19,15 +19,38 @@
 
     <CHr :color="'dark'" :title="'Список глав'" />
 
-    <div class="row justify-content-md-center mb-2">
-      <ol class="list-group list-group-numbered p-0">
-        <li
-          class="list-group-item d-flex justify-content-between align-items-start"
-          v-for="section of current_data.books[0].sections"
-          :key="section.id"
-        >
-          <div class="ms-2 me-auto">
-            <div class="fw-bold">
+    <div class="row justify-content-md-center mb-2 table-responsive">
+      <table class="table table-hover table-sm">
+        <thead>
+          <tr class="row m-0">
+            <th
+              class="col-sm-2 col-md-2 col-lg-1 col-xl-1 d-flex justify-content-center"
+            >
+              №
+            </th>
+            <th class="col-sm-8 col-md-8 col-lg-10 col-xl-10">
+              Название главы
+            </th>
+            <th
+              class="col-sm-2 col-md-2 col-lg-1 col-xl-1 d-flex justify-content-center"
+            >
+              Статус
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="row m-0"
+            v-for="section of current_data.books[0].sections"
+            :key="section.id"
+          >
+            <td
+              class="col-sm-2 col-md-2 col-lg-1 col-xl-1 d-flex justify-content-center"
+              scope="row"
+            >
+              {{ section.position }}
+            </td>
+            <td class="col-sm-8 col-md-8 col-lg-10 col-xl-10">
               <router-link
                 :to="{
                   name: 'VSectionEdit',
@@ -39,19 +62,23 @@
               >
                 {{ section.title }}
               </router-link>
-            </div>
-          </div>
-          <CBadge :title="'В очереди'" :color="'indigo'" />
-          <CBadge :title="'В процессе'" :color="'orange'" />
-          <CBadge :title="'Готово'" :color="'green'" />
-        </li>
-      </ol>
+            </td>
+            <td
+              class="col-sm-2 col-md-2 col-lg-1 col-xl-1 d-flex justify-content-center"
+            >
+              <CBadge :title="'В очереди'" :color="'indigo'" />
+              <!-- <CBadge :title="'В процессе'" :color="'orange'" /> -->
+              <!-- <CBadge :title="'Готово'" :color="'green'" /> -->
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </template>
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref, onBeforeMount } from "vue";
+import { ref, type Ref, onBeforeMount, onBeforeUnmount } from "vue";
 
 import { useRoute } from "vue-router";
 import { useApi } from "@/api/api";
@@ -65,10 +92,12 @@ import {
   type BookSectionsQueryVariables,
 } from "@/generated/graphql";
 import { currentUserStore, type ICurrentUser } from "@/stores/current-user";
+import { breadcrumbsStore } from "@/stores/breadcrumb";
 
 const route = useRoute();
 const api = useApi();
 
+const breadcrumbs_store = breadcrumbsStore();
 const current_user_store = currentUserStore();
 const current_user: Ref<ICurrentUser | null> = ref(null);
 current_user.value = current_user_store.currentUser;
@@ -84,6 +113,22 @@ onBeforeMount(async () => {
   >(BookSections, { book_id, user_id: current_user.value!.id });
 
   current_data.value = data;
+
+  breadcrumbs_store.setBreadcrumbs([
+    {
+      name: "Мои переводы",
+      is_current: false,
+      to: "VBookList",
+    },
+    {
+      name: current_data.value.books[0].title,
+      is_current: true,
+    },
+  ]);
+});
+
+onBeforeUnmount(async () => {
+  breadcrumbs_store.setBreadcrumbs(null);
 });
 </script>
 

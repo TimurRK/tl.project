@@ -84,13 +84,14 @@
 
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import { ref, type Ref, onBeforeMount } from "vue";
+import { ref, type Ref, onBeforeMount, onBeforeUnmount } from "vue";
 
 import { toBlogDateTime } from "@/helpers/date.helper";
 import { useApi } from "@/api/api";
 import CHr from "@/components/CHr.vue";
 import CBadge from "@/components/CBadge.vue";
 import { currentUserStore, type ICurrentUser } from "@/stores/current-user";
+import { breadcrumbsStore } from "@/stores/breadcrumb";
 import {
   UserTranslations,
   type UserTranslationsQuery,
@@ -101,6 +102,7 @@ import router from "@/router/index";
 const route = useRoute();
 const api = useApi();
 const current_user_store = currentUserStore();
+const breadcrumbs_store = breadcrumbsStore();
 
 const current_user: Ref<ICurrentUser | null> = ref(null);
 current_user.value = current_user_store.currentUser;
@@ -122,6 +124,17 @@ onBeforeMount(async () => {
   >(UserTranslations, { user_id: current_user.value!.id });
 
   current_data.value = data;
+
+  breadcrumbs_store.setBreadcrumbs([
+    {
+      name: "Мои переводы",
+      is_current: true,
+    },
+  ]);
+});
+
+onBeforeUnmount(async () => {
+  breadcrumbs_store.setBreadcrumbs(null);
 });
 </script>
 

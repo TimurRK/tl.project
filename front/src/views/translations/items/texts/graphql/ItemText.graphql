@@ -1,0 +1,30 @@
+query ItemText($book_id: ID!, $section_id: ID!, $item_id: ID!, $user_id: ID) {
+  books(WHERE: { id: { EQ: $book_id } }) {
+    id
+    title
+    author
+    sections(WHERE: { id: { EQ: $section_id }}) {
+      id
+      position
+      title
+      created_at
+      items(WHERE: { id: { EQ: $item_id }}) {
+        id
+        itemable {
+          __typename
+          ...on ItemText {
+            id
+            value
+          }
+          ...on ItemImage {
+            id
+            value
+          }
+        }
+      }
+    }
+  }
+  translators(WHERE: { book_id: { EQ: $book_id }, user_id: { EQ: $user_id } }) {
+    id
+  }
+}

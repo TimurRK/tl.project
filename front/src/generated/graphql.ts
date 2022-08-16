@@ -495,6 +495,129 @@ export type UserTranslationsQuery = {
   }>;
 };
 
+export type ItemTextQueryVariables = Exact<{
+  book_id: Scalars["ID"];
+  section_id: Scalars["ID"];
+  item_id: Scalars["ID"];
+  user_id?: InputMaybe<Scalars["ID"]>;
+}>;
+
+export type ItemTextQuery = {
+  __typename?: "Query";
+  books: Array<{
+    __typename?: "Book";
+    id: string;
+    title: string;
+    author?: string | null;
+    sections?: Array<{
+      __typename?: "Section";
+      id: string;
+      position: number;
+      title: string;
+      created_at: any;
+      items?: Array<{
+        __typename?: "Item";
+        id: string;
+        itemable:
+          | { __typename: "ItemImage"; id: string; value: string }
+          | { __typename: "ItemText"; id: string; value: string };
+      }> | null;
+    }> | null;
+  }>;
+  translators: Array<{ __typename?: "Translator"; id: string }>;
+};
+
+export type ItemTextVersionQueryVariables = Exact<{
+  book_id: Scalars["ID"];
+  section_id: Scalars["ID"];
+  item_id: Scalars["ID"];
+  item_version_id: Scalars["ID"];
+  user_id?: InputMaybe<Scalars["ID"]>;
+}>;
+
+export type ItemTextVersionQuery = {
+  __typename?: "Query";
+  books: Array<{
+    __typename?: "Book";
+    id: string;
+    title: string;
+    author?: string | null;
+    sections?: Array<{
+      __typename?: "Section";
+      id: string;
+      position: number;
+      title: string;
+      created_at: any;
+      items?: Array<{
+        __typename?: "Item";
+        id: string;
+        itemable:
+          | { __typename: "ItemImage"; id: string; value: string }
+          | {
+              __typename: "ItemText";
+              id: string;
+              value: string;
+              item_text_versions?: Array<{
+                __typename?: "ItemTextVersion";
+                id: string;
+                is_main: boolean;
+                value: string;
+              }> | null;
+            };
+      }> | null;
+    }> | null;
+  }>;
+  translators: Array<{ __typename?: "Translator"; id: string }>;
+};
+
+export type SectionItemsQueryVariables = Exact<{
+  book_id: Scalars["ID"];
+  section_id: Scalars["ID"];
+  user_id?: InputMaybe<Scalars["ID"]>;
+}>;
+
+export type SectionItemsQuery = {
+  __typename?: "Query";
+  books: Array<{
+    __typename?: "Book";
+    id: string;
+    title: string;
+    author?: string | null;
+    sections?: Array<{
+      __typename?: "Section";
+      id: string;
+      position: number;
+      title: string;
+      created_at: any;
+      items?: Array<{
+        __typename?: "Item";
+        id: string;
+        position: number;
+        itemable:
+          | { __typename: "ItemImage"; id: string; value: string }
+          | {
+              __typename: "ItemText";
+              id: string;
+              value: string;
+              item_text_versions?: Array<{
+                __typename?: "ItemTextVersion";
+                id: string;
+                is_main: boolean;
+                created_at: any;
+                user: {
+                  __typename?: "User";
+                  id: string;
+                  login: string;
+                  nickname?: string | null;
+                };
+              }> | null;
+            };
+      }> | null;
+    }> | null;
+  }>;
+  translators: Array<{ __typename?: "Translator"; id: string }>;
+};
+
 export const BookSections = gql`
   query BookSections($book_id: ID!, $user_id: ID!) {
     books(WHERE: { id: { EQ: $book_id } }) {
@@ -534,6 +657,130 @@ export const UserTranslations = gql`
           title
         }
       }
+    }
+  }
+`;
+export const ItemText = gql`
+  query ItemText($book_id: ID!, $section_id: ID!, $item_id: ID!, $user_id: ID) {
+    books(WHERE: { id: { EQ: $book_id } }) {
+      id
+      title
+      author
+      sections(WHERE: { id: { EQ: $section_id } }) {
+        id
+        position
+        title
+        created_at
+        items(WHERE: { id: { EQ: $item_id } }) {
+          id
+          itemable {
+            __typename
+            ... on ItemText {
+              id
+              value
+            }
+            ... on ItemImage {
+              id
+              value
+            }
+          }
+        }
+      }
+    }
+    translators(
+      WHERE: { book_id: { EQ: $book_id }, user_id: { EQ: $user_id } }
+    ) {
+      id
+    }
+  }
+`;
+export const ItemTextVersion = gql`
+  query ItemTextVersion(
+    $book_id: ID!
+    $section_id: ID!
+    $item_id: ID!
+    $item_version_id: ID!
+    $user_id: ID
+  ) {
+    books(WHERE: { id: { EQ: $book_id } }) {
+      id
+      title
+      author
+      sections(WHERE: { id: { EQ: $section_id } }) {
+        id
+        position
+        title
+        created_at
+        items(WHERE: { id: { EQ: $item_id } }) {
+          id
+          itemable {
+            __typename
+            ... on ItemText {
+              id
+              value
+              item_text_versions(WHERE: { id: { EQ: $item_version_id } }) {
+                id
+                is_main
+                value
+              }
+            }
+            ... on ItemImage {
+              id
+              value
+            }
+          }
+        }
+      }
+    }
+    translators(
+      WHERE: { book_id: { EQ: $book_id }, user_id: { EQ: $user_id } }
+    ) {
+      id
+    }
+  }
+`;
+export const SectionItems = gql`
+  query SectionItems($book_id: ID!, $section_id: ID!, $user_id: ID) {
+    books(WHERE: { id: { EQ: $book_id } }) {
+      id
+      title
+      author
+      sections(WHERE: { id: { EQ: $section_id } }) {
+        id
+        position
+        title
+        created_at
+        items {
+          id
+          position
+          itemable {
+            __typename
+            ... on ItemText {
+              id
+              value
+              item_text_versions {
+                id
+                is_main
+                created_at
+                user {
+                  id
+                  login
+                  nickname
+                }
+              }
+            }
+            ... on ItemImage {
+              id
+              value
+            }
+          }
+        }
+      }
+    }
+    translators(
+      WHERE: { book_id: { EQ: $book_id }, user_id: { EQ: $user_id } }
+    ) {
+      id
     }
   }
 `;

@@ -98,6 +98,28 @@ export const translation_routers: RouteRecordRaw[] = [
       protected: true,
     },
   },
+  {
+    name: "VItemTextEdit",
+    path: "/translations/books/:book_id/sections/:section_id/items/:item_id",
+    props: true,
+    component: () => import("../views/translations/items/texts/VEdit.vue"),
+    meta: {
+      name: "Редактировать перевод",
+      icon: "book",
+      protected: true,
+    },
+  },
+  {
+    name: "VItemTextNew",
+    path: "/translations/books/:book_id/sections/:section_id/items/:item_id/new",
+    props: true,
+    component: () => import("../views/translations/items/texts/VNew.vue"),
+    meta: {
+      name: "Редактировать перевод",
+      icon: "book",
+      protected: true,
+    },
+  },
 ];
 
 const router = createRouter({

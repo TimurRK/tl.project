@@ -1,7 +1,149 @@
 <template>
-  <div class="row justify-content-md-center"></div>
+  <template v-if="current_data && current_data.translators.length">
+    <template v-if="current_data.books[0].sections">
+      <CHr :color="'dark'" :title="current_data.books[0].sections[0].title" />
+
+      <CHr :color="'dark'" :title="'Содержание главы'" />
+      <div class="row justify-content-md-center mb-2 table-responsive">
+        <table class="table table-hover table-sm">
+          <thead>
+            <tr class="row m-0">
+              <th
+                class="col-sm-1 col-md-1 col-lg-1 col-xl-1 d-flex justify-content-center"
+              >
+                №
+              </th>
+              <th class="col-sm-6 col-md-6 col-lg-6 col-xl-6 break-word">
+                Оригинал
+              </th>
+              <th
+                class="col-sm-1 col-md-1 col-lg-1 col-xl-1 d-flex justify-content-center"
+              >
+                #
+              </th>
+              <th
+                class="col-sm-4 col-md-4 col-lg-4 col-xl-4 d-flex justify-content-center"
+              >
+                Варианты перевода
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="row m-0"
+              v-for="item in current_data.books[0].sections[0].items"
+              :key="item.id"
+            >
+              <td
+                class="col-sm-1 col-md-1 col-lg-1 col-xl-1 d-flex justify-content-center"
+              >
+                {{ item.position }}
+              </td>
+              <td class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <template v-if="item.itemable.__typename === 'ItemImage'">
+                  <img :src="item.itemable.value" />
+                </template>
+                <template v-else>
+                  <p>{{ item.itemable.value }}</p>
+                </template>
+              </td>
+              <td
+                class="col-sm-1 col-md-1 col-lg-1 col-xl-1 d-flex justify-content-center"
+              >
+                <template v-if="item.itemable.__typename === 'ItemText'">
+                  <router-link
+                    :to="{
+                      name: 'VItemTextNew',
+                      params: {
+                        book_id: current_data.books[0].id,
+                        section_id: current_data.books[0].sections[0].id,
+                        item_id: item.id,
+                      },
+                    }"
+                  >
+                    Добавить
+                  </router-link>
+                </template>
+              </td>
+              <td class="col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                <template
+                  v-if="
+                    item.itemable.__typename === 'ItemText' &&
+                    item.itemable.item_text_versions
+                  "
+                >
+                </template>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </template>
+  </template>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref, type Ref, onBeforeMount, onBeforeUnmount } from "vue";
 
-<style></style>
+import { useRoute } from "vue-router";
+import { useApi } from "@/api/api";
+
+import CHr from "@/components/CHr.vue";
+import CBadge from "@/components/CBadge.vue";
+
+import {
+  SectionItems,
+  type SectionItemsQuery,
+  type SectionItemsQueryVariables,
+} from "@/generated/graphql";
+import { currentUserStore, type ICurrentUser } from "@/stores/current-user";
+import { breadcrumbsStore } from "@/stores/breadcrumb";
+
+const route = useRoute();
+const api = useApi();
+
+const breadcrumbs_store = breadcrumbsStore();
+const current_user_store = currentUserStore();
+const current_user: Ref<ICurrentUser | null> = ref(null);
+current_user.value = current_user_store.currentUser;
+
+const current_data: Ref<SectionItemsQuery | null> = ref(null);
+
+onBeforeMount(async () => {
+  const book_id = route.params.book_id as string;
+  const section_id = route.params.section_id as string;
+
+  const { data } = await api.graphql<
+    SectionItemsQuery,
+    SectionItemsQueryVariables
+  >(SectionItems, { book_id, section_id, user_id: current_user.value!.id });
+
+  current_data.value = data;
+
+  breadcrumbs_store.setBreadcrumbs([
+    {
+      name: "Мои переводы",
+      is_current: false,
+      to: "VBookList",
+    },
+    {
+      name: current_data.value.books[0].title,
+      is_current: false,
+      to: "VBookEdit",
+      params: { book_id: current_data.value.books[0].id },
+    },
+    {
+      name: current_data.value.books[0].sections![0].title,
+      is_current: true,
+    },
+  ]);
+});
+
+onBeforeUnmount(async () => {
+  breadcrumbs_store.setBreadcrumbs(null);
+});
+</script>
+
+<style>
+@import "@/assets/main.css";
+</style>

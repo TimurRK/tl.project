@@ -2,6 +2,8 @@
   <CNavigation />
 
   <div class="container">
+    <CBreadcrumb />
+
     <RouterView />
   </div>
 </template>
@@ -12,6 +14,7 @@ import { RouterView } from "vue-router";
 
 import { useApi } from "@/api/api";
 
+import CBreadcrumb from "@/components/CBreadcrumb.vue";
 import CNavigation from "@/components/CNavigation.vue";
 
 const api = useApi();
@@ -21,4 +24,8 @@ onBeforeMount(async () => {
 });
 </script>
 
-<style></style>
+<style>
+body {
+  font-family: Open Sans, Helvetica Neue, Arial, Verdana, sans-serif;
+}
+</style>
