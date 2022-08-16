@@ -92,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref, watch } from "vue";
+import { ref, type Ref, watch, onBeforeUnmount } from "vue";
 import { useRoute } from "vue-router";
 
 import { currentUserStore, type ICurrentUser } from "@/stores/current-user";
@@ -114,7 +114,7 @@ current_user_store.$subscribe((_mutation, state) => {
 
 const route_name: Ref<string> = ref("");
 
-watch(
+const unwatch = watch(
   () => route.meta.name,
   (curr_name, _prev_name) => {
     route_name.value = curr_name as string;
@@ -128,6 +128,10 @@ function signOut() {
     timeout: 2500,
   });
 }
+
+onBeforeUnmount(() => {
+  unwatch();
+})
 </script>
 
 <style>
