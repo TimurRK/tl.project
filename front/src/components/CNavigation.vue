@@ -1,9 +1,9 @@
 <template>
   <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <div class="container-fluid">
-      <router-link :to="{ name: 'VDashboard' }" class="navbar-brand"
-        >TL.Project</router-link
-      >
+      <router-link :to="{ name: 'VDashboard' }" class="navbar-brand">{{
+        $t("routers.brand")
+      }}</router-link>
 
       <button
         class="navbar-toggler"
@@ -30,7 +30,7 @@
             >
               <span
                 ><i :class="'bi bi-' + route.meta.icon"></i>
-                {{ route.meta.name }}</span
+                {{ $t(route_name) }}</span
               >
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -73,14 +73,16 @@
                 </router-link>
               </li>
               <li>
-                <button class="dropdown-item" @click="signOut">Выйти</button>
+                <button class="dropdown-item" @click="signOut">
+                  {{ $t("pages.auth.sign_out") }}
+                </button>
               </li>
             </ul>
           </li>
 
           <li class="nav-item" v-else>
             <router-link :to="{ name: 'VSignIn' }" class="nav-link">
-              Войти
+              {{ $t("pages.auth.sign_in") }}
             </router-link>
           </li>
         </ul>
@@ -90,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref } from "vue";
+import { ref, type Ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
 import { currentUserStore, type ICurrentUser } from "@/stores/current-user";
@@ -109,6 +111,15 @@ current_user.value = current_user_store.currentUser;
 current_user_store.$subscribe((_mutation, state) => {
   current_user.value = state.current_user;
 });
+
+const route_name: Ref<string> = ref("");
+
+watch(
+  () => route.meta.name,
+  (curr_name, _prev_name) => {
+    route_name.value = curr_name as string;
+  }
+);
 
 function signOut() {
   api.signOut(true);

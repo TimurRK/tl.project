@@ -2,7 +2,7 @@
   <template v-if="password_changed">
     <div class="row justify-content-md-center">
       <div class="col-lg-4 col-md-6 col-12 md-auto">
-        <h1>Восстановление</h1>
+        <h1>{{ $t("routers.auth.change_password") }}</h1>
       </div>
     </div>
 
@@ -10,15 +10,14 @@
       class="row justify-content-md-center mt-3 alert alert-success"
       role="alert"
     >
-      Пароль успешно изменен. Используйте установленный пароль для входа в
-      аккаунт.
+      {{ $t("pages.change_password.labels.change_password_alert") }}
     </div>
 
     <div class="row justify-content-md-center mt-3">
       <div class="col-lg-4 col-md-6 col-12 md-auto">
         <br />
         <router-link :to="{ name: 'VSignIn' }">
-          Войти в уже существующий аккаунт
+          {{ $t("pages.auth.login_to_an_existing_account") }}
         </router-link>
       </div>
     </div>
@@ -26,7 +25,7 @@
   <template v-else>
     <div class="row justify-content-md-center">
       <div class="col-lg-4 col-md-6 col-12 md-auto">
-        <h1>Восстановление</h1>
+        <h1>{{ $t("routers.auth.change_password") }}</h1>
 
         <form
           @submit="onChangePassword"
@@ -35,7 +34,7 @@
         >
           <div class="mb-3">
             <label for="input-recovery-key" class="form-label">
-              Ключ восстановления
+              {{ $t("pages.change_password.labels.enter_recovery_key") }}
             </label>
             <input
               type="text"
@@ -46,13 +45,17 @@
               autocomplete="off"
             />
             <div id="input-recovery-key-help" class="form-text">
-              Ключ восстановления не чувствителен к регистру
+              {{
+                $t(
+                  "pages.change_password.labels.recovery_key_is_not_case_sensitive"
+                )
+              }}
             </div>
           </div>
 
           <div class="mb-3">
             <label for="input-password" class="form-label">
-              Введите новый пароль
+              {{ $t("pages.change_password.labels.enter_new_password") }}
             </label>
             <input
               type="password"
@@ -63,11 +66,15 @@
               autocomplete="off"
             />
             <div id="input-password-help" class="form-text">
-              Пароль чувствителен к регистру
+              {{
+                $t("pages.change_password.labels.password_is_case_sensitive")
+              }}
             </div>
           </div>
 
-          <button type="submit" class="btn btn-primary">Отправить</button>
+          <button type="submit" class="btn btn-primary">
+            {{ $t("pages.change_password.buttons.submit") }}
+          </button>
         </form>
       </div>
     </div>
@@ -76,11 +83,11 @@
       <div class="col-lg-4 col-md-6 col-12 md-auto">
         <br />
         <router-link :to="{ name: 'VSignIn' }">
-          Войти в уже существующий аккаунт
+          {{ $t("pages.auth.login_to_an_existing_account") }}
         </router-link>
         <br />
         <router-link :to="{ name: 'VSignUp' }">
-          Зарегистрировать новый аккаунт
+          {{ $t("pages.auth.register_a_new_account") }}
         </router-link>
       </div>
     </div>

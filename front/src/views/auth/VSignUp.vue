@@ -2,7 +2,9 @@
   <template v-if="recovery_keys?.length">
     <div class="row justify-content-md-center">
       <div class="col-lg-12 col-md-12 col-12 md-auto">
-        <h1 class="text-center">Ключи для восстановления аккаунта</h1>
+        <h1 class="text-center">
+          {{ $t("pages.sign_up.labels.recovery_keys") }}
+        </h1>
       </div>
     </div>
 
@@ -10,8 +12,7 @@
       class="row justify-content-md-center mt-3 alert alert-warning"
       role="alert"
     >
-      Сохраните эти ключи. Без них невозможно будет восстановить аккаунт в
-      случае утраты пароля.
+      {{ $t("pages.sign_up.labels.recovery_keys_alert") }}
     </div>
 
     <div class="row justify-content-md-center mt-3">
@@ -31,7 +32,7 @@
     <div class="row justify-content-md-center mt-3">
       <div class="col-lg-4 col-md-6 col-12 md-auto">
         <button class="btn btn-primary w-100" @click="downloadRecoveryKeys">
-          Скачать
+          {{ $t("pages.sign_up.buttons.download") }}
         </button>
       </div>
     </div>
@@ -40,7 +41,7 @@
       <div class="col-lg-4 col-md-6 col-12 md-auto">
         <br />
         <router-link :to="{ name: 'VSignIn' }">
-          Войти в уже существующий аккаунт
+          {{ $t("pages.auth.login_to_an_existing_account") }}
         </router-link>
       </div>
     </div>
@@ -49,11 +50,13 @@
   <template v-else>
     <div class="row justify-content-md-center">
       <div class="col-lg-4 col-md-6 col-12 md-auto">
-        <h1>Регистрация</h1>
+        <h1>{{ $t("routers.auth.sign_up") }}</h1>
 
         <form @submit="onSignUp" autocomplete="off" id="sign-up-form">
           <div class="mb-3">
-            <label for="input-login" class="form-label">Введите логин</label>
+            <label for="input-login" class="form-label">{{
+              $t("pages.sign_up.labels.enter_login")
+            }}</label>
             <input
               type="text"
               v-model="login"
@@ -63,14 +66,15 @@
               autocomplete="off"
             />
             <div id="input-login-help" class="form-text">
-              Логин не чувствителен к регистру
+              {{ $t("pages.sign_up.labels.login_is_not_case_sensitive") }}
             </div>
           </div>
 
           <div class="mb-3">
-            <label for="input-password" class="form-label"
-              >Введите пароль</label
-            >
+            <label for="input-password" class="form-label">
+              {{ $t("pages.sign_up.labels.enter_password") }}
+            </label>
+
             <input
               type="password"
               v-model="password"
@@ -80,12 +84,12 @@
               autocomplete="off"
             />
             <div id="input-password-help" class="form-text">
-              Пароль чувствителен к регистру
+              {{ $t("pages.sign_up.labels.password_is_case_sensitive") }}
             </div>
           </div>
 
           <button type="submit" class="btn btn-primary">
-            Зарегистрироваться
+            {{ $t("pages.sign_up.buttons.registration") }}
           </button>
         </form>
       </div>
@@ -95,11 +99,11 @@
       <div class="col-lg-4 col-md-6 col-12 md-auto">
         <br />
         <router-link :to="{ name: 'VSignIn' }">
-          Войти в уже существующий аккаунт
+          {{ $t("pages.auth.register_a_new_account") }}
         </router-link>
         <br />
         <router-link :to="{ name: 'VChangePassword' }">
-          Забыли пароль?
+          {{ $t("pages.auth.forgot_your_password") }}
         </router-link>
       </div>
     </div>

@@ -1,11 +1,13 @@
 <template>
   <div class="row justify-content-md-center">
     <div class="col-lg-4 col-md-6 col-12 md-auto">
-      <h1>Авторизация</h1>
+      <h1>{{ $t("routers.auth.sign_in") }}</h1>
 
       <form @submit="onSignIn" id="sign-in-form">
         <div class="mb-3">
-          <label for="input-login" class="form-label">Введите логин</label>
+          <label for="input-login" class="form-label">{{
+            $t("pages.sign_in.labels.enter_login")
+          }}</label>
           <input
             v-model="login"
             type="text"
@@ -15,12 +17,14 @@
             autocomplete="off"
           />
           <div id="input-login-help" class="form-text">
-            Логин не чувствителен к регистру
+            {{ $t("pages.sign_in.labels.login_is_not_case_sensitive") }}
           </div>
         </div>
 
         <div class="mb-3">
-          <label for="input-password" class="form-label">Введите пароль</label>
+          <label for="input-password" class="form-label">{{
+            $t("pages.sign_in.labels.enter_password")
+          }}</label>
           <input
             v-model="password"
             type="password"
@@ -30,7 +34,7 @@
             autocomplete="off"
           />
           <div id="input-password-help" class="form-text">
-            Пароль чувствителен к регистру
+            {{ $t("pages.sign_in.labels.password_is_case_sensitive") }}
           </div>
         </div>
 
@@ -43,11 +47,13 @@
             :checked="accept_cookie"
           />
           <label class="form-check-label" for="use-cookie">
-            Оставаться в системе?
+            {{ $t("pages.sign_in.labels.remain_in_the_system") }}
           </label>
         </div>
 
-        <button type="submit" class="btn btn-primary">Войти</button>
+        <button type="submit" class="btn btn-primary">
+          {{ $t("pages.sign_in.buttons.sign_in") }}
+        </button>
       </form>
     </div>
   </div>
@@ -56,11 +62,11 @@
     <div class="col-lg-4 col-md-6 col-12 md-auto">
       <br />
       <router-link :to="{ name: 'VSignUp' }">
-        Зарегистрировать новый аккаунт
+        {{ $t("pages.auth.register_a_new_account") }}
       </router-link>
       <br />
       <router-link :to="{ name: 'VChangePassword' }">
-        Забыли пароль?
+        {{ $t("pages.auth.forgot_your_password") }}
       </router-link>
     </div>
   </div>
@@ -87,15 +93,15 @@
         </div>
 
         <div class="modal-body">
-          Этот сайт использует cookie для хранения токенов авторизации.
+          {{ $t("pages.sign_in.labels.accept_cookie_info") }}
         </div>
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" @click="refuseCookie">
-            Отмена
+            {{ $t("pages.sign_in.buttons.cancel") }}
           </button>
           <button type="button" class="btn btn-success" @click="acceptCookie">
-            Согласиться
+            {{ $t("pages.sign_in.buttons.accept") }}
           </button>
         </div>
       </div>

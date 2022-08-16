@@ -10,7 +10,7 @@ export const dashboard_routes: RouteRecordRaw[] = [
     path: "/",
     component: () => import("../views/VDashboard.vue"),
     meta: {
-      name: "Главная",
+      name: "routers.dashboard",
       icon: "house-door",
       protected: false,
     },
@@ -23,7 +23,7 @@ export const auth_routes: RouteRecordRaw[] = [
     path: "/auth/sign-in",
     component: () => import("../views/auth/VSignIn.vue"),
     meta: {
-      name: "Авторизация",
+      name: "routers.auth.sign_in",
       icon: "person",
       protected: false,
     },
@@ -33,7 +33,7 @@ export const auth_routes: RouteRecordRaw[] = [
     path: "/auth/sign-up",
     component: () => import("../views/auth/VSignUp.vue"),
     meta: {
-      name: "Регистрация",
+      name: "routers.auth.sign_up",
       icon: "person",
       protected: false,
     },
@@ -43,7 +43,7 @@ export const auth_routes: RouteRecordRaw[] = [
     path: "/auth/change-password",
     component: () => import("../views/auth/VChangePassword.vue"),
     meta: {
-      name: "Восстановление",
+      name: "routers.auth.change_password",
       icon: "person",
       protected: false,
     },
@@ -57,7 +57,7 @@ export const user_nav_routers: RouteRecordRaw[] = [
     props: true,
     component: () => import("../views/translations/books/VList.vue"),
     meta: {
-      name: "Мои переводы",
+      name: "routers.translations.self",
       icon: "book",
       protected: true,
     },
@@ -71,7 +71,7 @@ export const translation_routers: RouteRecordRaw[] = [
     props: true,
     component: () => import("../views/translations/books/VNew.vue"),
     meta: {
-      name: "Новый перевод",
+      name: "routers.translations.new",
       icon: "book",
       protected: true,
     },
@@ -82,7 +82,7 @@ export const translation_routers: RouteRecordRaw[] = [
     props: true,
     component: () => import("../views/translations/books/VEdit.vue"),
     meta: {
-      name: "Редактировать перевод",
+      name: "routers.translations.edit",
       icon: "book",
       protected: true,
     },
@@ -93,7 +93,7 @@ export const translation_routers: RouteRecordRaw[] = [
     props: true,
     component: () => import("../views/translations/sections/VEdit.vue"),
     meta: {
-      name: "Редактировать перевод",
+      name: "routers.translations.edit",
       icon: "book",
       protected: true,
     },
@@ -104,7 +104,7 @@ export const translation_routers: RouteRecordRaw[] = [
     props: true,
     component: () => import("../views/translations/items/texts/VEdit.vue"),
     meta: {
-      name: "Редактировать перевод",
+      name: "routers.translations.edit",
       icon: "book",
       protected: true,
     },
@@ -115,7 +115,7 @@ export const translation_routers: RouteRecordRaw[] = [
     props: true,
     component: () => import("../views/translations/items/texts/VNew.vue"),
     meta: {
-      name: "Редактировать перевод",
+      name: "routers.translations.edit",
       icon: "book",
       protected: true,
     },
