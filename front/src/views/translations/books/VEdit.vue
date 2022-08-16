@@ -5,7 +5,9 @@
     <div class="row justify-content-md-center mb-2">
       <div class="col-6 pl-0">
         <ul class="list-group">
-          <li class="list-group-item disabled" aria-disabled="true">Автор</li>
+          <li class="list-group-item disabled" aria-disabled="true">
+            {{ $t("pages.books_edit.labels.author") }}
+          </li>
         </ul>
       </div>
       <div class="col-6 pr-0">
@@ -17,7 +19,7 @@
       </div>
     </div>
 
-    <CHr :color="'dark'" :title="'Список глав'" />
+    <CHr :color="'dark'" :title="$t('pages.books_edit.labels.sections_list')" />
 
     <div class="row justify-content-md-center mb-2 table-responsive">
       <table class="table table-hover table-sm">
@@ -29,12 +31,12 @@
               №
             </th>
             <th class="col-sm-8 col-md-8 col-lg-10 col-xl-10">
-              Название главы
+              {{ $t("pages.books_edit.labels.section_title") }}
             </th>
             <th
               class="col-sm-2 col-md-2 col-lg-1 col-xl-1 d-flex justify-content-center"
             >
-              Статус
+              {{ $t("pages.books_edit.labels.section_status") }}
             </th>
           </tr>
         </thead>
@@ -66,9 +68,9 @@
             <td
               class="col-sm-2 col-md-2 col-lg-1 col-xl-1 d-flex justify-content-center"
             >
-              <CBadge :title="'В очереди'" :color="'indigo'" />
-              <!-- <CBadge :title="'В процессе'" :color="'orange'" /> -->
-              <!-- <CBadge :title="'Готово'" :color="'green'" /> -->
+              <CBadge :title="$t('badges.queue')" :color="'indigo'" />
+              <!-- <CBadge :title="$t('badges.in_process')" :color="'orange'" /> -->
+              <!-- <CBadge :title="$t('badges.ready')" :color="'green'" /> -->
             </td>
           </tr>
         </tbody>
@@ -116,8 +118,9 @@ onBeforeMount(async () => {
 
   breadcrumbs_store.setBreadcrumbs([
     {
-      name: "Мои переводы",
+      name: "routers.translations.self",
       is_current: false,
+      is_i18n: true,
       to: "VBookList",
     },
     {

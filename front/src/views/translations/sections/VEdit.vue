@@ -3,7 +3,10 @@
     <template v-if="current_data.books[0].sections">
       <CHr :color="'dark'" :title="current_data.books[0].sections[0].title" />
 
-      <CHr :color="'dark'" :title="'Содержание главы'" />
+      <CHr
+        :color="'dark'"
+        :title="$t('pages.books_sections_edit.labels.items_list')"
+      />
       <div class="row justify-content-md-center mb-2 table-responsive">
         <table class="table table-hover table-sm">
           <thead>
@@ -14,7 +17,7 @@
                 №
               </th>
               <th class="col-sm-6 col-md-6 col-lg-6 col-xl-6 break-word">
-                Оригинал
+                {{ $t("pages.books_sections_edit.labels.original") }}
               </th>
               <th
                 class="col-sm-1 col-md-1 col-lg-1 col-xl-1 d-flex justify-content-center"
@@ -24,7 +27,7 @@
               <th
                 class="col-sm-4 col-md-4 col-lg-4 col-xl-4 d-flex justify-content-center"
               >
-                Варианты перевода
+                {{ $t("pages.books_sections_edit.labels.translation") }}
               </th>
             </tr>
           </thead>
@@ -61,7 +64,7 @@
                       },
                     }"
                   >
-                    Добавить
+                    {{ $t("pages.books_sections_edit.buttons.add") }}
                   </router-link>
                 </template>
               </td>
@@ -122,12 +125,14 @@ onBeforeMount(async () => {
 
   breadcrumbs_store.setBreadcrumbs([
     {
-      name: "Мои переводы",
+      name: "routers.translations.self",
       is_current: false,
+      is_i18n: true,
       to: "VBookList",
     },
     {
       name: current_data.value.books[0].title,
+      is_i18n: false,
       is_current: false,
       to: "VBookEdit",
       params: { book_id: current_data.value.books[0].id },
@@ -135,6 +140,7 @@ onBeforeMount(async () => {
     {
       name: current_data.value.books[0].sections![0].title,
       is_current: true,
+      is_i18n: false,
     },
   ]);
 });

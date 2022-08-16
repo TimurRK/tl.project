@@ -1,7 +1,7 @@
 <template>
   <CHr
     :color="'dark'"
-    :title="(route.meta!.name as string)"
+    :title="$t('routers.translations.self')"
     :icon="'bi-plus'"
     @click-button="newBook"
   />
@@ -50,17 +50,17 @@
             <p class="card-text">
               <small class="text-muted">
                 Стутус:
-                <CBadge :title="'Приватно'" :color="'dark'" />
-                <CBadge :title="'В процессе'" :color="'orange'" />
-                <CBadge :title="'Готово'" :color="'green'" />
-                <CBadge :title="'Приостановлено'" :color="'pink'" />
-                <CBadge :title="'Брошено'" :color="'red'" />
-                <CBadge :title="'В очереди'" :color="'indigo'" />
+                <CBadge :title="$t('badges.private')" :color="'dark'" />
+                <CBadge :title="$t('badges.in_process')" :color="'orange'" />
+                <CBadge :title="$t('badges.ready')" :color="'green'" />
+                <CBadge :title="$t('badges.suspended')" :color="'pink'" />
+                <CBadge :title="$t('badges.thrown')" :color="'red'" />
+                <CBadge :title="$t('badges.queue')" :color="'indigo'" />
               </small>
             </p>
             <p class="card-text">
               <small class="text-muted"
-                >Создано:
+                >{{ $t("pages.books_list.labels.created") }}:
                 {{ toBlogDateTime(translator.book.created_at) }}</small
               >
             </p>
@@ -73,7 +73,7 @@
               }"
               class="btn btn-primary ml-rbase"
             >
-              Переводить
+              {{ $t("pages.books_list.buttons.translate") }}
             </router-link>
           </div>
         </div>
@@ -83,7 +83,6 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from "vue-router";
 import { ref, type Ref, onBeforeMount, onBeforeUnmount } from "vue";
 
 import { toBlogDateTime } from "@/helpers/date.helper";
@@ -99,7 +98,6 @@ import {
 } from "@/generated/graphql";
 import router from "@/router/index";
 
-const route = useRoute();
 const api = useApi();
 const current_user_store = currentUserStore();
 const breadcrumbs_store = breadcrumbsStore();
@@ -127,8 +125,9 @@ onBeforeMount(async () => {
 
   breadcrumbs_store.setBreadcrumbs([
     {
-      name: "Мои переводы",
+      name: "routers.translations.self",
       is_current: true,
+      is_i18n: true,
     },
   ]);
 });

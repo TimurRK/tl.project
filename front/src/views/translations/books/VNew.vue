@@ -1,12 +1,14 @@
 <template>
-  <CHr :color="'dark'" :title="(route.meta!.name as string)" />
+  <CHr :color="'dark'" :title="$t('routers.translations.new')" />
 
   <CPreloader v-if="disable_upload" />
 
   <div class="row justify-content-md-center" v-else>
     <form @submit="onUploadFile" autocomplete="off" id="change-password-form">
       <div class="mb-3">
-        <label for="ebook-file" class="form-label">eBook File</label>
+        <label for="ebook-file" class="form-label">{{
+          $t("pages.books_new.labels.enter_file")
+        }}</label>
         <input
           type="file"
           ref="file_input"
@@ -21,24 +23,24 @@
           :disabled="disable_upload"
         />
         <div id="ebook-file-help" class="form-text">
-          Электронная книга формата ePub
+          {{ $t("pages.books_new.labels.file_format") }}
         </div>
       </div>
 
       <div class="mb-3">
-        Выбранный файл: <b>{{ file ? file.name : "" }}</b>
+        {{ $t("pages.books_new.labels.entered_file") }}:
+        <b>{{ file ? file.name : "" }}</b>
       </div>
 
       <button type="submit" class="btn btn-primary" :disabled="disable_upload">
-        Загрузить
+        {{ $t("pages.books_new.buttons.upload") }}
       </button>
     </form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { type Ref, ref } from "vue";
-import { useRoute } from "vue-router";
+import { type Ref, ref, onBeforeUnmount } from "vue";
 import { useToast } from "vue-toastification";
 
 import CHr from "@/components/CHr.vue";
@@ -46,14 +48,15 @@ import CPreloader from "@/components/CPreloader.vue";
 import router from "@/router";
 
 import { useApi } from "@/api/api";
+import { breadcrumbsStore } from "@/stores/breadcrumb";
 
-const route = useRoute();
 const api = useApi();
 const toast = useToast();
 
 const file_input: Ref<HTMLInputElement | null> = ref(null);
 const file: Ref<File | null> = ref(null);
 const disable_upload: Ref<boolean> = ref(false);
+const breadcrumbs_store = breadcrumbsStore();
 
 function changeFile() {
   if (file_input.value?.files) {
@@ -62,6 +65,20 @@ function changeFile() {
     file.value = null;
   }
 }
+
+breadcrumbs_store.setBreadcrumbs([
+  {
+    name: "routers.translations.self",
+    is_current: false,
+    is_i18n: true,
+    to: "VBookList",
+  },
+  {
+    name: "routers.translations.new",
+    is_current: true,
+    is_i18n: true,
+  },
+]);
 
 async function onUploadFile(event: Event) {
   event.preventDefault();
@@ -86,6 +103,10 @@ async function onUploadFile(event: Event) {
     disable_upload.value = false;
   }
 }
+
+onBeforeUnmount(async () => {
+  breadcrumbs_store.setBreadcrumbs(null);
+});
 </script>
 
 <style></style>

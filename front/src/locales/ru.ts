@@ -13,6 +13,14 @@ export const ru = {
       edit: "Редактировать перевод",
     },
   },
+  badges: {
+    private: "Приватно",
+    in_process: "В процессе",
+    ready: "Готово",
+    suspended: "Приостановлено",
+    thrown: "Брошено",
+    queue: "В очереди",
+  },
   pages: {
     auth: {
       login_to_an_existing_account: "Войти в уже существующий аккаунт",
@@ -65,6 +73,51 @@ export const ru = {
       buttons: {
         submit: "Отправить",
       },
+    },
+    books_list: {
+      labels: {
+        created: "Создано",
+      },
+      buttons: {
+        translate: "Переводить",
+      },
+    },
+    books_new: {
+      labels: {
+        enter_file: "Выберите файл",
+        file_format: "Электронная книга формата .ePub",
+        entered_file: "Выбранный файл",
+      },
+      buttons: {
+        upload: "Загрузить",
+      },
+    },
+    books_edit: {
+      labels: {
+        author: "Автор",
+        sections_list: "Список глав",
+        section_title: "Название главы",
+        section_status: "Статус",
+      },
+      buttons: {},
+    },
+    books_sections_edit: {
+      labels: {
+        items_list: "Содержимое главы",
+        original: "Оригинал",
+        translation: "Перевод",
+      },
+      buttons: {
+        add: "Добавить",
+      },
+    },
+    books_sections_items_new: {
+      labels: {},
+      buttons: {},
+    },
+    books_sections_items_edit: {
+      labels: {},
+      buttons: {},
     },
   },
 };

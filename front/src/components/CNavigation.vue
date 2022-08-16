@@ -69,7 +69,7 @@
                   :to="{ name: nav_route.name }"
                   class="dropdown-item"
                 >
-                  {{ nav_route.meta?.name }}
+                  {{ $t(nav_route.meta!.name! as string) }}
                 </router-link>
               </li>
               <li>
@@ -131,7 +131,7 @@ function signOut() {
 
 onBeforeUnmount(() => {
   unwatch();
-})
+});
 </script>
 
 <style>

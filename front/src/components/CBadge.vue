@@ -1,5 +1,5 @@
 <template>
-  <span class="badge ml-rbase" :class="'color-' + props.color">{{
+  <span class="badge ml-rbase c-badge" :class="'color-' + props.color">{{
     props.title
   }}</span>
 </template>
@@ -15,7 +15,6 @@ const props = defineProps({
 
 <style lang="scss">
 @import "@/assets/main.css";
-
 .color {
   &-dark {
     background-color: rgba(52, 58, 64, 0.25);
