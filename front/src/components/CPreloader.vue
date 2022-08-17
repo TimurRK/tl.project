@@ -43,8 +43,8 @@ $animTime: 4s;
   top: 50%;
   width: $contSize;
   height: $contSize;
-  margin-left: $contSize/-2;
-  margin-top: $contSize/-2;
+  margin-left: calc($contSize / -2);
+  margin-top: calc($contSize / -2);
 
   &__box {
     float: left;
@@ -208,7 +208,7 @@ $movement: (
   $yVal: 0;
   $n: 1;
   $len: length($dirArr);
-  $step: percentage(1 / $len);
+  $step: percentage(calc(1 / $len));
 
   @keyframes moveBox-#{$i} {
     @each $dir in $dirArr {

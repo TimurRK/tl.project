@@ -642,7 +642,7 @@ export const UserTranslations = gql`
   query UserTranslations($user_id: ID!) {
     translators(
       WHERE: { user_id: { EQ: $user_id } }
-      ORDER: { created_at: { SORT: ASC, NULLS: LAST } }
+      ORDER: { created_at: { SORT: DESC, NULLS: LAST } }
     ) {
       id
       book_id
