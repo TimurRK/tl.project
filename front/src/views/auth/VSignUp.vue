@@ -113,7 +113,7 @@
 <script setup lang="ts">
 import { useApi } from "@/api/api";
 import { ref, type Ref } from "vue";
-import { POSITION, useToast } from "vue-toastification";
+import { useToast } from "vue-toastification";
 import { saveAs } from "file-saver";
 
 const api = useApi();
@@ -134,7 +134,6 @@ async function onSignUp(event: Event) {
 
       toast.success("SIGN_UP_SUCCESS", {
         timeout: 2500,
-        position: POSITION.BOTTOM_RIGHT,
       });
     } catch (error: any) {
       toast.error(error.message.join(", "), {

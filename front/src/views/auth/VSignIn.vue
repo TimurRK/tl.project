@@ -112,7 +112,7 @@
 <script setup lang="ts">
 import { Modal } from "bootstrap";
 import { onMounted, ref, type Ref } from "vue";
-import { POSITION, useToast } from "vue-toastification";
+import { useToast } from "vue-toastification";
 
 import router from "@/router";
 import { useApi } from "@/api/api";
@@ -180,7 +180,6 @@ async function onSignIn(event: Event) {
 
       toast.success("SIGN_IN_SUCCESS", {
         timeout: 2500,
-        position: POSITION.BOTTOM_RIGHT,
       });
 
       router.push({ name: "VDashboard" });

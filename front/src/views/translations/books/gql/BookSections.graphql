@@ -3,11 +3,14 @@ query BookSections($book_id: ID!, $user_id: ID!) {
     id
     title
     author
+    is_private
+    book_status
     sections(ORDER: { position: { SORT: ASC, NULLS: LAST  }}) {
       id
       position
       title
       created_at
+      section_status
     }
   }
   translators(WHERE: { book_id: { EQ: $book_id }, user_id: { EQ: $user_id } }) {

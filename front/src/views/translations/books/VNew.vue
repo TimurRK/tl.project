@@ -93,7 +93,7 @@ async function onUploadFile(event: Event) {
         timeout: 2500,
       });
 
-      router.push({ name: "VBookList" });
+      await router.push({ name: "VBookList" });
     } catch (error: any) {
       toast.error(error.message, {
         timeout: 2500,

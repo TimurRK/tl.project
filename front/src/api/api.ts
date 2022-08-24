@@ -1,6 +1,8 @@
 import type { App, Plugin } from "vue";
 import { inject } from "vue";
 import type { Router } from "vue-router";
+import type { ToastInterface } from "vue-toastification";
+
 import type {
   AxiosInstance,
   AxiosRequestConfig,
@@ -17,7 +19,6 @@ import type {
   TUserStoreDefinition,
 } from "@/stores/current-user";
 import { clearCookie, getCookie, setCookie } from "@/helpers/cookie.helper";
-import type { ToastInterface } from "vue-toastification";
 
 const api_endpoint = import.meta.env.VITE_APP_API;
 const api_key = "api";

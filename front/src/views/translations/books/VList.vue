@@ -12,7 +12,7 @@
   >
     <div
       class="card mb-2"
-      v-for="translator of current_data.translators"
+      v-for="(translator, index) of current_data.translators"
       :key="translator.id"
     >
       <div class="row g-0">
@@ -50,12 +50,12 @@
             <p class="card-text">
               <small class="text-muted">
                 Стутус:
-                <CBadge :title="$t('badges.private')" :color="'dark'" />
-                <CBadge :title="$t('badges.in_process')" :color="'orange'" />
-                <CBadge :title="$t('badges.ready')" :color="'green'" />
-                <CBadge :title="$t('badges.suspended')" :color="'pink'" />
-                <CBadge :title="$t('badges.thrown')" :color="'red'" />
-                <CBadge :title="$t('badges.queue')" :color="'indigo'" />
+                <CBadge
+                  :title="$t('badges.private')"
+                  :color="'dark'"
+                  v-if="translator.book.is_private"
+                />
+                <CBookStatus :status="translator.book.book_status" />
               </small>
             </p>
             <p class="card-text">
@@ -66,15 +66,40 @@
             </p>
           </div>
           <div class="card-footer text-muted">
-            <router-link
-              :to="{
-                name: 'VBookEdit',
-                params: { book_id: translator.book.id },
-              }"
-              class="btn btn-primary ml-rbase"
-            >
-              {{ $t("pages.books_list.buttons.translate") }}
-            </router-link>
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-2">
+                <div class="row plr-base">
+                  <router-link
+                    :to="{
+                      name: 'VBookEdit',
+                      params: { book_id: translator.book.id },
+                    }"
+                    class="btn btn-primary"
+                  >
+                    {{ $t("pages.books_list.buttons.translate") }}
+                  </router-link>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-2">
+                <div class="row plr-base">
+                  <button type="button" class="btn btn-outline-success">
+                    {{ $t("pages.books_list.buttons.read") }}
+                  </button>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-6"></div>
+              <div class="col-sm-12 col-md-12 col-lg-2">
+                <div class="row plr-base">
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    @click="deleteBook(translator.book.id, index)"
+                  >
+                    {{ $t("pages.books_list.buttons.delete") }}
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -89,10 +114,14 @@ import { toBlogDateTime } from "@/helpers/date.helper";
 import { useApi } from "@/api/api";
 import CHr from "@/components/CHr.vue";
 import CBadge from "@/components/CBadge.vue";
+import CBookStatus from "@/components/CBookStatus.vue";
 import { currentUserStore, type ICurrentUser } from "@/stores/current-user";
 import { breadcrumbsStore } from "@/stores/breadcrumb";
 import {
+  BookDelete,
   UserTranslations,
+  type BookDeleteMutation,
+  type BookDeleteMutationVariables,
   type UserTranslationsQuery,
   type UserTranslationsQueryVariables,
 } from "@/generated/graphql";
@@ -131,6 +160,21 @@ onBeforeMount(async () => {
     },
   ]);
 });
+
+async function deleteBook(book_id: string, index: number) {
+  if (!window.confirm("delete?")) {
+    return;
+  }
+
+  const { data } = await api.graphql<
+    BookDeleteMutation,
+    BookDeleteMutationVariables
+  >(BookDelete, { book_id });
+
+  if (data.bookDelete.id) {
+    current_data.value?.translators.splice(index, 1);
+  }
+}
 
 onBeforeUnmount(async () => {
   breadcrumbs_store.setBreadcrumbs(null);

@@ -1,14 +1,18 @@
-import { Context, GraphQLExecutionContext, Parent, Resolver } from '@nestjs/graphql';
+import { Args, Context, GraphQLExecutionContext, ID, Parent, Resolver } from '@nestjs/graphql';
 
-import { ELoaderType, Filter, Loader, Order, ResolveField, Pagination, Query } from 'nestjs-graphql-easy';
+import { ELoaderType, Filter, Loader, Order, ResolveField, Pagination, Query, Mutation } from 'nestjs-graphql-easy';
 
 import { Item } from '../item/item.entity';
 import { SectionVersion } from '../section-version/section-version.entity';
+import { SectionChangeStatus } from './mutation-result/change-status.dto';
 
-import { Section } from './section.entity';
+import { ESectionStatus, Section } from './section.entity';
+import { SectionService } from './section.service';
 
 @Resolver(() => Section)
 export class SectionResolver {
+  constructor(private readonly sectionService: SectionService) {}
+
   @Query(() => [Section])
   public async sections(
     @Loader({
@@ -58,5 +62,13 @@ export class SectionResolver {
     @Context() ctx: GraphQLExecutionContext
   ) {
     return await ctx[field_alias].load(section.id);
+  }
+
+  @Mutation(() => SectionChangeStatus)
+  public async sectionChangeStatus(
+    @Args({ name: 'id', type: () => ID }) id: number,
+    @Args({ name: 'section_status', type: () => ESectionStatus }) status: ESectionStatus
+  ) {
+    return await this.sectionService.changeStatus(id, status);
   }
 }

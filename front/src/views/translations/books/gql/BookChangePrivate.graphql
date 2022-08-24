@@ -1,0 +1,5 @@
+mutation BookChangePrivate($book_id: ID!, $is_private: Boolean!) {
+  bookChangePrivate(id: $book_id, is_private: $is_private) {
+    id
+  }
+}

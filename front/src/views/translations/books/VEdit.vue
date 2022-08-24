@@ -3,7 +3,7 @@
     <CHr :color="'dark'" :title="current_data.books[0].title" />
 
     <div class="row justify-content-md-center mb-2">
-      <div class="col-6 pl-0">
+      <div class="col-6 pl-0 mb-2">
         <ul class="list-group">
           <li class="list-group-item disabled" aria-disabled="true">
             {{ $t("pages.books_edit.labels.author") }}
@@ -16,6 +16,25 @@
             {{ current_data.books[0].author }}
           </li>
         </ul>
+      </div>
+      <div class="col-12">
+        <div class="form-check form-switch">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            role="switch"
+            id="bookIsPrivate"
+            v-model="current_data.books[0].is_private"
+            @change="bookChangePrivate"
+          />
+          <label class="form-check-label" for="bookIsPrivate">
+            {{ $t("pages.books_edit.labels.is_private") }}
+            <b
+              >({{ $t("pages.books_edit.labels.is_private_selected") }}
+              {{ current_data.books[0].is_private }})</b
+            >
+          </label>
+        </div>
       </div>
     </div>
 
@@ -68,9 +87,7 @@
             <td
               class="col-sm-2 col-md-2 col-lg-1 col-xl-1 d-flex justify-content-center"
             >
-              <CBadge :title="$t('badges.queue')" :color="'indigo'" />
-              <!-- <CBadge :title="$t('badges.in_process')" :color="'orange'" /> -->
-              <!-- <CBadge :title="$t('badges.ready')" :color="'green'" /> -->
+              <CSectionStatus :status="section.section_status" />
             </td>
           </tr>
         </tbody>
@@ -81,15 +98,22 @@
 
 <script setup lang="ts">
 import { ref, type Ref, onBeforeMount, onBeforeUnmount } from "vue";
-
 import { useRoute } from "vue-router";
+import { useToast } from "vue-toastification";
+
 import { useApi } from "@/api/api";
 
 import CHr from "@/components/CHr.vue";
-import CBadge from "@/components/CBadge.vue";
+import CSectionStatus from "@/components/CSectionStatus.vue";
 
 import {
+  BookChangePrivate,
+  BookChangeStatus,
   BookSections,
+  type BookChangePrivateMutation,
+  type BookChangePrivateMutationVariables,
+  type BookChangeStatusMutation,
+  type BookChangeStatusMutationVariables,
   type BookSectionsQuery,
   type BookSectionsQueryVariables,
 } from "@/generated/graphql";
@@ -98,6 +122,7 @@ import { breadcrumbsStore } from "@/stores/breadcrumb";
 
 const route = useRoute();
 const api = useApi();
+const toast = useToast();
 
 const breadcrumbs_store = breadcrumbsStore();
 const current_user_store = currentUserStore();
@@ -133,6 +158,46 @@ onBeforeMount(async () => {
 onBeforeUnmount(async () => {
   breadcrumbs_store.setBreadcrumbs(null);
 });
+
+async function bookChangePrivate() {
+  try {
+    await api.graphql<
+      BookChangePrivateMutation,
+      BookChangePrivateMutationVariables
+    >(BookChangePrivate, {
+      book_id: current_data.value!.books[0].id,
+      is_private: current_data.value!.books[0].is_private,
+    });
+
+    toast.success("UPDATE_SUCCESS", {
+      timeout: 2500,
+    });
+  } catch (error: any) {
+    toast.error(error.message, {
+      timeout: 2500,
+    });
+  }
+}
+
+async function bookChangeStatus() {
+  try {
+    await api.graphql<
+      BookChangeStatusMutation,
+      BookChangeStatusMutationVariables
+    >(BookChangeStatus, {
+      book_id: current_data.value!.books[0].id,
+      book_status: current_data.value!.books[0].book_status,
+    });
+
+    toast.success("UPDATE_SUCCESS", {
+      timeout: 2500,
+    });
+  } catch (error: any) {
+    toast.error(error.message, {
+      timeout: 2500,
+    });
+  }
+}
 </script>
 
 <style>

@@ -11,6 +11,8 @@ query UserTranslations($user_id: ID!) {
       author
       cover
       created_at
+      book_status
+      is_private
       book_versions(WHERE: { is_main: { EQ: true } }) {
         id
         title

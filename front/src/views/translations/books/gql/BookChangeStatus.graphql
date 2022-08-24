@@ -1,0 +1,5 @@
+mutation BookChangeStatus($book_id: ID!, $book_status: EBookStatus!) {
+  bookChangeStatus(id: $book_id, book_status: $book_status) {
+    id
+  }
+}

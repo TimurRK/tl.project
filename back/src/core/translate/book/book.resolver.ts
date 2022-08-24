@@ -1,14 +1,20 @@
-import { Context, GraphQLExecutionContext, Parent, Resolver } from '@nestjs/graphql';
+import { Args, Context, GraphQLExecutionContext, ID, Parent, Resolver } from '@nestjs/graphql';
 
-import { ELoaderType, Filter, Loader, Order, Pagination, Query, ResolveField } from 'nestjs-graphql-easy';
+import { ELoaderType, Filter, Loader, Mutation, Order, Pagination, Query, ResolveField } from 'nestjs-graphql-easy';
 
 import { BookVersion } from '../book-version/book-version.entity';
 import { Section } from '../section/section.entity';
 
-import { Book } from './book.entity';
+import { Book, EBookStatus } from './book.entity';
+import { BookService } from './book.service';
+import { BookChangePrivate } from './mutation-result/change-private.dto';
+import { BookChangeStatus } from './mutation-result/change-status.dto';
+import { BookDelete } from './mutation-result/delete.dto';
 
 @Resolver(() => Book)
 export class BookResolver {
+  constructor(private readonly bookService: BookService) {}
+
   @Query(() => [Book])
   public async books(
     @Loader({
@@ -58,5 +64,26 @@ export class BookResolver {
     @Context() ctx: GraphQLExecutionContext
   ) {
     return await ctx[field_alias].load(book.id);
+  }
+
+  @Mutation(() => BookDelete)
+  public async bookDelete(@Args({ name: 'id', type: () => ID }) id: number) {
+    return await this.bookService.deleteBook(id);
+  }
+
+  @Mutation(() => BookChangeStatus)
+  public async bookChangeStatus(
+    @Args({ name: 'id', type: () => ID }) id: number,
+    @Args({ name: 'book_status', type: () => EBookStatus }) status: EBookStatus
+  ) {
+    return await this.bookService.changeStatus(id, status);
+  }
+
+  @Mutation(() => BookChangePrivate)
+  public async bookChangePrivate(
+    @Args({ name: 'id', type: () => ID }) id: number,
+    @Args({ name: 'is_private', type: () => Boolean }) is_private: boolean
+  ) {
+    return await this.bookService.changePrivate(id, is_private);
   }
 }

@@ -96,7 +96,7 @@
 
 <script setup lang="ts">
 import { ref, type Ref } from "vue";
-import { POSITION, useToast } from "vue-toastification";
+import { useToast } from "vue-toastification";
 
 import { useApi } from "@/api/api";
 
@@ -116,7 +116,6 @@ async function onChangePassword(event: Event) {
 
       toast.success("CHANGE_PASSWORD_SUCCESS", {
         timeout: 2500,
-        position: POSITION.BOTTOM_RIGHT,
       });
 
       password_changed.value = true;

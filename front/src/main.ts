@@ -14,11 +14,12 @@ app.use(createPinia());
 import router from "@/router";
 app.use(router);
 
-import Toast, { useToast } from "vue-toastification";
+import Toast, { POSITION, useToast } from "vue-toastification";
 app.use(Toast, {
   transition: "Vue-Toastification__bounce",
   maxToasts: 5,
   newestOnTop: true,
+  position: POSITION.BOTTOM_RIGHT,
 });
 
 import api from "@/api/api";

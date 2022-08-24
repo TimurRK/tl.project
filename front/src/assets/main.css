@@ -25,3 +25,8 @@
 .center-text {
   text-align: center;
 }
+
+.plr-base {
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}

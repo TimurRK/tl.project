@@ -24,10 +24,12 @@ export type Book = {
   __typename?: "Book";
   annotation?: Maybe<Scalars["String"]>;
   author?: Maybe<Scalars["String"]>;
+  book_status: EBookStatus;
   book_versions?: Maybe<Array<BookVersion>>;
   cover?: Maybe<Scalars["String"]>;
   created_at: Scalars["DateTime"];
   id: Scalars["ID"];
+  is_private: Scalars["Boolean"];
   sections?: Maybe<Array<Section>>;
   title: Scalars["String"];
   updated_at: Scalars["DateTime"];
@@ -41,6 +43,23 @@ export type BookBook_VersionsArgs = {
 export type BookSectionsArgs = {
   ORDER?: InputMaybe<Section_OrderInputType>;
   WHERE?: InputMaybe<Section_FilterInputType>;
+};
+
+export type BookChangePrivate = {
+  __typename?: "BookChangePrivate";
+  id: Scalars["ID"];
+  is_private: Scalars["Boolean"];
+};
+
+export type BookChangeStatus = {
+  __typename?: "BookChangeStatus";
+  book_status: EBookStatus;
+  id: Scalars["ID"];
+};
+
+export type BookDelete = {
+  __typename?: "BookDelete";
+  id: Scalars["ID"];
 };
 
 export type BookVersion = {
@@ -78,7 +97,9 @@ export type BookVersion_OrderInputType = {
 export type Book_FilterInputType = {
   AND?: InputMaybe<Array<Book_FilterInputType>>;
   OR?: InputMaybe<Array<Book_FilterInputType>>;
+  book_status?: InputMaybe<Undefined_FilterInputType>;
   id?: InputMaybe<Id_FilterInputType>;
+  is_private?: InputMaybe<Boolean_FilterInputType>;
   title?: InputMaybe<String_FilterInputType>;
 };
 
@@ -97,6 +118,14 @@ export type Boolean_FilterInputType = {
   NULL?: InputMaybe<Scalars["Boolean"]>;
 };
 
+export enum EBookStatus {
+  InProcess = "IN_PROCESS",
+  Queue = "QUEUE",
+  Ready = "READY",
+  Suspended = "SUSPENDED",
+  Thrown = "THROWN",
+}
+
 export enum EOrderMethod {
   Asc = "ASC",
   Desc = "DESC",
@@ -105,6 +134,12 @@ export enum EOrderMethod {
 export enum EOrderNulls {
   First = "FIRST",
   Last = "LAST",
+}
+
+export enum ESectionStatus {
+  InProcess = "IN_PROCESS",
+  Queue = "QUEUE",
+  Ready = "READY",
 }
 
 export type Id_FilterInputType = {
@@ -224,6 +259,33 @@ export type Item_OrderInputType = {
 
 export type ItemableType = ItemImage | ItemText;
 
+export type Mutation = {
+  __typename?: "Mutation";
+  bookChangePrivate: BookChangePrivate;
+  bookChangeStatus: BookChangeStatus;
+  bookDelete: BookDelete;
+  sectionChangeStatus: SectionChangeStatus;
+};
+
+export type MutationBookChangePrivateArgs = {
+  id: Scalars["ID"];
+  is_private: Scalars["Boolean"];
+};
+
+export type MutationBookChangeStatusArgs = {
+  book_status: EBookStatus;
+  id: Scalars["ID"];
+};
+
+export type MutationBookDeleteArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationSectionChangeStatusArgs = {
+  id: Scalars["ID"];
+  section_status: ESectionStatus;
+};
+
 export type PaginationInputType = {
   page: Scalars["Int"];
   per_page: Scalars["Int"];
@@ -304,6 +366,7 @@ export type Section = {
   id: Scalars["ID"];
   items?: Maybe<Array<Item>>;
   position: Scalars["Int"];
+  section_status: ESectionStatus;
   section_versions?: Maybe<Array<SectionVersion>>;
   title: Scalars["String"];
   updated_at: Scalars["DateTime"];
@@ -317,6 +380,12 @@ export type SectionItemsArgs = {
 export type SectionSection_VersionsArgs = {
   ORDER?: InputMaybe<SectionVersion_OrderInputType>;
   WHERE?: InputMaybe<SectionVersion_FilterInputType>;
+};
+
+export type SectionChangeStatus = {
+  __typename?: "SectionChangeStatus";
+  id: Scalars["ID"];
+  section_status: ESectionStatus;
 };
 
 export type SectionVersion = {
@@ -446,6 +515,43 @@ export type Field_OrderInputType = {
   SORT: EOrderMethod;
 };
 
+export type Undefined_FilterInputType = {
+  EQ?: InputMaybe<EBookStatus>;
+  IN?: InputMaybe<Array<EBookStatus>>;
+  NOT_EQ?: InputMaybe<EBookStatus>;
+  NOT_IN?: InputMaybe<Array<EBookStatus>>;
+  NULL?: InputMaybe<Scalars["Boolean"]>;
+};
+
+export type BookChangePrivateMutationVariables = Exact<{
+  book_id: Scalars["ID"];
+  is_private: Scalars["Boolean"];
+}>;
+
+export type BookChangePrivateMutation = {
+  __typename?: "Mutation";
+  bookChangePrivate: { __typename?: "BookChangePrivate"; id: string };
+};
+
+export type BookChangeStatusMutationVariables = Exact<{
+  book_id: Scalars["ID"];
+  book_status: EBookStatus;
+}>;
+
+export type BookChangeStatusMutation = {
+  __typename?: "Mutation";
+  bookChangeStatus: { __typename?: "BookChangeStatus"; id: string };
+};
+
+export type BookDeleteMutationVariables = Exact<{
+  book_id: Scalars["ID"];
+}>;
+
+export type BookDeleteMutation = {
+  __typename?: "Mutation";
+  bookDelete: { __typename?: "BookDelete"; id: string };
+};
+
 export type BookSectionsQueryVariables = Exact<{
   book_id: Scalars["ID"];
   user_id: Scalars["ID"];
@@ -458,12 +564,15 @@ export type BookSectionsQuery = {
     id: string;
     title: string;
     author?: string | null;
+    is_private: boolean;
+    book_status: EBookStatus;
     sections?: Array<{
       __typename?: "Section";
       id: string;
       position: number;
       title: string;
       created_at: any;
+      section_status: ESectionStatus;
     }> | null;
   }>;
   translators: Array<{ __typename?: "Translator"; id: string }>;
@@ -486,6 +595,8 @@ export type UserTranslationsQuery = {
       author?: string | null;
       cover?: string | null;
       created_at: any;
+      book_status: EBookStatus;
+      is_private: boolean;
       book_versions?: Array<{
         __typename?: "BookVersion";
         id: string;
@@ -618,17 +729,41 @@ export type SectionItemsQuery = {
   translators: Array<{ __typename?: "Translator"; id: string }>;
 };
 
+export const BookChangePrivate = gql`
+  mutation BookChangePrivate($book_id: ID!, $is_private: Boolean!) {
+    bookChangePrivate(id: $book_id, is_private: $is_private) {
+      id
+    }
+  }
+`;
+export const BookChangeStatus = gql`
+  mutation BookChangeStatus($book_id: ID!, $book_status: EBookStatus!) {
+    bookChangeStatus(id: $book_id, book_status: $book_status) {
+      id
+    }
+  }
+`;
+export const BookDelete = gql`
+  mutation BookDelete($book_id: ID!) {
+    bookDelete(id: $book_id) {
+      id
+    }
+  }
+`;
 export const BookSections = gql`
   query BookSections($book_id: ID!, $user_id: ID!) {
     books(WHERE: { id: { EQ: $book_id } }) {
       id
       title
       author
+      is_private
+      book_status
       sections(ORDER: { position: { SORT: ASC, NULLS: LAST } }) {
         id
         position
         title
         created_at
+        section_status
       }
     }
     translators(
@@ -652,6 +787,8 @@ export const UserTranslations = gql`
         author
         cover
         created_at
+        book_status
+        is_private
         book_versions(WHERE: { is_main: { EQ: true } }) {
           id
           title

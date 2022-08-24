@@ -1,4 +1,4 @@
-import { ID, Int } from '@nestjs/graphql';
+import { ID, Int, registerEnumType } from '@nestjs/graphql';
 
 import { Column, CreateDateColumn, Entity, Field, ObjectType, PrimaryGeneratedColumn, UpdateDateColumn } from 'nestjs-graphql-easy';
 import { Index, JoinColumn, ManyToOne, OneToMany, Unique } from 'typeorm';
@@ -6,6 +6,16 @@ import { Index, JoinColumn, ManyToOne, OneToMany, Unique } from 'typeorm';
 import { Book } from '../book/book.entity';
 import { Item } from '../item/item.entity';
 import { SectionVersion } from '../section-version/section-version.entity';
+
+export enum ESectionStatus {
+  QUEUE = 1,
+  IN_PROCESS = 2,
+  READY = 3,
+}
+
+registerEnumType(ESectionStatus, {
+  name: 'ESectionStatus',
+});
 
 @Unique('idx_section_position_on_book', ['position', 'book_id'])
 @ObjectType()
@@ -42,6 +52,16 @@ export class Section {
   @Index()
   @Column('integer', { nullable: false })
   public position: number;
+
+  @Field(() => ESectionStatus, { nullable: false })
+  @Index()
+  @Column({
+    type: 'enum',
+    enum: ESectionStatus,
+    nullable: false,
+    default: ESectionStatus.QUEUE,
+  })
+  public section_status: ESectionStatus;
 
   @Field(() => ID, { nullable: false, sortable: true, filterable: true })
   @Index()

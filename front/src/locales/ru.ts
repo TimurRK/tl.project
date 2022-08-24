@@ -80,6 +80,8 @@ export const ru = {
       },
       buttons: {
         translate: "Переводить",
+        read: "Читать",
+        delete: "Удалить",
       },
     },
     books_new: {
@@ -98,6 +100,8 @@ export const ru = {
         sections_list: "Список глав",
         section_title: "Название главы",
         section_status: "Статус",
+        is_private: "Приватный перевод?",
+        is_private_selected: "Выбрано:",
       },
       buttons: {},
     },

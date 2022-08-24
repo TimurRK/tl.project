@@ -92,7 +92,6 @@ import { useRoute } from "vue-router";
 import { useApi } from "@/api/api";
 
 import CHr from "@/components/CHr.vue";
-import CBadge from "@/components/CBadge.vue";
 
 import {
   SectionItems,
