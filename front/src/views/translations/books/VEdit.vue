@@ -3,21 +3,55 @@
     <CHr :color="'dark'" :title="current_data.books[0].title" />
 
     <div class="row justify-content-md-center mb-2">
-      <div class="col-6 pl-0 mb-2">
+      <div class="col-sm-12 col-md-6 mb-2">
         <ul class="list-group">
           <li class="list-group-item disabled" aria-disabled="true">
             {{ $t("pages.books_edit.labels.author") }}
           </li>
         </ul>
       </div>
-      <div class="col-6 pr-0">
+      <div class="col-sm-12 col-md-6">
         <ul class="list-group">
           <li class="list-group-item disabled" aria-disabled="true">
             {{ current_data.books[0].author }}
           </li>
         </ul>
       </div>
-      <div class="col-12">
+    </div>
+
+    <div class="row justify-content-md-center mb-2">
+      <div class="col-sm-12 col-md-6 mb-2">
+        <ul class="list-group">
+          <li class="list-group-item disabled" aria-disabled="true">
+            {{ $t("pages.books_edit.labels.book_status") }}
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-fp" aria-disabled="true">
+            <v-select
+              :options="book_statuses"
+              label="label"
+              value="value"
+              :appendToBody="true"
+              v-model="current_data.books[0].book_status"
+              :reduce="(c: Record<string, string>) => c.value"
+            >
+              <template #selected-option="{ value }">
+                <CBookStatus :status="value" />
+              </template>
+              <template #option="{ value }">
+                <CBookStatus :status="value" />
+              </template>
+            </v-select>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row justify-content-md-center mb-2">
+      <div class="col-12 mb-2">
         <div class="form-check form-switch">
           <input
             class="form-check-input"
@@ -97,19 +131,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref, onBeforeMount, onBeforeUnmount } from "vue";
-import { useRoute } from "vue-router";
+import {
+  ref,
+  type Ref,
+  onBeforeMount,
+  onBeforeUnmount,
+  defineProps,
+  watch,
+} from "vue";
 import { useToast } from "vue-toastification";
 
 import { useApi } from "@/api/api";
 
 import CHr from "@/components/CHr.vue";
+import CBookStatus from "@/components/CBookStatus.vue";
 import CSectionStatus from "@/components/CSectionStatus.vue";
 
 import {
   BookChangePrivate,
   BookChangeStatus,
   BookSections,
+  EBookStatus,
   type BookChangePrivateMutation,
   type BookChangePrivateMutationVariables,
   type BookChangeStatusMutation,
@@ -120,7 +162,6 @@ import {
 import { currentUserStore, type ICurrentUser } from "@/stores/current-user";
 import { breadcrumbsStore } from "@/stores/breadcrumb";
 
-const route = useRoute();
 const api = useApi();
 const toast = useToast();
 
@@ -131,8 +172,16 @@ current_user.value = current_user_store.currentUser;
 
 const current_data: Ref<BookSectionsQuery | null> = ref(null);
 
+const book_statuses = Object.values(EBookStatus).map((value) => {
+  return { label: value.toLowerCase(), value };
+});
+
+const props = defineProps({
+  book_id: { type: String, required: true },
+});
+
 onBeforeMount(async () => {
-  const book_id = route.params.book_id as string;
+  const book_id = props.book_id;
 
   const { data } = await api.graphql<
     BookSectionsQuery,
@@ -155,8 +204,23 @@ onBeforeMount(async () => {
   ]);
 });
 
+/**
+ * @TODO костыль. Почему-то у v-select не работают события.
+ * @input, @change, @selected.
+ */
+const unwatch = watch(
+  () => current_data.value?.books[0]?.book_status,
+  async (curr_name, prev_name) => {
+    if (curr_name && prev_name) {
+      await bookChangeStatus();
+    }
+  }
+);
+
 onBeforeUnmount(async () => {
   breadcrumbs_store.setBreadcrumbs(null);
+
+  unwatch();
 });
 
 async function bookChangePrivate() {
@@ -202,4 +266,17 @@ async function bookChangeStatus() {
 
 <style>
 @import "@/assets/main.css";
+
+.list-group-item-fp {
+  padding: 0.25rem 1rem !important;
+}
+
+.v-select .dropdown-toggle,
+.v-select .vs__dropdown-toggle {
+  border: none !important;
+}
+
+.vs__dropdown-menu {
+  border: none !important;
+}
 </style>

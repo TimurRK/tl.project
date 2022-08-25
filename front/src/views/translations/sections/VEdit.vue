@@ -86,9 +86,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref, onBeforeMount, onBeforeUnmount } from "vue";
+import {
+  ref,
+  type Ref,
+  onBeforeMount,
+  onBeforeUnmount,
+  defineProps,
+} from "vue";
 
-import { useRoute } from "vue-router";
 import { useApi } from "@/api/api";
 
 import CHr from "@/components/CHr.vue";
@@ -101,7 +106,6 @@ import {
 import { currentUserStore, type ICurrentUser } from "@/stores/current-user";
 import { breadcrumbsStore } from "@/stores/breadcrumb";
 
-const route = useRoute();
 const api = useApi();
 
 const breadcrumbs_store = breadcrumbsStore();
@@ -111,9 +115,14 @@ current_user.value = current_user_store.currentUser;
 
 const current_data: Ref<SectionItemsQuery | null> = ref(null);
 
+const props = defineProps({
+  book_id: { type: String, required: true },
+  section_id: { type: String, required: true },
+});
+
 onBeforeMount(async () => {
-  const book_id = route.params.book_id as string;
-  const section_id = route.params.section_id as string;
+  const book_id = props.book_id;
+  const section_id = props.section_id;
 
   const { data } = await api.graphql<
     SectionItemsQuery,

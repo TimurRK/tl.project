@@ -97,6 +97,7 @@ export const ru = {
     books_edit: {
       labels: {
         author: "Автор",
+        book_status: "Статус",
         sections_list: "Список глав",
         section_title: "Название главы",
         section_status: "Статус",

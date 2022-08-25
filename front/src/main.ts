@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 
 import "vue-toastification/dist/index.css";
+import "vue-select/dist/vue-select.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
@@ -29,5 +30,8 @@ app.use(api, { currentUserStore, router, toast });
 
 import { i18n } from "@/locales/i18n";
 app.use(i18n);
+
+import vSelect from "vue-select";
+app.component("v-select", vSelect);
 
 app.mount("#app");
