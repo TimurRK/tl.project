@@ -1,0 +1,5 @@
+mutation SectionChangeStatus($section_id: ID!, $section_status: ESectionStatus!) {
+  sectionChangeStatus(id: $section_id, section_status: $section_status) {
+    id
+  }
+}

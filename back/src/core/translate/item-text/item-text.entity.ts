@@ -1,8 +1,10 @@
 import { ID } from '@nestjs/graphql';
 
 import { Column, CreateDateColumn, Entity, Field, ObjectType, PrimaryGeneratedColumn, UpdateDateColumn } from 'nestjs-graphql-easy';
-import { OneToMany } from 'typeorm';
+import { Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+
 import { ItemTextVersion } from '../item-text-version/item-text-version.entity';
+import { Item } from '../item/item.entity';
 
 @ObjectType()
 @Entity()
@@ -31,4 +33,16 @@ export class ItemText {
 
   @OneToMany(() => ItemTextVersion, (item_text_version) => item_text_version.item_text)
   public versions: ItemTextVersion[];
+
+  /**
+   * For cascade delete to work
+   */
+
+  @Index()
+  @Column('uuid', { nullable: true })
+  public item_id: string;
+
+  @ManyToOne(() => Item, { nullable: true, onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'item_id' })
+  public item: Item;
 }

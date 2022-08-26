@@ -7,8 +7,8 @@ import sharp from 'sharp';
 
 import { LoggerStore } from '../../logger/logger.store';
 import { LoggerService } from '../../logger/logger.service';
-import { Book } from '../translate/book/book.entity';
-import { Section } from '../translate/section/section.entity';
+import { Book, EBookStatus } from '../translate/book/book.entity';
+import { ESectionStatus, Section } from '../translate/section/section.entity';
 import { Item } from '../translate/item/item.entity';
 import { ItemImage } from '../translate/item-image/item-image.entity';
 import { ItemText } from '../translate/item-text/item-text.entity';
@@ -44,6 +44,7 @@ export class ParserService {
         title: parsed_book.title,
         author: parsed_book.author,
         is_private: true,
+        book_status: EBookStatus.QUEUE,
       };
 
       if (parsed_book.cover) {
@@ -76,7 +77,10 @@ export class ParserService {
           title: parsed_section.id,
           book_id: book.id,
           position: section_index,
+          section_status: ESectionStatus.QUEUE,
         };
+
+        let only_image = true;
 
         for await (const [item_index, parsed_item] of parsed_section.parsed_data.entries()) {
           const item: DeepPartial<Item> = {
@@ -106,10 +110,16 @@ export class ParserService {
               value: parsed_item.value,
             };
 
+            only_image = false;
+
             texts.push(text);
           }
 
           items.push(item);
+        }
+
+        if (only_image) {
+          section.section_status = ESectionStatus.READY;
         }
 
         sections.push(section);
@@ -128,6 +138,50 @@ export class ParserService {
 
         if (items.length) {
           await entityManager.getRepository(Item).insert(items);
+        }
+
+        if (texts.length) {
+          await entityManager.query(`
+            UPDATE "item_text"
+            SET item_id = t.item_id
+            FROM (
+              SELECT
+                "item_text".id,
+                "item".id AS item_id
+              FROM "item_text"
+              LEFT JOIN "item"
+                ON "item".itemable_id = "item_text".id
+                AND "item".itemable_type = 'ItemText'
+              LEFT JOIN "section"
+                ON "section".id = "item".section_id
+              WHERE "item_text".item_id IS NULL
+                AND "item".id IS NOT NULL
+                AND "section".book_id = '${book.id}'
+            ) AS t
+            WHERE t.id = "item_text".id
+          `);
+        }
+
+        if (images.length) {
+          await entityManager.query(`
+            UPDATE "item_image"
+            SET item_id = t.item_id
+            FROM (
+              SELECT
+                "item_image".id,
+                "item".id AS item_id
+              FROM "item_image"
+              LEFT JOIN "item"
+                ON "item".itemable_id = "item_image".id
+                AND "item".itemable_type = 'ItemImage'
+              LEFT JOIN "section"
+                ON "section".id = "item".section_id
+              WHERE "item_image".item_id IS NULL
+                AND "item".id IS NOT NULL
+                AND "section".book_id = '${book.id}'
+            ) AS t
+            WHERE t.id = "item_image".id
+          `);
         }
       }
 

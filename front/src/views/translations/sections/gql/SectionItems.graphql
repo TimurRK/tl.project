@@ -3,11 +3,13 @@ query SectionItems($book_id: ID!, $section_id: ID!, $user_id: ID) {
     id
     title
     author
+    book_status
     sections(WHERE: { id: { EQ: $section_id }}) {
       id
       position
       title
       created_at
+      section_status
       items {
         id
         position

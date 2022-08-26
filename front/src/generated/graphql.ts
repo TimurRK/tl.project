@@ -681,6 +681,16 @@ export type ItemTextVersionQuery = {
   translators: Array<{ __typename?: "Translator"; id: string }>;
 };
 
+export type SectionChangeStatusMutationVariables = Exact<{
+  section_id: Scalars["ID"];
+  section_status: ESectionStatus;
+}>;
+
+export type SectionChangeStatusMutation = {
+  __typename?: "Mutation";
+  sectionChangeStatus: { __typename?: "SectionChangeStatus"; id: string };
+};
+
 export type SectionItemsQueryVariables = Exact<{
   book_id: Scalars["ID"];
   section_id: Scalars["ID"];
@@ -694,12 +704,14 @@ export type SectionItemsQuery = {
     id: string;
     title: string;
     author?: string | null;
+    book_status: EBookStatus;
     sections?: Array<{
       __typename?: "Section";
       id: string;
       position: number;
       title: string;
       created_at: any;
+      section_status: ESectionStatus;
       items?: Array<{
         __typename?: "Item";
         id: string;
@@ -876,17 +888,29 @@ export const ItemTextVersion = gql`
     }
   }
 `;
+export const SectionChangeStatus = gql`
+  mutation SectionChangeStatus(
+    $section_id: ID!
+    $section_status: ESectionStatus!
+  ) {
+    sectionChangeStatus(id: $section_id, section_status: $section_status) {
+      id
+    }
+  }
+`;
 export const SectionItems = gql`
   query SectionItems($book_id: ID!, $section_id: ID!, $user_id: ID) {
     books(WHERE: { id: { EQ: $book_id } }) {
       id
       title
       author
+      book_status
       sections(WHERE: { id: { EQ: $section_id } }) {
         id
         position
         title
         created_at
+        section_status
         items {
           id
           position

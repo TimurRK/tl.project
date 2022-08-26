@@ -10,7 +10,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'nestjs-graphql-easy';
-import { Index, JoinColumn, ManyToOne } from 'typeorm';
+import { Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { ItemImage } from '../item-image/item-image.entity';
+import { ItemText } from '../item-text/item-text.entity';
 
 import { Section } from '../section/section.entity';
 
@@ -60,4 +62,14 @@ export class Item {
   @Column({ nullable: false })
   @PolymorphicColumn()
   public itemable_type: string;
+
+  /**
+   * For cascade delete to work
+   */
+
+  @OneToMany(() => ItemImage, (item_image) => item_image.item)
+  public item_images: ItemImage[];
+
+  @OneToMany(() => ItemText, (item_text) => item_text.item)
+  public item_texts: ItemText[];
 }

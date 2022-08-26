@@ -3,6 +3,37 @@
     <template v-if="current_data.books[0].sections">
       <CHr :color="'dark'" :title="current_data.books[0].sections[0].title" />
 
+      <div class="row justify-content-md-center mb-2">
+        <div class="col-sm-12 col-md-6 mb-2">
+          <ul class="list-group">
+            <li class="list-group-item disabled" aria-disabled="true">
+              {{ $t("pages.books_edit.labels.book_status") }}
+            </li>
+          </ul>
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-fp" aria-disabled="true">
+              <v-select
+                :options="section_statuses"
+                label="label"
+                value="value"
+                :appendToBody="true"
+                v-model="current_data.books[0].sections[0].section_status"
+                :reduce="(c: Record<string, string>) => c.value"
+              >
+                <template #selected-option="{ value }">
+                  <CSectionStatus :status="value" />
+                </template>
+                <template #option="{ value }">
+                  <CSectionStatus :status="value" />
+                </template>
+              </v-select>
+            </li>
+          </ul>
+        </div>
+      </div>
+
       <CHr
         :color="'dark'"
         :title="$t('pages.books_sections_edit.labels.items_list')"
@@ -92,14 +123,21 @@ import {
   onBeforeMount,
   onBeforeUnmount,
   defineProps,
+  watch,
 } from "vue";
+import { useToast } from "vue-toastification";
 
 import { useApi } from "@/api/api";
 
 import CHr from "@/components/CHr.vue";
+import CSectionStatus from "@/components/CSectionStatus.vue";
 
 import {
+  ESectionStatus,
+  SectionChangeStatus,
   SectionItems,
+  type SectionChangeStatusMutation,
+  type SectionChangeStatusMutationVariables,
   type SectionItemsQuery,
   type SectionItemsQueryVariables,
 } from "@/generated/graphql";
@@ -107,6 +145,7 @@ import { currentUserStore, type ICurrentUser } from "@/stores/current-user";
 import { breadcrumbsStore } from "@/stores/breadcrumb";
 
 const api = useApi();
+const toast = useToast();
 
 const breadcrumbs_store = breadcrumbsStore();
 const current_user_store = currentUserStore();
@@ -118,6 +157,10 @@ const current_data: Ref<SectionItemsQuery | null> = ref(null);
 const props = defineProps({
   book_id: { type: String, required: true },
   section_id: { type: String, required: true },
+});
+
+const section_statuses = Object.values(ESectionStatus).map((value) => {
+  return { label: value.toLowerCase(), value };
 });
 
 onBeforeMount(async () => {
@@ -153,9 +196,44 @@ onBeforeMount(async () => {
   ]);
 });
 
+/**
+ * @TODO костыль. Почему-то у v-select не работают события.
+ * @input, @change, @selected.
+ */
+const unwatch = watch(
+  () => current_data.value?.books[0]?.sections?.[0].section_status,
+  async (curr_name, prev_name) => {
+    if (curr_name && prev_name) {
+      await sectionChangeStatus();
+    }
+  }
+);
+
 onBeforeUnmount(async () => {
   breadcrumbs_store.setBreadcrumbs(null);
+
+  unwatch();
 });
+
+async function sectionChangeStatus() {
+  try {
+    await api.graphql<
+      SectionChangeStatusMutation,
+      SectionChangeStatusMutationVariables
+    >(SectionChangeStatus, {
+      section_id: current_data.value!.books![0].sections![0].id,
+      section_status: current_data.value!.books![0].sections![0].section_status,
+    });
+
+    toast.success("UPDATE_SUCCESS", {
+      timeout: 2500,
+    });
+  } catch (error: any) {
+    toast.error(error.message, {
+      timeout: 2500,
+    });
+  }
+}
 </script>
 
 <style>
