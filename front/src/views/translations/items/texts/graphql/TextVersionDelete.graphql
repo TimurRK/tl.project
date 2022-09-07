@@ -1,0 +1,5 @@
+mutation TextVersionDelete($id: ID!) {
+	textVersionDelete(id: $id) {
+    id
+  }
+}

@@ -8,24 +8,24 @@
           <table class="table table-hover table-sm">
             <thead>
               <tr class="row m-0">
-                <th class="col-6">
+                <th class="col-sm-12 col-md-6">
                   {{ $t("pages.books_sections_items_new.labels.original") }}
                 </th>
-                <th class="col-6">
+                <th class="col-sm-12 col-md-6">
                   {{ $t("pages.books_sections_items_new.labels.translation") }}
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr class="row m-0">
-                <td class="col-6">
+                <td class="col-sm-12 col-md-6">
                   <p>
                     {{
                       current_data.books[0].sections[0].items[0].itemable.value
                     }}
                   </p>
                 </td>
-                <td class="col-6">
+                <td class="col-sm-12 col-md-6">
                   <div class="form-floating h-100">
                     <textarea
                       class="form-control h-100 p-1"

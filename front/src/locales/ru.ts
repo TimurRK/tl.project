@@ -111,6 +111,7 @@ export const ru = {
         items_list: "Содержимое главы",
         original: "Оригинал",
         translation: "Перевод",
+        is_main: "Основной",
       },
       buttons: {
         add: "Добавить",
@@ -128,8 +129,15 @@ export const ru = {
       },
     },
     books_sections_items_edit: {
-      labels: {},
-      buttons: {},
+      labels: {
+        original: "Оригинал",
+        translation: "Перевод",
+        is_main: "Основная версия перевода?",
+        is_main_selected: "Выбрано:",
+      },
+      buttons: {
+        save: "Сохранить",
+      },
     },
   },
 };

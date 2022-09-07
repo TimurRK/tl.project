@@ -62,4 +62,13 @@ export class ItemTextVersionResolver {
 
     return await this.itemtextVersionService.update(id, data);
   }
+
+  @Mutation(() => ItemTextVersion)
+  public async textVersionDelete(@Args('id', { type: () => ID }) id: string) {
+    /**
+     * @TODO check permissions
+     */
+
+    return await this.itemtextVersionService.delete(id);
+  }
 }

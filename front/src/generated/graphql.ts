@@ -273,6 +273,7 @@ export type Mutation = {
   bookDelete: BookDelete;
   sectionChangeStatus: SectionChangeStatus;
   textVersionCreate: ItemTextVersion;
+  textVersionDelete: ItemTextVersion;
   textVersionUpdate: ItemTextVersion;
 };
 
@@ -297,6 +298,10 @@ export type MutationSectionChangeStatusArgs = {
 
 export type MutationTextVersionCreateArgs = {
   data: CreateItemTextVersionDto;
+};
+
+export type MutationTextVersionDeleteArgs = {
+  id: Scalars["ID"];
 };
 
 export type MutationTextVersionUpdateArgs = {
@@ -713,6 +718,15 @@ export type TextVersionCreateMutation = {
   textVersionCreate: { __typename?: "ItemTextVersion"; id: string };
 };
 
+export type TextVersionDeleteMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type TextVersionDeleteMutation = {
+  __typename?: "Mutation";
+  textVersionDelete: { __typename?: "ItemTextVersion"; id: string };
+};
+
 export type TextVersionUpdateMutationVariables = Exact<{
   id: Scalars["ID"];
   data: UpdateItemTextVersionDto;
@@ -937,6 +951,13 @@ export const TextVersionCreate = gql`
     }
   }
 `;
+export const TextVersionDelete = gql`
+  mutation TextVersionDelete($id: ID!) {
+    textVersionDelete(id: $id) {
+      id
+    }
+  }
+`;
 export const TextVersionUpdate = gql`
   mutation TextVersionUpdate($id: ID!, $data: UpdateItemTextVersionDTO!) {
     textVersionUpdate(id: $id, data: $data) {
@@ -975,7 +996,9 @@ export const SectionItems = gql`
             ... on ItemText {
               id
               value
-              item_text_versions {
+              item_text_versions(
+                ORDER: { created_at: { SORT: ASC, NULLS: LAST } }
+              ) {
                 id
                 is_main
                 created_at

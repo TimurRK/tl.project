@@ -40,24 +40,24 @@
       />
 
       <div class="row justify-content-md-center mb-2 table-responsive">
-        <table class="table table-hover table-sm">
+        <table class="table table-hover table-sm table-striped">
           <thead>
             <tr class="row m-0">
               <th
-                class="col-sm-1 col-md-1 col-lg-1 col-xl-1 d-flex justify-content-center"
+                class="col-sm-12 col-md-1 col-lg-1 col-xl-1 d-flex justify-content-center"
               >
                 №
               </th>
-              <th class="col-sm-6 col-md-6 col-lg-6 col-xl-6 break-word">
+              <th class="col-sm-12 col-md-5 col-lg-5 col-xl-5 break-word">
                 {{ $t("pages.books_sections_edit.labels.original") }}
               </th>
               <th
-                class="col-sm-1 col-md-1 col-lg-1 col-xl-1 d-flex justify-content-center"
+                class="col-sm-12 col-md-1 col-lg-1 col-xl-1 d-flex justify-content-center"
               >
                 #
               </th>
               <th
-                class="col-sm-4 col-md-4 col-lg-4 col-xl-4 d-flex justify-content-center"
+                class="col-sm-12 col-md-5 col-lg-5 col-xl-5 d-flex justify-content-center"
               >
                 {{ $t("pages.books_sections_edit.labels.translation") }}
               </th>
@@ -70,11 +70,11 @@
               :key="item.id"
             >
               <td
-                class="col-sm-1 col-md-1 col-lg-1 col-xl-1 d-flex justify-content-center"
+                class="col-sm-12 col-md-1 col-lg-1 col-xl-1 d-flex justify-content-center"
               >
                 {{ item.position }}
               </td>
-              <td class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+              <td class="col-sm-12 col-md-4 col-lg-5 col-xl-5">
                 <template v-if="item.itemable.__typename === 'ItemImage'">
                   <img :src="item.itemable.value" />
                 </template>
@@ -83,7 +83,7 @@
                 </template>
               </td>
               <td
-                class="col-sm-1 col-md-1 col-lg-1 col-xl-1 d-flex justify-content-center"
+                class="col-sm-12 col-md-2 col-lg-1 col-xl-1 d-flex justify-content-center"
               >
                 <template v-if="item.itemable.__typename === 'ItemText'">
                   <router-link
@@ -100,30 +100,48 @@
                   </router-link>
                 </template>
               </td>
-              <td class="col-sm-4 col-md-4 col-lg-4 col-xl-4">
+              <td class="col-sm-12 col-md-5 col-lg-5 col-xl-5">
                 <template
                   v-if="
                     item.itemable.__typename === 'ItemText' &&
                     item.itemable.item_text_versions
                   "
                 >
-                  <div
-                    class="row"
-                    v-for="item_text_version of item.itemable
-                      .item_text_versions"
-                    :key="item_text_version.id"
-                  >
-                    <div class="col">
-                      <span>{{ item_text_version.user.login }}</span>
-                      <span class="mlr-base">от</span>
-                      <span>{{ item_text_version.created_at }}</span>
+                  <ul>
+                    <li
+                      class="d-flex justify-content-between align-items-center"
+                      v-for="item_text_version of item.itemable
+                        .item_text_versions"
+                      :key="item_text_version.id"
+                    >
+                      <span>
+                        <span>{{ item_text_version.user.login }}</span>
+                        <span class="mlr-base">от</span>
+                        <span>
+                          <router-link
+                            :to="{
+                              name: 'VItemTextEdit',
+                              params: {
+                                book_id: current_data.books[0].id,
+                                section_id:
+                                  current_data.books[0].sections[0].id,
+                                item_id: item.id,
+                                item_version_id: item_text_version.id,
+                              },
+                            }"
+                          >
+                            {{ item_text_version.created_at }}
+                          </router-link>
+                        </span>
+                      </span>
                       <span
                         v-if="item_text_version.is_main"
                         class="badge bg-info text-dark"
-                        >is_main</span
                       >
-                    </div>
-                  </div>
+                        {{ $t("pages.books_sections_edit.labels.is_main") }}
+                      </span>
+                    </li>
+                  </ul>
                 </template>
               </td>
             </tr>

@@ -32,4 +32,12 @@ export class ItemTextVersionService {
 
     return item_text_version;
   }
+
+  public async delete(id: string) {
+    const item_text_version = await this.dataSource.getRepository(ItemTextVersion).findOne({ where: { id } });
+
+    await this.dataSource.getRepository(ItemTextVersion).delete(item_text_version.id);
+
+    return item_text_version;
+  }
 }
