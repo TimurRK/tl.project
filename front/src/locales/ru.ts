@@ -117,8 +117,15 @@ export const ru = {
       },
     },
     books_sections_items_new: {
-      labels: {},
-      buttons: {},
+      labels: {
+        original: "Оригинал",
+        translation: "Перевод",
+        is_main: "Основная версия перевода?",
+        is_main_selected: "Выбрано:",
+      },
+      buttons: {
+        save: "Сохранить",
+      },
     },
     books_sections_items_edit: {
       labels: {},

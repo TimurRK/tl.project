@@ -44,7 +44,7 @@ export class ItemTextVersion {
   @Column('uuid', { nullable: false })
   public item_text_id: string;
 
-  @ManyToOne(() => User, { nullable: false, onDelete: 'CASCADE' })
+  @ManyToOne(() => ItemText, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'item_text_id' })
   public item_text: ItemText;
 

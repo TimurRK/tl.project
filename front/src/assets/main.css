@@ -1,5 +1,10 @@
-.ml-rbase {
+.mr-base {
   margin-right: 5px;
+}
+
+.mlr-base {
+  margin-right: 5px;
+  margin-left: 5px;
 }
 
 .cover {

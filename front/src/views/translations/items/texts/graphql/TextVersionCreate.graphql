@@ -1,0 +1,5 @@
+mutation TextVersionCreate($data: CreateItemTextVersionDTO!) {
+	textVersionCreate(data: $data) {
+    id
+  }
+}

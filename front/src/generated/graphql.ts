@@ -118,6 +118,13 @@ export type Boolean_FilterInputType = {
   NULL?: InputMaybe<Scalars["Boolean"]>;
 };
 
+export type CreateItemTextVersionDto = {
+  is_main: Scalars["Boolean"];
+  item_text_id: Scalars["ID"];
+  user_id: Scalars["ID"];
+  value: Scalars["String"];
+};
+
 export enum EBookStatus {
   InProcess = "IN_PROCESS",
   Queue = "QUEUE",
@@ -265,6 +272,8 @@ export type Mutation = {
   bookChangeStatus: BookChangeStatus;
   bookDelete: BookDelete;
   sectionChangeStatus: SectionChangeStatus;
+  textVersionCreate: ItemTextVersion;
+  textVersionUpdate: ItemTextVersion;
 };
 
 export type MutationBookChangePrivateArgs = {
@@ -284,6 +293,15 @@ export type MutationBookDeleteArgs = {
 export type MutationSectionChangeStatusArgs = {
   id: Scalars["ID"];
   section_status: ESectionStatus;
+};
+
+export type MutationTextVersionCreateArgs = {
+  data: CreateItemTextVersionDto;
+};
+
+export type MutationTextVersionUpdateArgs = {
+  data: UpdateItemTextVersionDto;
+  id: Scalars["ID"];
 };
 
 export type PaginationInputType = {
@@ -473,6 +491,11 @@ export type Translator_OrderInputType = {
   id?: InputMaybe<Field_OrderInputType>;
   updated_at?: InputMaybe<Field_OrderInputType>;
   user_id?: InputMaybe<Field_OrderInputType>;
+};
+
+export type UpdateItemTextVersionDto = {
+  is_main: Scalars["Boolean"];
+  value: Scalars["String"];
 };
 
 export type User = {
@@ -681,6 +704,25 @@ export type ItemTextVersionQuery = {
   translators: Array<{ __typename?: "Translator"; id: string }>;
 };
 
+export type TextVersionCreateMutationVariables = Exact<{
+  data: CreateItemTextVersionDto;
+}>;
+
+export type TextVersionCreateMutation = {
+  __typename?: "Mutation";
+  textVersionCreate: { __typename?: "ItemTextVersion"; id: string };
+};
+
+export type TextVersionUpdateMutationVariables = Exact<{
+  id: Scalars["ID"];
+  data: UpdateItemTextVersionDto;
+}>;
+
+export type TextVersionUpdateMutation = {
+  __typename?: "Mutation";
+  textVersionUpdate: { __typename?: "ItemTextVersion"; id: string };
+};
+
 export type SectionChangeStatusMutationVariables = Exact<{
   section_id: Scalars["ID"];
   section_status: ESectionStatus;
@@ -884,6 +926,20 @@ export const ItemTextVersion = gql`
     translators(
       WHERE: { book_id: { EQ: $book_id }, user_id: { EQ: $user_id } }
     ) {
+      id
+    }
+  }
+`;
+export const TextVersionCreate = gql`
+  mutation TextVersionCreate($data: CreateItemTextVersionDTO!) {
+    textVersionCreate(data: $data) {
+      id
+    }
+  }
+`;
+export const TextVersionUpdate = gql`
+  mutation TextVersionUpdate($id: ID!, $data: UpdateItemTextVersionDTO!) {
+    textVersionUpdate(id: $id, data: $data) {
       id
     }
   }

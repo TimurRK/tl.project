@@ -1,0 +1,5 @@
+mutation TextVersionUpdate($id: ID!, $data: UpdateItemTextVersionDTO!) {
+	textVersionUpdate(id: $id, data: $data) {
+    id
+  }
+}

@@ -38,6 +38,7 @@
         :color="'dark'"
         :title="$t('pages.books_sections_edit.labels.items_list')"
       />
+
       <div class="row justify-content-md-center mb-2 table-responsive">
         <table class="table table-hover table-sm">
           <thead>
@@ -106,6 +107,23 @@
                     item.itemable.item_text_versions
                   "
                 >
+                  <div
+                    class="row"
+                    v-for="item_text_version of item.itemable
+                      .item_text_versions"
+                    :key="item_text_version.id"
+                  >
+                    <div class="col">
+                      <span>{{ item_text_version.user.login }}</span>
+                      <span class="mlr-base">от</span>
+                      <span>{{ item_text_version.created_at }}</span>
+                      <span
+                        v-if="item_text_version.is_main"
+                        class="badge bg-info text-dark"
+                        >is_main</span
+                      >
+                    </div>
+                  </div>
                 </template>
               </td>
             </tr>
@@ -186,7 +204,7 @@ onBeforeMount(async () => {
       is_i18n: false,
       is_current: false,
       to: "VBookEdit",
-      params: { book_id: current_data.value.books[0].id },
+      params: { book_id },
     },
     {
       name: current_data.value.books[0].sections![0].title,
