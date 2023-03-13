@@ -20,8 +20,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from "vue";
-
 const props = defineProps({
   icon: { type: String, required: false, default: "bi-caret-right-fill" },
   color: { type: String, required: false, default: "dark" },

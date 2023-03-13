@@ -153,14 +153,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  ref,
-  type Ref,
-  onBeforeMount,
-  onBeforeUnmount,
-  defineProps,
-  watch,
-} from "vue";
+import { ref, type Ref, onBeforeMount, onBeforeUnmount, watch } from "vue";
 import { useToast } from "vue-toastification";
 
 import { useApi } from "@/api/api";

@@ -5,8 +5,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from "vue";
-
 const props = defineProps({
   color: { type: String, required: false, default: "dark" },
   title: { type: String, required: true },
