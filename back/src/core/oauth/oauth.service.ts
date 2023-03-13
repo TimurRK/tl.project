@@ -18,7 +18,7 @@ import { IJwtPayload, User } from './user/user.entity';
 import { RecoveryKey } from './recovery-key/recovery-key.entity';
 import { RefreshToken } from './refresh-token/refresh-token.entity';
 
-const jwt_settings = config.get<IJwtSettings>('JWT_SETTINGS');
+const JWT_SETTINGS = config.get<IJwtSettings>('JWT_SETTINGS');
 
 export interface IJwtToken {
   iat: number;
@@ -122,26 +122,26 @@ export class OAuthService {
   private async genereteJwt(entityManager: EntityManager, user: User) {
     const refresh = await entityManager.getRepository(RefreshToken).save({ user_id: user.id });
 
-    const access_token = sign({ current_user: user.json_for_jwt(), token_type: 'access' }, jwt_settings.secret_key, {
+    const access_token = sign({ current_user: user.json_for_jwt(), token_type: 'access' }, JWT_SETTINGS.secret_key, {
       jwtid: nanoid(16),
-      expiresIn: `${jwt_settings.access_token_expires_in}m`,
-      algorithm: jwt_settings.algorithm as Algorithm,
+      expiresIn: `${JWT_SETTINGS.access_token_expires_in}m`,
+      algorithm: JWT_SETTINGS.algorithm as Algorithm,
     });
 
-    const refresh_token = sign({ current_user: { id: user.id }, token_type: 'refresh' }, jwt_settings.secret_key, {
+    const refresh_token = sign({ current_user: { id: user.id }, token_type: 'refresh' }, JWT_SETTINGS.secret_key, {
       jwtid: refresh.id,
-      expiresIn: `${jwt_settings.refresh_token_expires_in}m`,
-      algorithm: jwt_settings.algorithm as Algorithm,
+      expiresIn: `${JWT_SETTINGS.refresh_token_expires_in}m`,
+      algorithm: JWT_SETTINGS.algorithm as Algorithm,
     });
 
     return {
       access_token,
       access_token_expires_at: new Date(
-        new Date().setMinutes(new Date().getMinutes() + jwt_settings.access_token_expires_in)
+        new Date().setMinutes(new Date().getMinutes() + JWT_SETTINGS.access_token_expires_in)
       ).toISOString(),
       refresh_token,
       refresh_token_expires_at: new Date(
-        new Date().setMinutes(new Date().getMinutes() + jwt_settings.refresh_token_expires_in)
+        new Date().setMinutes(new Date().getMinutes() + JWT_SETTINGS.refresh_token_expires_in)
       ).toISOString(),
     };
   }
@@ -160,7 +160,7 @@ export class OAuthService {
 
   public verifyToken<T>(jwt_token: string, is_access_token = true) {
     try {
-      return verify(jwt_token, jwt_settings.secret_key) as T;
+      return verify(jwt_token, JWT_SETTINGS.secret_key) as T;
     } catch (error) {
       if (is_access_token) {
         access_token_expired_signature({ raise: true });

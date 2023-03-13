@@ -9,7 +9,7 @@ import { account_blocked, authorization_failed, access_token_expired_signature, 
 import { IJwtPayload } from './user/user.entity';
 import { IAccessToken } from './oauth.service';
 
-const jwt_settings = config.get<IJwtSettings>('JWT_SETTINGS');
+const JWT_SETTINGS = config.get<IJwtSettings>('JWT_SETTINGS');
 
 @Injectable()
 export class OAuthMiddleware implements NestMiddleware {
@@ -18,7 +18,7 @@ export class OAuthMiddleware implements NestMiddleware {
 
     if (jwt_token) {
       try {
-        const { current_user, token_type } = verify(jwt_token, jwt_settings.secret_key) as IAccessToken;
+        const { current_user, token_type } = verify(jwt_token, JWT_SETTINGS.secret_key) as IAccessToken;
 
         if (!token_type || token_type !== 'access') {
           authorization_failed({ raise: true });

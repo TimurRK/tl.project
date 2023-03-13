@@ -12,7 +12,7 @@ import { json, urlencoded } from 'body-parser';
 import { AppModule } from './app.module';
 import { cors_options_delegate } from './cors.options';
 
-const appSettings = config.get<IAppSettings>('APP_SETTINGS');
+const APP_SETTINGS = config.get<IAppSettings>('APP_SETTINGS');
 
 async function bootstrap() {
   const server = express();
@@ -21,19 +21,20 @@ async function bootstrap() {
     bodyParser: true,
   });
 
-  app.use(json({ limit: appSettings.body_limit }));
+  app.use(json({ limit: APP_SETTINGS.body_limit }));
 
   app.use(
     urlencoded({
       extended: true,
-      limit: appSettings.body_limit,
-      parameterLimit: appSettings.body_parameter_limit,
+      limit: APP_SETTINGS.body_limit,
+      parameterLimit: APP_SETTINGS.body_parameter_limit,
     })
   );
 
   app.use(
     helmet({
       contentSecurityPolicy: false,
+      crossOriginEmbedderPolicy: false,
     })
   );
 
@@ -51,7 +52,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('swagger', app, document);
 
-  await app.listen(appSettings.port);
+  await app.listen(APP_SETTINGS.port);
 }
 
 bootstrap();
