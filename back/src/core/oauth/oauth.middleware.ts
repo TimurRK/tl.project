@@ -13,7 +13,7 @@ const JWT_SETTINGS = config.get<IJwtSettings>('JWT_SETTINGS');
 
 @Injectable()
 export class OAuthMiddleware implements NestMiddleware {
-  public async use(req: Request & { user?: IJwtPayload }, _res: Response, next: NextFunction) {
+  public async use(req: Request & { current_user?: IJwtPayload }, _res: Response, next: NextFunction) {
     const jwt_token: string = req.headers.authorization || (req.cookies as { JWT: string }).JWT;
 
     if (jwt_token) {
@@ -29,7 +29,7 @@ export class OAuthMiddleware implements NestMiddleware {
             return next(account_blocked({ raise: false }));
           }
 
-          req.user = current_user;
+          req.current_user = current_user;
 
           return next();
         }

@@ -1,7 +1,7 @@
 <template>
   <CNavigation />
 
-  <div class="container">
+  <div class="container content-wrapper">
     <CBreadcrumb />
 
     <RouterView />
@@ -27,5 +27,9 @@ onBeforeMount(async () => {
 <style>
 body {
   font-family: Open Sans, Helvetica Neue, Arial, Verdana, sans-serif;
+}
+
+.content-wrapper {
+  margin-top: 60px;
 }
 </style>

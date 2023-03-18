@@ -71,7 +71,7 @@
                 <div class="row plr-base">
                   <router-link
                     :to="{
-                      name: 'VBookEdit',
+                      name: 'VTranslationBookEdit',
                       params: { book_id: translator.book.id },
                     }"
                     class="btn btn-primary"
@@ -141,7 +141,7 @@ current_user_store.$subscribe((_mutation, state) => {
 });
 
 function newBook() {
-  router.push({ name: "VBookNew" });
+  router.push({ name: "VTranslationBookNew" });
 }
 
 onBeforeMount(async () => {

@@ -66,7 +66,7 @@ export const user_nav_routers: RouteRecordRaw[] = [
 
 export const translation_routers: RouteRecordRaw[] = [
   {
-    name: "VBookNew",
+    name: "VTranslationBookNew",
     path: "/translations/new",
     props: true,
     component: () => import("../views/translations/books/VNew.vue"),
@@ -77,7 +77,7 @@ export const translation_routers: RouteRecordRaw[] = [
     },
   },
   {
-    name: "VBookEdit",
+    name: "VTranslationBookEdit",
     path: "/translations/books/:book_id",
     props: true,
     component: () => import("../views/translations/books/VEdit.vue"),
@@ -88,7 +88,7 @@ export const translation_routers: RouteRecordRaw[] = [
     },
   },
   {
-    name: "VSectionEdit",
+    name: "VTranslationSectionEdit",
     path: "/translations/books/:book_id/sections/:section_id",
     props: true,
     component: () => import("../views/translations/sections/VEdit.vue"),
@@ -99,18 +99,7 @@ export const translation_routers: RouteRecordRaw[] = [
     },
   },
   {
-    name: "VItemTextEdit",
-    path: "/translations/books/:book_id/sections/:section_id/items/:item_id",
-    props: true,
-    component: () => import("../views/translations/items/texts/VEdit.vue"),
-    meta: {
-      name: "routers.translations.edit",
-      icon: "book",
-      protected: true,
-    },
-  },
-  {
-    name: "VItemTextNew",
+    name: "VTranslationItemTextNew",
     path: "/translations/books/:book_id/sections/:section_id/items/:item_id/new",
     props: true,
     component: () => import("../views/translations/items/texts/VNew.vue"),
@@ -121,7 +110,7 @@ export const translation_routers: RouteRecordRaw[] = [
     },
   },
   {
-    name: "VItemTextEdit",
+    name: "VTranslationItemItemTextVersionEdit",
     path: "/translations/books/:book_id/sections/:section_id/items/:item_id/versions/:item_version_id",
     props: true,
     component: () => import("../views/translations/items/texts/VEdit.vue"),

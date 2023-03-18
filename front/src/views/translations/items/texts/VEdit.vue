@@ -175,12 +175,12 @@ onBeforeMount(async () => {
       name: current_data.value.books[0].title,
       is_i18n: false,
       is_current: false,
-      to: "VBookEdit",
+      to: "VTranslationBookEdit",
       params: { book_id },
     },
     {
       name: current_data.value.books[0].sections![0].title,
-      to: "VSectionEdit",
+      to: "VTranslationSectionEdit",
       params: { book_id, section_id },
       is_current: false,
       is_i18n: false,
@@ -214,7 +214,7 @@ async function updateTransalte() {
     });
 
     router.push({
-      name: "VSectionEdit",
+      name: "VTranslationSectionEdit",
       params: {
         book_id: props.book_id,
         section_id: props.section_id,
@@ -248,7 +248,7 @@ async function deleteTtanslate() {
     });
 
     router.push({
-      name: "VSectionEdit",
+      name: "VTranslationSectionEdit",
       params: {
         book_id: props.book_id,
         section_id: props.section_id,

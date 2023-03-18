@@ -108,7 +108,7 @@
             <td class="col-sm-8 col-md-8 col-lg-10 col-xl-10">
               <router-link
                 :to="{
-                  name: 'VSectionEdit',
+                  name: 'VTranslationSectionEdit',
                   params: {
                     book_id: current_data.books[0].id,
                     section_id: section.id,

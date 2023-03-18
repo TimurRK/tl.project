@@ -88,7 +88,7 @@
                 <template v-if="item.itemable.__typename === 'ItemText'">
                   <router-link
                     :to="{
-                      name: 'VItemTextNew',
+                      name: 'VTranslationItemTextNew',
                       params: {
                         book_id: current_data.books[0].id,
                         section_id: current_data.books[0].sections[0].id,
@@ -120,7 +120,7 @@
                         <span>
                           <router-link
                             :to="{
-                              name: 'VItemTextEdit',
+                              name: 'VTranslationItemItemTextVersionEdit',
                               params: {
                                 book_id: current_data.books[0].id,
                                 section_id:
@@ -214,7 +214,7 @@ onBeforeMount(async () => {
       name: current_data.value.books[0].title,
       is_i18n: false,
       is_current: false,
-      to: "VBookEdit",
+      to: "VTranslationBookEdit",
       params: { book_id },
     },
     {
