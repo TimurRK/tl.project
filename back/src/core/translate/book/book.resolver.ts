@@ -16,7 +16,7 @@ export class BookResolver {
   constructor(private readonly bookService: BookService) {}
 
   @Query(() => [Book])
-  public async books(
+  protected async books(
     @Loader({
       loader_type: ELoaderType.MANY,
       field_name: 'books',
@@ -33,7 +33,7 @@ export class BookResolver {
   }
 
   @ResolveField(() => [BookVersion], { nullable: true })
-  public async book_versions(
+  protected async book_versions(
     @Parent() book: Book,
     @Loader({
       loader_type: ELoaderType.ONE_TO_MANY,
@@ -50,7 +50,7 @@ export class BookResolver {
   }
 
   @ResolveField(() => [Section], { nullable: true })
-  public async sections(
+  protected async sections(
     @Parent() book: Book,
     @Loader({
       loader_type: ELoaderType.ONE_TO_MANY,
@@ -67,12 +67,12 @@ export class BookResolver {
   }
 
   @Mutation(() => BookDelete)
-  public async bookDelete(@Args({ name: 'id', type: () => ID }) id: number) {
+  protected async bookDelete(@Args({ name: 'id', type: () => ID }) id: number) {
     return await this.bookService.deleteBook(id);
   }
 
   @Mutation(() => BookChangeStatus)
-  public async bookChangeStatus(
+  protected async bookChangeStatus(
     @Args({ name: 'id', type: () => ID }) id: number,
     @Args({ name: 'book_status', type: () => EBookStatus }) status: EBookStatus
   ) {
@@ -80,7 +80,7 @@ export class BookResolver {
   }
 
   @Mutation(() => BookChangePrivate)
-  public async bookChangePrivate(
+  protected async bookChangePrivate(
     @Args({ name: 'id', type: () => ID }) id: number,
     @Args({ name: 'is_private', type: () => Boolean }) is_private: boolean
   ) {

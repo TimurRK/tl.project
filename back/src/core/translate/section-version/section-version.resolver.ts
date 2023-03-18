@@ -9,7 +9,7 @@ import { SectionVersion } from './section-version.entity';
 @Resolver(() => SectionVersion)
 export class SectionVersionResolver {
   @Query(() => [SectionVersion])
-  public async section_versions(
+  protected async section_versions(
     @Loader({
       loader_type: ELoaderType.MANY,
       field_name: 'section_versions',
@@ -26,7 +26,7 @@ export class SectionVersionResolver {
   }
 
   @ResolveField(() => User, { nullable: false })
-  public async user(
+  protected async user(
     @Parent() section_version: SectionVersion,
     @Loader({
       loader_type: ELoaderType.MANY_TO_ONE,

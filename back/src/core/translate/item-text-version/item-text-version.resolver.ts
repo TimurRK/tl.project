@@ -14,7 +14,7 @@ export class ItemTextVersionResolver {
   constructor(private readonly itemtextVersionService: ItemTextVersionService) {}
 
   @Query(() => [ItemTextVersion])
-  public async item_text_versions(
+  protected async item_text_versions(
     @Loader({
       loader_type: ELoaderType.MANY,
       field_name: 'item_text_versions',
@@ -31,7 +31,7 @@ export class ItemTextVersionResolver {
   }
 
   @ResolveField(() => User, { nullable: false })
-  public async user(
+  protected async user(
     @Parent() item_text_version: ItemTextVersion,
     @Loader({
       loader_type: ELoaderType.MANY_TO_ONE,
@@ -46,7 +46,7 @@ export class ItemTextVersionResolver {
   }
 
   @Mutation(() => ItemTextVersion)
-  public async textVersionCreate(@Args('data') data: CreateItemTextVersionDTO) {
+  protected async textVersionCreate(@Args('data') data: CreateItemTextVersionDTO) {
     /**
      * @TODO check permissions
      */
@@ -55,7 +55,7 @@ export class ItemTextVersionResolver {
   }
 
   @Mutation(() => ItemTextVersion)
-  public async textVersionUpdate(@Args('id', { type: () => ID }) id: string, @Args('data') data: UpdateItemTextVersionDTO) {
+  protected async textVersionUpdate(@Args('id', { type: () => ID }) id: string, @Args('data') data: UpdateItemTextVersionDTO) {
     /**
      * @TODO check permissions
      */
@@ -64,7 +64,7 @@ export class ItemTextVersionResolver {
   }
 
   @Mutation(() => ItemTextVersion)
-  public async textVersionDelete(@Args('id', { type: () => ID }) id: string) {
+  protected async textVersionDelete(@Args('id', { type: () => ID }) id: string) {
     /**
      * @TODO check permissions
      */

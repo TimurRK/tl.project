@@ -11,7 +11,7 @@ import { Translator } from './translator.entity';
 @Resolver(() => Translator)
 export class TranslatorResolver {
   @Query(() => [Translator])
-  public async translators(
+  protected async translators(
     @Loader({
       loader_type: ELoaderType.MANY,
       field_name: 'translators',
@@ -28,7 +28,7 @@ export class TranslatorResolver {
   }
 
   @ResolveField(() => User, { nullable: false })
-  public async user(
+  protected async user(
     @Parent() translator: Translator,
     @Loader({
       loader_type: ELoaderType.MANY_TO_ONE,
@@ -43,7 +43,7 @@ export class TranslatorResolver {
   }
 
   @ResolveField(() => Book, { nullable: false })
-  public async book(
+  protected async book(
     @Parent() translator: Translator,
     @Loader({
       loader_type: ELoaderType.MANY_TO_ONE,

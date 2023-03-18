@@ -8,7 +8,7 @@ import { ItemableType } from './item.itemable';
 @Resolver(() => Item)
 export class ItemResolver {
   @Query(() => [Item])
-  public async items(
+  protected async items(
     @Loader({
       loader_type: ELoaderType.MANY,
       field_name: 'items',
@@ -25,7 +25,7 @@ export class ItemResolver {
   }
 
   @ResolveField(() => ItemableType, { nullable: false })
-  public async itemable(
+  protected async itemable(
     @Parent() item: Item,
     @Loader({
       loader_type: ELoaderType.POLYMORPHIC,

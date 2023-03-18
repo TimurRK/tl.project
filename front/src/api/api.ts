@@ -113,11 +113,11 @@ class ApiService {
     return {
       "Content-Type": "application/json; charset=utf-8",
       ...this.defaultAuthHeaders(),
-    } as AxiosRequestHeaders;
+    } as Record<string, string | number>;
   }
 
   private defaultAuthHeaders() {
-    const headers: AxiosRequestHeaders = {};
+    const headers: Record<string, string | number> = {};
 
     if (this.current_user_store?.accessToken) {
       headers.Authorization = this.current_user_store.accessToken;
@@ -137,7 +137,7 @@ class ApiService {
   public async post(
     url: string,
     body: Record<string, unknown> | FormData,
-    headers: AxiosRequestHeaders = {}
+    headers: Record<string, string | number> = {}
   ) {
     return await this.http_client!.post(url, body, {
       headers: {

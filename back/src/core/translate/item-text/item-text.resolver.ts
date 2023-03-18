@@ -9,7 +9,7 @@ import { ItemText } from './item-text.entity';
 @Resolver(() => ItemText)
 export class ItemTextResolver {
   @Query(() => [ItemText])
-  public async item_texts(
+  protected async item_texts(
     @Loader({
       loader_type: ELoaderType.MANY,
       field_name: 'item_texts',
@@ -26,7 +26,7 @@ export class ItemTextResolver {
   }
 
   @ResolveField(() => [ItemTextVersion], { nullable: true })
-  public async item_text_versions(
+  protected async item_text_versions(
     @Parent() item_text: ItemText,
     @Loader({
       loader_type: ELoaderType.ONE_TO_MANY,

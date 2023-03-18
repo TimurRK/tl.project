@@ -9,7 +9,7 @@ import { BookVersion } from './book-version.entity';
 @Resolver(() => BookVersion)
 export class BookVersionResolver {
   @Query(() => [BookVersion])
-  public async book_versions(
+  protected async book_versions(
     @Loader({
       loader_type: ELoaderType.MANY,
       field_name: 'book_versions',
@@ -26,7 +26,7 @@ export class BookVersionResolver {
   }
 
   @ResolveField(() => User, { nullable: false })
-  public async user(
+  protected async user(
     @Parent() book_version: BookVersion,
     @Loader({
       loader_type: ELoaderType.MANY_TO_ONE,

@@ -9,7 +9,7 @@ import { User } from './user.entity';
 @Resolver(() => User)
 export class UserResolver {
   @Query(() => [User])
-  public async users(
+  protected async users(
     @Loader({
       loader_type: ELoaderType.MANY,
       field_name: 'users',
@@ -26,7 +26,7 @@ export class UserResolver {
   }
 
   @ResolveField(() => [Translator], { nullable: true })
-  public async translators(
+  protected async translators(
     @Parent() user: User,
     @Loader({
       loader_type: ELoaderType.ONE_TO_MANY,

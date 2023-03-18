@@ -14,7 +14,7 @@ export class SectionResolver {
   constructor(private readonly sectionService: SectionService) {}
 
   @Query(() => [Section])
-  public async sections(
+  protected async sections(
     @Loader({
       loader_type: ELoaderType.MANY,
       field_name: 'sections',
@@ -31,7 +31,7 @@ export class SectionResolver {
   }
 
   @ResolveField(() => [SectionVersion], { nullable: true })
-  public async section_versions(
+  protected async section_versions(
     @Parent() section: Section,
     @Loader({
       loader_type: ELoaderType.ONE_TO_MANY,
@@ -48,7 +48,7 @@ export class SectionResolver {
   }
 
   @ResolveField(() => [Item], { nullable: true })
-  public async items(
+  protected async items(
     @Parent() section: Section,
     @Loader({
       loader_type: ELoaderType.ONE_TO_MANY,
@@ -65,7 +65,7 @@ export class SectionResolver {
   }
 
   @Mutation(() => SectionChangeStatus)
-  public async sectionChangeStatus(
+  protected async sectionChangeStatus(
     @Args({ name: 'id', type: () => ID }) id: number,
     @Args({ name: 'section_status', type: () => ESectionStatus }) status: ESectionStatus
   ) {
