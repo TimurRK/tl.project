@@ -14,7 +14,8 @@ export const ru = {
     },
     community: {
       profile: "Профиль",
-      books: "Список книг",
+      books: "Переводы",
+      bookmarks: "Закладки",
     },
   },
   badges: {

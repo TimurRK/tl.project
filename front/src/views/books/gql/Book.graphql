@@ -1,0 +1,14 @@
+query Book($book_id: ID!) {
+  books(WHERE: { id: { EQ: $book_id } }) {
+    id
+    title
+    annotation
+    book_status
+    cover
+    book_versions(WHERE: { is_main: { EQ: true } }) {
+      id
+      title
+      annotation
+    }
+  }
+}

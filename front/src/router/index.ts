@@ -68,7 +68,7 @@ export const user_nav_routers: RouteRecordRaw[] = [
     props: true,
     component: () => import("../views/community/VUserBookList.vue"),
     meta: {
-      name: "routers.community.books",
+      name: "routers.community.bookmarks",
       icon: "person",
       protected: false,
     },
@@ -147,6 +147,20 @@ export const translation_routers: RouteRecordRaw[] = [
   },
 ];
 
+export const book_routers: RouteRecordRaw[] = [
+  {
+    name: "VBook",
+    path: "/books/:book_id",
+    props: true,
+    component: () => import("../views/books/VBook.vue"),
+    meta: {
+      name: "routers.community.books",
+      icon: "book",
+      protected: false,
+    },
+  },
+];
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   scrollBehavior(_to, _from, savedPosition) {
@@ -166,6 +180,7 @@ const router = createRouter({
     ...user_nav_routers,
     ...user_translation_nav_routers,
     ...translation_routers,
+    ...book_routers,
   ],
 });
 

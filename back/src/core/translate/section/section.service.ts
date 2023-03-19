@@ -11,6 +11,10 @@ export class SectionService {
   constructor(private readonly dataSource: DataSource) {}
 
   public async changeStatus(id: number, section_status: ESectionStatus) {
+    /**
+     * @TODO check permissions
+     */
+
     const res = await this.dataSource.getRepository(Section).update(id, { section_status });
 
     if (!res.affected) {

@@ -1,5 +1,5 @@
 <template>
-  <CHr :color="'dark'" :title="$t('routers.community.books')" />
+  <CHr :color="'dark'" :title="$t('routers.community.bookmarks')" />
 
   <div class="row justify-content-md-center"></div>
 </template>
@@ -27,7 +27,7 @@ onBeforeMount(async () => {
       params: { login: props.login },
     },
     {
-      name: "routers.community.books",
+      name: "routers.community.bookmarks",
       is_current: true,
       is_i18n: true,
     },

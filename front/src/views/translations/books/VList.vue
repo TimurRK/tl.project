@@ -82,9 +82,15 @@
               </div>
               <div class="col-sm-12 col-md-12 col-lg-2">
                 <div class="row plr-base">
-                  <button type="button" class="btn btn-outline-success">
+                  <router-link
+                    :to="{
+                      name: 'VBook',
+                      params: { book_id: translator.book.id },
+                    }"
+                    class="btn btn-outline-success"
+                  >
                     {{ $t("pages.books_list.buttons.read") }}
-                  </button>
+                  </router-link>
                 </div>
               </div>
               <div class="col-sm-12 col-md-12 col-lg-6"></div>
@@ -134,11 +140,11 @@ const breadcrumbs_store = breadcrumbsStore();
 const current_user: Ref<ICurrentUser | null> = ref(null);
 current_user.value = current_user_store.currentUser;
 
-const current_data: Ref<UserTranslationsQuery | null> = ref(null);
-
 current_user_store.$subscribe((_mutation, state) => {
   current_user.value = state.current_user;
 });
+
+const current_data: Ref<UserTranslationsQuery | null> = ref(null);
 
 function newBook() {
   router.push({ name: "VTranslationBookNew" });

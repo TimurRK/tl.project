@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { CommunityModule } from './community/community';
 
 import { OAuthModule } from './oauth/oauth.module';
 import { ParserModule } from './parser/parser.module';
@@ -6,8 +7,8 @@ import { TranslateModule } from './translate/translate.module';
 import { UploadModule } from './upload/upload.module';
 
 @Module({
-  imports: [OAuthModule, TranslateModule, UploadModule, ParserModule],
+  imports: [OAuthModule, UploadModule, ParserModule, TranslateModule, CommunityModule],
   providers: [],
-  exports: [OAuthModule, TranslateModule, UploadModule, ParserModule],
+  exports: [OAuthModule, UploadModule, ParserModule, TranslateModule, CommunityModule],
 })
 export class CoreModule {}

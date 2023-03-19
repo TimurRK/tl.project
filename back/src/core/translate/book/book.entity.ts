@@ -3,6 +3,7 @@ import { ID, registerEnumType } from '@nestjs/graphql';
 import { Column, CreateDateColumn, Entity, Field, ObjectType, PrimaryGeneratedColumn, UpdateDateColumn } from 'nestjs-graphql-easy';
 import { Index, OneToMany } from 'typeorm';
 
+import { Bookmark } from '../../community/bookmark/bookmark.entity';
 import { BookVersion } from '../book-version/book-version.entity';
 import { Section } from '../section/section.entity';
 import { Translator } from '../translator/translator.entity';
@@ -77,6 +78,9 @@ export class Book {
 
   @OneToMany(() => Translator, (translator) => translator.book)
   public translators: Translator[];
+
+  @OneToMany(() => Bookmark, (bookmark) => bookmark.book)
+  public bookmarks?: Bookmark[];
 
   @OneToMany(() => BookVersion, (book_version) => book_version.book)
   public versions: BookVersion[];

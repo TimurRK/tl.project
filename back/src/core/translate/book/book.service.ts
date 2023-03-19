@@ -26,6 +26,10 @@ export class BookService {
   }
 
   public async changeStatus(id: number, book_status: EBookStatus) {
+    /**
+     * @TODO check permissions
+     */
+
     const res = await this.dataSource.getRepository(Book).update(id, { book_status });
 
     if (!res.affected) {
@@ -39,6 +43,10 @@ export class BookService {
   }
 
   public async changePrivate(id: number, is_private: boolean) {
+    /**
+     * @TODO check permissions
+     */
+
     const res = await this.dataSource.getRepository(Book).update(id, { is_private });
 
     if (!res.affected) {

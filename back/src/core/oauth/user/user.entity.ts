@@ -9,6 +9,7 @@ import { Translator } from '../../translate/translator/translator.entity';
 import { BookVersion } from '../../translate/book-version/book-version.entity';
 import { SectionVersion } from '../../translate/section-version/section-version.entity';
 import { ItemTextVersion } from '../../translate/item-text-version/item-text-version.entity';
+import { Bookmark } from '../../community/bookmark/bookmark.entity';
 
 export interface IJwtPayload {
   id: string;
@@ -90,6 +91,9 @@ export class User {
 
   @OneToMany(() => Translator, (translator) => translator.user)
   public translators?: Translator[];
+
+  @OneToMany(() => Bookmark, (bookmark) => bookmark.user)
+  public bookmarks?: Bookmark[];
 
   @OneToMany(() => BookVersion, (book_version) => book_version.user)
   public book_versions?: BookVersion[];
