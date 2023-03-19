@@ -136,7 +136,7 @@ onBeforeMount(async () => {
       name: "routers.translations.self",
       is_current: false,
       is_i18n: true,
-      to: "VBookList",
+      to: "VTranslationBookList",
     },
     {
       name: current_data.value.books[0].title,

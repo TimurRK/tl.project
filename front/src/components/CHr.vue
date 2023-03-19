@@ -12,8 +12,10 @@
           <span class="headline-center-title">{{ props.title }}</span>
         </template>
       </div>
-      <div class="headline-right" :class="[props.color]" @click="clickButton">
-        <i class="bi" :class="props.icon"></i>
+      <div class="headline-right" :class="[props.color]">
+        <div class="headline-right-icon" @click="clickButton" v-if="props.icon">
+          <i class="bi" :class="props.icon"></i>
+        </div>
       </div>
     </div>
   </div>
@@ -21,9 +23,9 @@
 
 <script setup lang="ts">
 const props = defineProps({
-  icon: { type: String, required: false, default: "bi-caret-right-fill" },
   color: { type: String, required: false, default: "dark" },
   title: { type: String, required: true },
+  icon: { type: String, required: false, default: null },
   to: { type: String, required: false, default: null },
 });
 
@@ -79,7 +81,12 @@ function clickButton() {
   &-right {
     width: 30px;
     text-align: center;
-    cursor: pointer;
+
+    &-icon {
+      width: 100%;
+
+      cursor: pointer;
+    }
   }
 
   &-left {

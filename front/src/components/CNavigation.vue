@@ -33,7 +33,10 @@
                 {{ $t(route_name) }}</span
               >
             </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <ul
+              class="dropdown-menu dropdown-menu-dark"
+              aria-labelledby="navbarDropdownMenuLink"
+            >
               <li><a class="dropdown-item" href="#">Action</a></li>
               <li><a class="dropdown-item" href="#">Another action</a></li>
               <li><a class="dropdown-item" href="#">Something else here</a></li>
@@ -61,10 +64,27 @@
             </a>
 
             <ul
-              class="dropdown-menu dropdown-menu-end"
+              class="dropdown-menu dropdown-menu-end dropdown-menu-dark"
               aria-labelledby="navbarUserDropdownMenuLink"
             >
               <li v-for="nav_route of user_nav_routers" :key="nav_route.name">
+                <router-link
+                  :to="{
+                    name: nav_route.name,
+                    params: { login: current_user.login },
+                  }"
+                  class="dropdown-item"
+                >
+                  {{ $t(nav_route.meta!.name! as string) }}
+                </router-link>
+              </li>
+
+              <li><hr class="dropdown-divider" /></li>
+
+              <li
+                v-for="nav_route of user_translation_nav_routers"
+                :key="nav_route.name"
+              >
                 <router-link
                   :to="{ name: nav_route.name }"
                   class="dropdown-item"
@@ -72,6 +92,9 @@
                   {{ $t(nav_route.meta!.name! as string) }}
                 </router-link>
               </li>
+
+              <li><hr class="dropdown-divider" /></li>
+
               <li>
                 <button class="dropdown-item" @click="signOut">
                   {{ $t("pages.auth.sign_out") }}
@@ -98,7 +121,7 @@ import { useRoute } from "vue-router";
 import { currentUserStore, type ICurrentUser } from "@/stores/current-user";
 import { useApi } from "@/api/api";
 import { useToast } from "vue-toastification";
-import { user_nav_routers } from "@/router";
+import { user_nav_routers, user_translation_nav_routers } from "@/router";
 
 const route = useRoute();
 const current_user_store = currentUserStore();

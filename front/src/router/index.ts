@@ -52,7 +52,32 @@ export const auth_routes: RouteRecordRaw[] = [
 
 export const user_nav_routers: RouteRecordRaw[] = [
   {
-    name: "VBookList",
+    name: "VUserProfile",
+    path: "/community/:login",
+    props: true,
+    component: () => import("../views/community/VUserProfile.vue"),
+    meta: {
+      name: "routers.community.profile",
+      icon: "person",
+      protected: false,
+    },
+  },
+  {
+    name: "VUserBookList",
+    path: "/community/:login/books",
+    props: true,
+    component: () => import("../views/community/VUserBookList.vue"),
+    meta: {
+      name: "routers.community.books",
+      icon: "person",
+      protected: false,
+    },
+  },
+];
+
+export const user_translation_nav_routers: RouteRecordRaw[] = [
+  {
+    name: "VTranslationBookList",
     path: "/translations/books",
     props: true,
     component: () => import("../views/translations/books/VList.vue"),
@@ -139,6 +164,7 @@ const router = createRouter({
     ...auth_routes,
     ...dashboard_routes,
     ...user_nav_routers,
+    ...user_translation_nav_routers,
     ...translation_routers,
   ],
 });

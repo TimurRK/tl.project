@@ -6,6 +6,9 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 
+import api from "@/api/api";
+import { currentUserStore } from "@/stores/current-user";
+
 import App from "./App.vue";
 const app = createApp(App);
 
@@ -23,8 +26,6 @@ app.use(Toast, {
   position: POSITION.BOTTOM_RIGHT,
 });
 
-import api from "@/api/api";
-import { currentUserStore } from "@/stores/current-user";
 const toast = useToast();
 app.use(api, { currentUserStore, router, toast });
 

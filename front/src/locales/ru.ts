@@ -12,6 +12,10 @@ export const ru = {
       new: "Новый перевод",
       edit: "Редактировать перевод",
     },
+    community: {
+      profile: "Профиль",
+      books: "Список книг",
+    },
   },
   badges: {
     private: "Приватно",

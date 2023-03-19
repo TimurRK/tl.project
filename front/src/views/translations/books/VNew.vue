@@ -71,7 +71,7 @@ breadcrumbs_store.setBreadcrumbs([
     name: "routers.translations.self",
     is_current: false,
     is_i18n: true,
-    to: "VBookList",
+    to: "VTranslationBookList",
   },
   {
     name: "routers.translations.new",
@@ -93,7 +93,7 @@ async function onUploadFile(event: Event) {
         timeout: 2500,
       });
 
-      router.push({ name: "VBookList" });
+      router.push({ name: "VTranslationBookList" });
     } catch (error: any) {
       toast.error(error.message, {
         timeout: 2500,
