@@ -58,6 +58,7 @@
     "sharp": "^0.31.3",
     "transliteration": "^2.3.5",
     "typeorm": "^0.3.12",
+    "typeorm-extension": "^2.5.4",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

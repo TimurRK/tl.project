@@ -8,13 +8,21 @@ import cookieParser from 'cookie-parser';
 import express from 'express';
 import helmet from 'helmet';
 import { json, urlencoded } from 'body-parser';
+import { createDatabase } from 'typeorm-extension';
+import { DataSourceOptions } from 'typeorm';
 
 import { AppModule } from './app.module';
 import { cors_options_delegate } from './cors.options';
+import { getOrmConfig } from './database/database-ormconfig.constant';
 
 const APP_SETTINGS = config.get<IAppSettings>('APP_SETTINGS');
 
 async function bootstrap() {
+  await createDatabase({
+    ifNotExist: true,
+    options: getOrmConfig() as DataSourceOptions,
+  });
+
   const server = express();
 
   const app = await NestFactory.create(AppModule, new ExpressAdapter(server), {
