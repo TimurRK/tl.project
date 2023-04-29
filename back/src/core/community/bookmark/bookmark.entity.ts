@@ -1,6 +1,15 @@
-import { ID, registerEnumType } from '@nestjs/graphql';
+import { ID } from '@nestjs/graphql';
 
-import { Column, CreateDateColumn, Entity, Field, ObjectType, PrimaryGeneratedColumn, UpdateDateColumn } from 'nestjs-graphql-easy';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Field,
+  ObjectType,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+  registerEnumType,
+} from 'nestjs-graphql-easy';
 import { Index, ManyToOne, JoinColumn } from 'typeorm';
 
 import { User } from '../../oauth/user/user.entity';

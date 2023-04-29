@@ -1,7 +1,7 @@
 query UserTranslations($user_id: ID!) {
   translators(
     WHERE: { user_id: { EQ: $user_id }}
-    ORDER: { created_at: { SORT: DESC, NULLS: LAST }}
+    ORDER: { created_at: { SORT: DESC }}
   ) {
     id
     book_id

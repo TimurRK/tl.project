@@ -16,10 +16,7 @@ interface IAppSettings {
 }
 
 interface IGraphqlSettings {
-  readonly playground: boolean;
-  readonly debug: boolean;
-  readonly introspection: boolean;
-  readonly installSubscriptionHandlers: boolean;
+  readonly graphiql: boolean;
 }
 
 interface ILogSettings {

@@ -5,7 +5,7 @@ query BookSections($book_id: ID!, $user_id: ID!) {
     author
     is_private
     book_status
-    sections(ORDER: { position: { SORT: ASC, NULLS: LAST  }}) {
+    sections(ORDER: { position: { SORT: ASC }}) {
       id
       position
       title

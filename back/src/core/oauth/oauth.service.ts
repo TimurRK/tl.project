@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { Algorithm, sign, verify } from 'jsonwebtoken';
-import { DataSource, DeepPartial, EntityManager } from 'typeorm';
+import { DataSource, DeepPartial } from 'typeorm';
 import config from 'config';
 import { nanoid } from 'nanoid';
 
@@ -41,86 +41,78 @@ export class OAuthService {
   constructor(private readonly dataSource: DataSource) {}
 
   public async registration(login: string, password: string) {
-    return await this.dataSource.transaction(async (entityManager) => {
-      const exist_user = await entityManager.getRepository(User).findOne({ where: { login: login.trim().toLowerCase() } });
+    const exist_user = await this.dataSource.getRepository(User).findOne({ where: { login: login.trim().toLowerCase() } });
 
-      if (exist_user) {
-        bad_request({ raise: true, msg: 'LOGIN_ALREADY_EXISTS' });
-      }
+    if (exist_user) {
+      bad_request({ raise: true, msg: 'LOGIN_ALREADY_EXISTS' });
+    }
 
-      const user_obj: DeepPartial<User> = {
-        login,
-        password: passwordToHash(password),
-      };
+    const user_obj: DeepPartial<User> = {
+      login,
+      password: passwordToHash(password),
+    };
 
-      const inserted_user = await entityManager.getRepository(User).insert(user_obj);
+    const inserted_user = await this.dataSource.getRepository(User).insert(user_obj);
 
-      return await this.reGenerateRecoveryKeys(entityManager, inserted_user.identifiers[0].id);
-    });
+    return await this.reGenerateRecoveryKeys(inserted_user.identifiers[0].id);
   }
 
   public async signInByPassword(login: string, password: string) {
-    return await this.dataSource.transaction(async (entityManager) => {
-      const user = await entityManager.getRepository(User).findOne({ where: { login: login.trim().toLowerCase() } });
+    const user = await this.dataSource.getRepository(User).findOne({ where: { login: login.trim().toLowerCase() } });
 
-      if (!user || !checkPassword(user.password, password)) {
-        authorization_failed({ raise: true });
-      }
+    if (!user || !checkPassword(user.password, password)) {
+      authorization_failed({ raise: true });
+    }
 
-      if (user.is_blocked) {
-        account_blocked({ raise: true });
-      }
+    if (user.is_blocked) {
+      account_blocked({ raise: true });
+    }
 
-      return await this.genereteJwt(entityManager, user);
-    });
+    return await this.genereteJwt(user);
   }
 
   public async signInByRefreshToken(refresh_token: string) {
-    return await this.dataSource.transaction(async (entityManager) => {
-      const { current_user, token_type, jti } = this.verifyToken<IRefreshToken>(refresh_token, false);
+    const { current_user, token_type, jti } = this.verifyToken<IRefreshToken>(refresh_token, false);
 
-      if (!token_type || token_type !== 'refresh') {
-        authorization_failed({ raise: true });
-      }
+    if (!token_type || token_type !== 'refresh') {
+      authorization_failed({ raise: true });
+    }
 
-      const deleted_token = await entityManager.getRepository(RefreshToken).delete({ id: jti, user_id: current_user.id });
+    const deleted_token = await this.dataSource.getRepository(RefreshToken).delete({ id: jti, user_id: current_user.id });
 
-      if (!deleted_token.affected) {
-        authorization_failed({ raise: true });
-      }
+    if (!deleted_token.affected) {
+      authorization_failed({ raise: true });
+    }
 
-      const user = await entityManager.getRepository(User).findOne({ where: { id: current_user.id } });
+    const user = await this.dataSource.getRepository(User).findOne({ where: { id: current_user.id } });
 
-      if (!user) {
-        authorization_failed({ raise: true });
-      }
+    if (!user) {
+      authorization_failed({ raise: true });
+    }
 
-      if (user.is_blocked) {
-        account_blocked({ raise: true });
-      }
+    if (user.is_blocked) {
+      account_blocked({ raise: true });
+    }
 
-      return await this.genereteJwt(entityManager, user);
-    });
+    return await this.genereteJwt(user);
   }
 
   public async changePassword(recovery_key: string, new_password: string) {
-    return await this.dataSource.transaction(async (entityManager) => {
-      const recovery_key_entity = await entityManager.getRepository(RecoveryKey).findOne({ where: { id: recovery_key } });
+    const recovery_key_entity = await this.dataSource.getRepository(RecoveryKey).findOne({ where: { id: recovery_key } });
 
-      if (!recovery_key_entity) {
-        authorization_failed({ raise: true });
-      }
+    if (!recovery_key_entity) {
+      authorization_failed({ raise: true });
+    }
 
-      await entityManager.getRepository(User).update(recovery_key_entity.user_id, { password: passwordToHash(new_password) });
+    await this.dataSource.getRepository(User).update(recovery_key_entity.user_id, { password: passwordToHash(new_password) });
 
-      await entityManager.getRepository(RecoveryKey).delete(recovery_key);
+    await this.dataSource.getRepository(RecoveryKey).delete(recovery_key);
 
-      return { message: 'OK' };
-    });
+    return { message: 'OK' };
   }
 
-  private async genereteJwt(entityManager: EntityManager, user: User) {
-    const refresh = await entityManager.getRepository(RefreshToken).save({ user_id: user.id });
+  private async genereteJwt(user: User) {
+    const refresh = await this.dataSource.getRepository(RefreshToken).save({ user_id: user.id });
 
     const access_token = sign({ current_user: user.json_for_jwt(), token_type: 'access' }, JWT_SETTINGS.secret_key, {
       jwtid: nanoid(16),
@@ -146,8 +138,8 @@ export class OAuthService {
     };
   }
 
-  public async reGenerateRecoveryKeys(entityManager: EntityManager, user_id: string) {
-    await entityManager.getRepository(RecoveryKey).delete({ user_id });
+  public async reGenerateRecoveryKeys(user_id: string) {
+    await this.dataSource.getRepository(RecoveryKey).delete({ user_id });
 
     const keys = [];
 
@@ -155,7 +147,7 @@ export class OAuthService {
       keys.push({ user_id: user_id });
     }
 
-    return (await entityManager.getRepository(RecoveryKey).save(keys)).map((r) => r.id);
+    return (await this.dataSource.getRepository(RecoveryKey).save(keys)).map((r) => r.id);
   }
 
   public verifyToken<T>(jwt_token: string, is_access_token = true) {

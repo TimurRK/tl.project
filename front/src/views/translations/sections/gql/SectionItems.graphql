@@ -18,7 +18,7 @@ query SectionItems($book_id: ID!, $section_id: ID!, $user_id: ID) {
           ...on ItemText {
             id
             value
-            item_text_versions(ORDER: { created_at: { SORT: ASC, NULLS: LAST }}) {
+            item_text_versions(ORDER: { created_at: { SORT: ASC }}) {
               id
               is_main
               created_at

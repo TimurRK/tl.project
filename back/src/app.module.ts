@@ -1,7 +1,7 @@
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 
 import { DatabaseModule } from './database/database.module';
-import GraphQLModule from './graphql/graphql.module';
+import { GraphQLModule } from './graphql/graphql.module';
 import { HealthzModule } from './healthz/healthz.module';
 import { LoggerModule } from './logger/logger.module';
 import { LoggerMiddleware } from './logger/logger.middleware';

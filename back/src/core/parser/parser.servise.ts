@@ -6,7 +6,6 @@ import { v4 } from 'uuid';
 import sharp from 'sharp';
 
 import { LoggerStore } from '../../logger/logger.store';
-import { LoggerService } from '../../logger/logger.service';
 import { Book, EBookStatus } from '../translate/book/book.entity';
 import { ESectionStatus, Section } from '../translate/section/section.entity';
 import { Item } from '../translate/item/item.entity';
@@ -30,7 +29,7 @@ export const IMAGE_SIZES = {
 
 @Injectable()
 export class ParserService {
-  constructor(private readonly logger: LoggerService, private readonly dataSource: DataSource) {}
+  constructor(private readonly dataSource: DataSource) {}
 
   public async parse(file: IFile, logger_store: LoggerStore, current_user: IJwtPayload) {
     logger_store.addBaseCtx({ file_name: file.originalname, mimetype: file.mimetype, current_user_id: current_user.id });

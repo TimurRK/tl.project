@@ -37,10 +37,7 @@
     "allowed_headers": []
   },
   "GRAPHQL_SETTINGS": {
-    "playground": true,
-    "debug": true,
-    "introspection": true,
-    "installSubscriptionHandlers": true
+    "graphiql": true
   },
   "JWT_SETTINGS": {
     "secret_key": "key",
