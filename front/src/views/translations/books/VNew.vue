@@ -7,7 +7,7 @@
     <form @submit="onUploadFile" autocomplete="off" id="change-password-form">
       <div class="mb-3">
         <label for="ebook-file" class="form-label">{{
-          $t("pages.books_new.labels.enter_file")
+          $t("views.translations.books.new.labels.enter_file")
         }}</label>
         <input
           type="file"
@@ -23,17 +23,17 @@
           :disabled="disable_upload"
         />
         <div id="ebook-file-help" class="form-text">
-          {{ $t("pages.books_new.labels.file_format") }}
+          {{ $t("views.translations.books.new.labels.file_format") }}
         </div>
       </div>
 
       <div class="mb-3">
-        {{ $t("pages.books_new.labels.entered_file") }}:
+        {{ $t("views.translations.books.new.labels.entered_file") }}:
         <b>{{ file ? file.name : "" }}</b>
       </div>
 
       <button type="submit" class="btn btn-primary" :disabled="disable_upload">
-        {{ $t("pages.books_new.buttons.upload") }}
+        {{ $t("views.translations.books.new.buttons.upload") }}
       </button>
     </form>
   </div>

@@ -97,7 +97,7 @@
 
               <li>
                 <button class="dropdown-item" @click="signOut">
-                  {{ $t("pages.auth.sign_out") }}
+                  {{ $t("views.auth.common.sign_out") }}
                 </button>
               </li>
             </ul>
@@ -105,7 +105,7 @@
 
           <li class="nav-item" v-else>
             <router-link :to="{ name: 'VSignIn' }" class="nav-link">
-              {{ $t("pages.auth.sign_in") }}
+              {{ $t("views.auth.common.sign_in") }}
             </router-link>
           </li>
         </ul>

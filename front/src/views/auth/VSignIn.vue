@@ -6,7 +6,7 @@
       <form @submit="onSignIn" id="sign-in-form">
         <div class="mb-3">
           <label for="input-login" class="form-label">{{
-            $t("pages.sign_in.labels.enter_login")
+            $t("views.auth.sign_in.labels.enter_login")
           }}</label>
           <input
             v-model="login"
@@ -17,13 +17,13 @@
             autocomplete="off"
           />
           <div id="input-login-help" class="form-text">
-            {{ $t("pages.sign_in.labels.login_is_not_case_sensitive") }}
+            {{ $t("views.auth.sign_in.labels.login_is_not_case_sensitive") }}
           </div>
         </div>
 
         <div class="mb-3">
           <label for="input-password" class="form-label">{{
-            $t("pages.sign_in.labels.enter_password")
+            $t("views.auth.sign_in.labels.enter_password")
           }}</label>
           <input
             v-model="password"
@@ -34,7 +34,7 @@
             autocomplete="off"
           />
           <div id="input-password-help" class="form-text">
-            {{ $t("pages.sign_in.labels.password_is_case_sensitive") }}
+            {{ $t("views.auth.sign_in.labels.password_is_case_sensitive") }}
           </div>
         </div>
 
@@ -47,12 +47,12 @@
             :checked="accept_cookie"
           />
           <label class="form-check-label" for="use-cookie">
-            {{ $t("pages.sign_in.labels.remain_in_the_system") }}
+            {{ $t("views.auth.sign_in.labels.remain_in_the_system") }}
           </label>
         </div>
 
         <button type="submit" class="btn btn-primary">
-          {{ $t("pages.sign_in.buttons.sign_in") }}
+          {{ $t("views.auth.sign_in.buttons.sign_in") }}
         </button>
       </form>
     </div>
@@ -62,11 +62,11 @@
     <div class="col-lg-4 col-md-6 col-12 md-auto">
       <br />
       <router-link :to="{ name: 'VSignUp' }">
-        {{ $t("pages.auth.register_a_new_account") }}
+        {{ $t("views.auth.common.register_a_new_account") }}
       </router-link>
       <br />
       <router-link :to="{ name: 'VChangePassword' }">
-        {{ $t("pages.auth.forgot_your_password") }}
+        {{ $t("views.auth.common.forgot_your_password") }}
       </router-link>
     </div>
   </div>
@@ -93,15 +93,15 @@
         </div>
 
         <div class="modal-body">
-          {{ $t("pages.sign_in.labels.accept_cookie_info") }}
+          {{ $t("views.auth.sign_in.labels.accept_cookie_info") }}
         </div>
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" @click="refuseCookie">
-            {{ $t("pages.sign_in.buttons.cancel") }}
+            {{ $t("views.auth.sign_in.buttons.cancel") }}
           </button>
           <button type="button" class="btn btn-success" @click="acceptCookie">
-            {{ $t("pages.sign_in.buttons.accept") }}
+            {{ $t("views.auth.sign_in.buttons.accept") }}
           </button>
         </div>
       </div>

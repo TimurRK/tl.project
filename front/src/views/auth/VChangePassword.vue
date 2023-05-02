@@ -10,14 +10,14 @@
       class="row justify-content-md-center mt-3 alert alert-success"
       role="alert"
     >
-      {{ $t("pages.change_password.labels.change_password_alert") }}
+      {{ $t("views.auth.change_password.labels.change_password_alert") }}
     </div>
 
     <div class="row justify-content-md-center mt-3">
       <div class="col-lg-4 col-md-6 col-12 md-auto">
         <br />
         <router-link :to="{ name: 'VSignIn' }">
-          {{ $t("pages.auth.login_to_an_existing_account") }}
+          {{ $t("views.auth.common.login_to_an_existing_account") }}
         </router-link>
       </div>
     </div>
@@ -34,7 +34,7 @@
         >
           <div class="mb-3">
             <label for="input-recovery-key" class="form-label">
-              {{ $t("pages.change_password.labels.enter_recovery_key") }}
+              {{ $t("views.auth.change_password.labels.enter_recovery_key") }}
             </label>
             <input
               type="text"
@@ -47,7 +47,7 @@
             <div id="input-recovery-key-help" class="form-text">
               {{
                 $t(
-                  "pages.change_password.labels.recovery_key_is_not_case_sensitive"
+                  "views.auth.change_password.labels.recovery_key_is_not_case_sensitive"
                 )
               }}
             </div>
@@ -55,7 +55,7 @@
 
           <div class="mb-3">
             <label for="input-password" class="form-label">
-              {{ $t("pages.change_password.labels.enter_new_password") }}
+              {{ $t("views.auth.change_password.labels.enter_new_password") }}
             </label>
             <input
               type="password"
@@ -67,13 +67,15 @@
             />
             <div id="input-password-help" class="form-text">
               {{
-                $t("pages.change_password.labels.password_is_case_sensitive")
+                $t(
+                  "views.auth.change_password.labels.password_is_case_sensitive"
+                )
               }}
             </div>
           </div>
 
           <button type="submit" class="btn btn-primary">
-            {{ $t("pages.change_password.buttons.submit") }}
+            {{ $t("views.auth.change_password.buttons.submit") }}
           </button>
         </form>
       </div>
@@ -83,11 +85,11 @@
       <div class="col-lg-4 col-md-6 col-12 md-auto">
         <br />
         <router-link :to="{ name: 'VSignIn' }">
-          {{ $t("pages.auth.login_to_an_existing_account") }}
+          {{ $t("views.auth.common.login_to_an_existing_account") }}
         </router-link>
         <br />
         <router-link :to="{ name: 'VSignUp' }">
-          {{ $t("pages.auth.register_a_new_account") }}
+          {{ $t("views.auth.common.register_a_new_account") }}
         </router-link>
       </div>
     </div>

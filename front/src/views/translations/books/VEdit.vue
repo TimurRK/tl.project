@@ -6,7 +6,7 @@
       <div class="col-sm-12 col-md-6 mb-2">
         <ul class="list-group">
           <li class="list-group-item disabled" aria-disabled="true">
-            {{ $t("pages.books_edit.labels.author") }}
+            {{ $t("views.translations.books.edit.labels.author") }}
           </li>
         </ul>
       </div>
@@ -23,7 +23,7 @@
       <div class="col-sm-12 col-md-6 mb-2">
         <ul class="list-group">
           <li class="list-group-item disabled" aria-disabled="true">
-            {{ $t("pages.books_edit.labels.book_status") }}
+            {{ $t("views.translations.books.edit.labels.book_status") }}
           </li>
         </ul>
       </div>
@@ -62,9 +62,11 @@
             @change="bookChangePrivate"
           />
           <label class="form-check-label" for="bookIsPrivate">
-            {{ $t("pages.books_edit.labels.is_private") }}
+            {{ $t("views.translations.books.edit.labels.is_private") }}
             <b
-              >({{ $t("pages.books_edit.labels.is_private_selected") }}
+              >({{
+                $t("views.translations.books.edit.labels.is_private_selected")
+              }}
               {{ current_data.books[0].is_private }})</b
             >
           </label>
@@ -72,7 +74,10 @@
       </div>
     </div>
 
-    <CHr :color="'dark'" :title="$t('pages.books_edit.labels.sections_list')" />
+    <CHr
+      :color="'dark'"
+      :title="$t('views.translations.books.edit.labels.sections_list')"
+    />
 
     <div class="row justify-content-md-center mb-2 table-responsive">
       <table class="table table-hover table-sm">
@@ -84,12 +89,12 @@
               №
             </th>
             <th class="col-sm-8 col-md-8 col-lg-10 col-xl-10">
-              {{ $t("pages.books_edit.labels.section_title") }}
+              {{ $t("views.translations.books.edit.labels.section_title") }}
             </th>
             <th
               class="col-sm-2 col-md-2 col-lg-1 col-xl-1 d-flex justify-content-center"
             >
-              {{ $t("pages.books_edit.labels.section_status") }}
+              {{ $t("views.translations.books.edit.labels.section_status") }}
             </th>
           </tr>
         </thead>

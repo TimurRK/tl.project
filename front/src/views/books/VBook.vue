@@ -46,7 +46,7 @@ onBeforeMount(async () => {
 
   breadcrumbs_store.setBreadcrumbs([
     {
-      name: "routers.community.books",
+      name: "routers.books.self",
       is_current: false,
       is_i18n: true,
     },

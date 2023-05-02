@@ -7,7 +7,7 @@
         <div class="col-sm-12 col-md-6 mb-2">
           <ul class="list-group">
             <li class="list-group-item disabled" aria-disabled="true">
-              {{ $t("pages.books_edit.labels.book_status") }}
+              {{ $t("views.translations.books.edit.labels.book_status") }}
             </li>
           </ul>
         </div>
@@ -36,7 +36,7 @@
 
       <CHr
         :color="'dark'"
-        :title="$t('pages.books_sections_edit.labels.items_list')"
+        :title="$t('views.translations.sections.edit.labels.items_list')"
       />
 
       <div class="row justify-content-md-center mb-2 table-responsive">
@@ -49,7 +49,7 @@
                 №
               </th>
               <th class="col-sm-12 col-md-5 col-lg-5 col-xl-5 break-word">
-                {{ $t("pages.books_sections_edit.labels.original") }}
+                {{ $t("views.translations.sections.edit.labels.original") }}
               </th>
               <th
                 class="col-sm-12 col-md-1 col-lg-1 col-xl-1 d-flex justify-content-center"
@@ -59,7 +59,7 @@
               <th
                 class="col-sm-12 col-md-5 col-lg-5 col-xl-5 d-flex justify-content-center"
               >
-                {{ $t("pages.books_sections_edit.labels.translation") }}
+                {{ $t("views.translations.sections.edit.labels.translation") }}
               </th>
             </tr>
           </thead>
@@ -96,7 +96,7 @@
                       },
                     }"
                   >
-                    {{ $t("pages.books_sections_edit.buttons.add") }}
+                    {{ $t("views.translations.sections.edit.buttons.add") }}
                   </router-link>
                 </template>
               </td>
@@ -138,7 +138,9 @@
                         v-if="item_text_version.is_main"
                         class="badge bg-info text-dark"
                       >
-                        {{ $t("pages.books_sections_edit.labels.is_main") }}
+                        {{
+                          $t("views.translations.sections.edit.labels.is_main")
+                        }}
                       </span>
                     </li>
                   </ul>

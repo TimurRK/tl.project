@@ -17,12 +17,10 @@
               <thead>
                 <tr class="row m-0">
                   <th class="col-sm-12 col-md-6">
-                    {{ $t("pages.books_sections_items_edit.labels.original") }}
+                    {{ $t("views.translations.items.edit.labels.original") }}
                   </th>
                   <th class="col-sm-12 col-md-6">
-                    {{
-                      $t("pages.books_sections_items_edit.labels.translation")
-                    }}
+                    {{ $t("views.translations.items.edit.labels.translation") }}
                   </th>
                 </tr>
               </thead>
@@ -62,11 +60,11 @@
                   v-model="is_main"
                 />
                 <label class="form-check-label" for="bookIsPrivate">
-                  {{ $t("pages.books_sections_items_edit.labels.is_main") }}
+                  {{ $t("views.translations.items.edit.labels.is_main") }}
                   <b
                     >({{
                       $t(
-                        "pages.books_sections_items_edit.labels.is_main_selected"
+                        "views.translations.items.edit.labels.is_main_selected"
                       )
                     }}
                     {{ is_main }})</b
@@ -84,7 +82,7 @@
                 class="btn btn-primary"
                 @click="updateTransalte"
               >
-                {{ $t("pages.books_sections_items_edit.buttons.save") }}
+                {{ $t("views.translations.items.edit.buttons.save") }}
               </button>
             </div>
           </div>

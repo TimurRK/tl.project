@@ -60,7 +60,7 @@
             </p>
             <p class="card-text">
               <small class="text-muted"
-                >{{ $t("pages.books_list.labels.created") }}:
+                >{{ $t("views.translations.books.list.labels.created") }}:
                 {{ toBlogDateTime(translator.book.created_at) }}</small
               >
             </p>
@@ -76,7 +76,7 @@
                     }"
                     class="btn btn-primary"
                   >
-                    {{ $t("pages.books_list.buttons.translate") }}
+                    {{ $t("views.translations.books.list.buttons.translate") }}
                   </router-link>
                 </div>
               </div>
@@ -89,7 +89,7 @@
                     }"
                     class="btn btn-outline-success"
                   >
-                    {{ $t("pages.books_list.buttons.read") }}
+                    {{ $t("views.translations.books.list.buttons.read") }}
                   </router-link>
                 </div>
               </div>
@@ -101,7 +101,7 @@
                     class="btn btn-danger"
                     @click="deleteBook(translator.book.id, index)"
                   >
-                    {{ $t("pages.books_list.buttons.delete") }}
+                    {{ $t("views.translations.books.list.buttons.delete") }}
                   </button>
                 </div>
               </div>
