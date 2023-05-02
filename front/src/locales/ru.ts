@@ -161,7 +161,7 @@ export const ru = {
     },
     community: {
       user_profile: {},
-      user_book_list: {},
+      user_bookmarks: {},
     },
   },
 };

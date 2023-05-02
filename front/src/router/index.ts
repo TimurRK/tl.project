@@ -64,9 +64,9 @@ export const user_nav_routers: RouteRecordRaw[] = [
   },
   {
     name: "VUserBookList",
-    path: "/community/:login/books",
+    path: "/community/:login/bookmarks",
     props: true,
-    component: () => import("../views/community/VUserBookList.vue"),
+    component: () => import("../views/community/VUserBookmark.vue"),
     meta: {
       name: "routers.community.bookmarks",
       icon: "person",
