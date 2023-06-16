@@ -191,6 +191,32 @@ export enum ESectionStatus {
   Ready = "READY",
 }
 
+export enum EUserGender {
+  Female = "FEMALE",
+  Male = "MALE",
+}
+
+export type EUserGender_FilterInputType = {
+  EQ?: InputMaybe<EUserGender>;
+  IN?: InputMaybe<Array<EUserGender>>;
+  NOT_EQ?: InputMaybe<EUserGender>;
+  NOT_IN?: InputMaybe<Array<EUserGender>>;
+  NULL?: InputMaybe<Scalars["Boolean"]>;
+};
+
+export enum EUserLocale {
+  En = "EN",
+  Ru = "RU",
+}
+
+export type EUserLocale_FilterInputType = {
+  EQ?: InputMaybe<EUserLocale>;
+  IN?: InputMaybe<Array<EUserLocale>>;
+  NOT_EQ?: InputMaybe<EUserLocale>;
+  NOT_IN?: InputMaybe<Array<EUserLocale>>;
+  NULL?: InputMaybe<Scalars["Boolean"]>;
+};
+
 export type Id_FilterInputType = {
   EQ?: InputMaybe<Scalars["ID"]>;
   IN?: InputMaybe<Array<Scalars["ID"]>>;
@@ -554,13 +580,19 @@ export type UpdateItemTextVersionDto = {
 
 export type User = {
   __typename?: "User";
+  birth_day?: Maybe<Scalars["Int"]>;
+  birth_month?: Maybe<Scalars["Int"]>;
+  birth_year?: Maybe<Scalars["Int"]>;
   created_at: Scalars["DateTime"];
+  gender?: Maybe<EUserGender>;
   id: Scalars["ID"];
   is_admin: Scalars["Boolean"];
   is_blocked: Scalars["Boolean"];
   is_online: Scalars["Boolean"];
+  locale?: Maybe<EUserLocale>;
   login: Scalars["String"];
   nickname?: Maybe<Scalars["String"]>;
+  show_birthdate: Scalars["Boolean"];
   translators?: Maybe<Array<Translator>>;
   updated_at: Scalars["DateTime"];
 };
@@ -568,10 +600,12 @@ export type User = {
 export type User_FilterInputType = {
   AND?: InputMaybe<Array<User_FilterInputType>>;
   OR?: InputMaybe<Array<User_FilterInputType>>;
+  gender?: InputMaybe<EUserGender_FilterInputType>;
   id?: InputMaybe<Id_FilterInputType>;
   is_admin?: InputMaybe<Boolean_FilterInputType>;
   is_blocked?: InputMaybe<Boolean_FilterInputType>;
   is_online?: InputMaybe<Boolean_FilterInputType>;
+  locale?: InputMaybe<EUserLocale_FilterInputType>;
   login?: InputMaybe<String_FilterInputType>;
   nickname?: InputMaybe<String_FilterInputType>;
 };
@@ -611,6 +645,27 @@ export type BookQuery = {
       title: string;
       annotation?: string | null;
     }> | null;
+  }>;
+};
+
+export type UserProfileQueryVariables = Exact<{
+  login: Scalars["String"];
+}>;
+
+export type UserProfileQuery = {
+  __typename?: "Query";
+  users: Array<{
+    __typename?: "User";
+    id: string;
+    created_at: any;
+    login: string;
+    nickname?: string | null;
+    locale?: EUserLocale | null;
+    gender?: EUserGender | null;
+    birth_day?: number | null;
+    birth_month?: number | null;
+    birth_year?: number | null;
+    show_birthdate: boolean;
   }>;
 };
 
@@ -873,6 +928,25 @@ export const Book = gql`
         title
         annotation
       }
+    }
+  }
+`;
+export const UserProfile = gql`
+  query UserProfile($login: String!) {
+    users(
+      WHERE: { login: { EQ: $login } }
+      PAGINATION: { page: 0, per_page: 1 }
+    ) {
+      id
+      created_at
+      login
+      nickname
+      locale
+      gender
+      birth_day
+      birth_month
+      birth_year
+      show_birthdate
     }
   }
 `;

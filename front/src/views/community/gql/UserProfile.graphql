@@ -1,0 +1,15 @@
+query UserProfile($login: String!) {
+  users(WHERE: {login: {EQ: $login}}, PAGINATION: {page: 0, per_page: 1}) {
+    id
+    created_at
+    login
+    nickname
+    locale
+    gender
+    avatar
+    birth_day
+    birth_month
+    birth_year
+    show_birthdate
+  }
+}

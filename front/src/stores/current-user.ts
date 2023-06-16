@@ -9,7 +9,6 @@ import {
 export interface ICurrentUser {
   id: string;
   login: string;
-  nickname?: string;
   is_admin: boolean;
   is_blocked: boolean;
 }

@@ -1,7 +1,16 @@
-import { ID } from '@nestjs/graphql';
+import { ID, Int } from '@nestjs/graphql';
 
 import { BeforeInsert, BeforeUpdate, Index, OneToMany } from 'typeorm';
-import { Field, ObjectType, Column, PrimaryGeneratedColumn, Entity, CreateDateColumn, UpdateDateColumn } from 'nestjs-graphql-easy';
+import {
+  Field,
+  ObjectType,
+  Column,
+  PrimaryGeneratedColumn,
+  Entity,
+  CreateDateColumn,
+  UpdateDateColumn,
+  registerEnumType,
+} from 'nestjs-graphql-easy';
 
 import { RefreshToken } from '../refresh-token/refresh-token.entity';
 import { RecoveryKey } from '../recovery-key/recovery-key.entity';
@@ -14,10 +23,27 @@ import { Bookmark } from '../../community/bookmark/bookmark.entity';
 export interface IJwtPayload {
   id: string;
   login: string;
-  nickname?: string;
   is_admin: boolean;
   is_blocked: boolean;
 }
+
+export enum EUserGender {
+  MALE = 'MALE',
+  FEMALE = 'FEMALE',
+}
+
+registerEnumType(EUserGender, {
+  name: 'EUserGender',
+});
+
+export enum EUserLocale {
+  RU = 'RU',
+  EN = 'EN',
+}
+
+registerEnumType(EUserLocale, {
+  name: 'EUserLocale',
+});
 
 @ObjectType()
 @Entity()
@@ -41,8 +67,8 @@ export class User {
   public updated_at: Date;
 
   @Field(() => String, { nullable: false, sortable: true, filterable: true })
-  @Column({ nullable: false })
   @Index({ unique: true })
+  @Column({ nullable: false })
   public login: string;
 
   @Column({ nullable: false })
@@ -53,8 +79,49 @@ export class User {
   @Column({ nullable: true })
   public nickname?: string;
 
+  @Field(() => EUserGender, { nullable: true, filterable: true })
+  @Index()
+  @Column({
+    type: 'enum',
+    enum: EUserGender,
+    nullable: true,
+  })
+  public gender?: EUserGender;
+
+  @Field(() => EUserLocale, { nullable: true, filterable: true })
+  @Index()
+  @Column({
+    type: 'enum',
+    enum: EUserLocale,
+    nullable: true,
+  })
+  public locale?: EUserLocale;
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  public avatar?: string;
+
+  @Field(() => Int, { nullable: true })
+  @Column('integer', { nullable: true })
+  public birth_day?: number;
+
+  @Field(() => Int, { nullable: true })
+  @Column('integer', { nullable: true })
+  public birth_month?: number;
+
+  @Field(() => Int, { nullable: true })
+  @Column('integer', { nullable: true })
+  public birth_year?: number;
+
+  @Field(() => Boolean, { nullable: false })
+  @Column({
+    nullable: false,
+    default: () => 'false',
+  })
+  public show_birthdate: boolean;
+
   /**
-   * @TODO is_admin only
+   * TODO is_admin only
    */
   @Field(() => Boolean, { nullable: false, filterable: true, sortable: true })
   @Index()
@@ -65,7 +132,7 @@ export class User {
   public is_blocked: boolean;
 
   /**
-   * @TODO is_admin only
+   * TODO is_admin only
    */
   @Field(() => Boolean, { nullable: false, filterable: true, sortable: true })
   @Index()
@@ -114,7 +181,6 @@ export class User {
     return {
       id: this.id,
       login: this.login,
-      nickname: this.nickname,
       is_admin: this.is_admin,
       is_blocked: this.is_blocked,
     };

@@ -12,7 +12,7 @@ export class SectionService {
 
   public async changeStatus(id: number, section_status: ESectionStatus) {
     /**
-     * @TODO check permissions
+     * TODO check permissions
      */
 
     const res = await this.dataSource.getRepository(Section).update(id, { section_status });

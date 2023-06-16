@@ -12,7 +12,7 @@ export class ItemTextVersionService {
 
   public async create(data: CreateItemTextVersionDTO) {
     /**
-     * @TODO check permissions
+     * TODO check permissions
      */
 
     if (data.is_main) {
@@ -24,7 +24,7 @@ export class ItemTextVersionService {
 
   public async update(id: string, data: UpdateItemTextVersionDTO) {
     /**
-     * @TODO check permissions
+     * TODO check permissions
      */
 
     const item_text_version = await this.dataSource.getRepository(ItemTextVersion).findOne({ where: { id } });
@@ -43,7 +43,7 @@ export class ItemTextVersionService {
 
   public async delete(id: string) {
     /**
-     * @TODO check permissions
+     * TODO check permissions
      */
 
     const item_text_version = await this.dataSource.getRepository(ItemTextVersion).findOne({ where: { id } });

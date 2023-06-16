@@ -11,7 +11,7 @@ export class BookService {
 
   public async deleteBook(id: number) {
     /**
-     * @TODO check permissions
+     * TODO check permissions
      */
 
     const res = await this.dataSource.getRepository(Book).delete(id);
@@ -27,7 +27,7 @@ export class BookService {
 
   public async changeStatus(id: number, book_status: EBookStatus) {
     /**
-     * @TODO check permissions
+     * TODO check permissions
      */
 
     const res = await this.dataSource.getRepository(Book).update(id, { book_status });
@@ -44,7 +44,7 @@ export class BookService {
 
   public async changePrivate(id: number, is_private: boolean) {
     /**
-     * @TODO check permissions
+     * TODO check permissions
      */
 
     const res = await this.dataSource.getRepository(Book).update(id, { is_private });

@@ -228,7 +228,7 @@ onBeforeMount(async () => {
 });
 
 /**
- * @TODO костыль. Почему-то у v-select не работают события.
+ * TODO костыль. Почему-то у v-select не работают события.
  * @input, @change, @selected.
  */
 const unwatch = watch(

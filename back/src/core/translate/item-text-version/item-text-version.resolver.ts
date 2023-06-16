@@ -48,7 +48,7 @@ export class ItemTextVersionResolver {
   @Mutation(() => ItemTextVersion)
   protected async textVersionCreate(@Args('data') data: CreateItemTextVersionDTO) {
     /**
-     * @TODO check permissions
+     * TODO check permissions
      */
 
     return await this.itemtextVersionService.create(data);
@@ -57,7 +57,7 @@ export class ItemTextVersionResolver {
   @Mutation(() => ItemTextVersion)
   protected async textVersionUpdate(@Args('id', { type: () => ID }) id: string, @Args('data') data: UpdateItemTextVersionDTO) {
     /**
-     * @TODO check permissions
+     * TODO check permissions
      */
 
     return await this.itemtextVersionService.update(id, data);
@@ -66,7 +66,7 @@ export class ItemTextVersionResolver {
   @Mutation(() => ItemTextVersion)
   protected async textVersionDelete(@Args('id', { type: () => ID }) id: string) {
     /**
-     * @TODO check permissions
+     * TODO check permissions
      */
 
     return await this.itemtextVersionService.delete(id);
