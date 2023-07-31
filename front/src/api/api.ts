@@ -52,7 +52,7 @@ class ApiService {
   constructor(
     currentUserStore: TUserStoreDefinition,
     private readonly router: Router,
-    private readonly toast: ToastInterface
+    private readonly toast: ToastInterface,
   ) {
     this.http_client = axios.create({ baseURL: api_endpoint });
 
@@ -94,7 +94,7 @@ class ApiService {
         }
 
         return await Promise.reject(data);
-      }
+      },
     );
   }
 
@@ -137,7 +137,7 @@ class ApiService {
   public async post(
     url: string,
     body: Record<string, unknown> | FormData,
-    headers: Record<string, string | number> = {}
+    headers: Record<string, string | number> = {},
   ) {
     return await this.http_client!.post(url, body, {
       headers: {
@@ -198,11 +198,11 @@ class ApiService {
 
     const { data: res }: { data: IAuthResponse } = await this.post(
       `/oauth/token?${stringify(data)}`,
-      {}
+      {},
     );
 
     const { current_user }: { current_user: ICurrentUser } = jwtDecode(
-      res.access_token
+      res.access_token,
     );
 
     if (accept_cookie) {
@@ -212,17 +212,17 @@ class ApiService {
       setCookie(
         "access_token_expires_at",
         res.access_token_expires_at,
-        res.access_token_expires_at
+        res.access_token_expires_at,
       );
       setCookie(
         "refresh_token",
         res.refresh_token,
-        res.refresh_token_expires_at
+        res.refresh_token_expires_at,
       );
       setCookie(
         "refresh_token_expires_at",
         res.refresh_token_expires_at,
-        res.refresh_token_expires_at
+        res.refresh_token_expires_at,
       );
     } else {
       setCookie("accept_cookie", "false");
@@ -237,7 +237,7 @@ class ApiService {
   public async signUp(login: string, password: string) {
     const { data: res }: { data: string[] } = await this.post(
       `/oauth/registration`,
-      { login, password }
+      { login, password },
     );
 
     return res;
@@ -259,7 +259,7 @@ class ApiService {
   public async changePassword(recovery_key: string, new_password: string) {
     const { data: res }: { data: string[] } = await this.post(
       `/oauth/change_password`,
-      { recovery_key, new_password }
+      { recovery_key, new_password },
     );
 
     return res;
@@ -273,7 +273,7 @@ class ApiService {
       try {
         await this.signIn(
           { refresh_token, grand_type: "refresh_token" },
-          accept_cookie === "true"
+          accept_cookie === "true",
         );
       } catch (error) {
         this.signOut();
@@ -327,12 +327,12 @@ export default {
       currentUserStore: TUserStoreDefinition;
       router: Router;
       toast: ToastInterface;
-    }
+    },
   ) {
     const api = new ApiService(
       options.currentUserStore,
       options.router,
-      options.toast
+      options.toast,
     );
 
     app.config.globalProperties.$api = api;

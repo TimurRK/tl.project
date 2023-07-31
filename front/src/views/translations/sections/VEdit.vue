@@ -237,7 +237,7 @@ const unwatch = watch(
     if (curr_name && prev_name) {
       await sectionChangeStatus();
     }
-  }
+  },
 );
 
 onBeforeUnmount(async () => {

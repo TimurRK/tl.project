@@ -126,7 +126,7 @@ onBeforeMount(async () => {
 
   const { data } = await api.graphql<ItemTextQuery, ItemTextQueryVariables>(
     ItemText,
-    { book_id, section_id, item_id, user_id: current_user.value!.id }
+    { book_id, section_id, item_id, user_id: current_user.value!.id },
   );
 
   current_data.value = data;

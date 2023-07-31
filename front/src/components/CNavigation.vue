@@ -141,7 +141,7 @@ const unwatch = watch(
   () => route.meta.name,
   (curr_name, _prev_name) => {
     route_name.value = curr_name as string;
-  }
+  },
 );
 
 function signOut() {

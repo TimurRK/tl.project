@@ -47,6 +47,10 @@ current_breadcrumbs_store.$subscribe((_mutation, state) => {
   line-height: 1.65;
   cursor: pointer;
   text-decoration: none;
-  font-family: Helvetica Neue, Arial, Verdana, sans-serif;
+  font-family:
+    Helvetica Neue,
+    Arial,
+    Verdana,
+    sans-serif;
 }
 </style>

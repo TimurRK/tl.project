@@ -212,7 +212,7 @@ const unwatch = watch(
     if (curr_name && prev_name) {
       await bookChangeStatus();
     }
-  }
+  },
 );
 
 onBeforeUnmount(async () => {

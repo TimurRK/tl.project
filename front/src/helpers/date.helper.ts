@@ -50,12 +50,12 @@ export function toBlogDateTime(value: string) {
   const targetDay = new Date(
     targetDate.getFullYear(),
     targetDate.getMonth(),
-    targetDate.getDate()
+    targetDate.getDate(),
   ).valueOf();
   const currentDay = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth(),
-    currentDate.getDate()
+    currentDate.getDate(),
   ).valueOf();
 
   let result = "";

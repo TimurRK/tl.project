@@ -175,7 +175,7 @@ async function onSignIn(event: Event) {
           password: password.value,
           grand_type: "password",
         },
-        !!accept_cookie.value
+        !!accept_cookie.value,
       );
 
       toast.success("SIGN_IN_SUCCESS", {

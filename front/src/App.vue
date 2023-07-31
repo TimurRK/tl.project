@@ -26,7 +26,12 @@ onBeforeMount(async () => {
 
 <style>
 body {
-  font-family: Open Sans, Helvetica Neue, Arial, Verdana, sans-serif;
+  font-family:
+    Open Sans,
+    Helvetica Neue,
+    Arial,
+    Verdana,
+    sans-serif;
 }
 
 .content-wrapper {

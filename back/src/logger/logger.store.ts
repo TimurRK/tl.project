@@ -15,7 +15,10 @@ export class LoggerStore {
   private log_index = 0;
   private prev_log_time: number = Date.now();
 
-  constructor(private readonly logger: LoggerService, private base_ctx: { [key: string]: unknown } = {}) {}
+  constructor(
+    private readonly logger: LoggerService,
+    private base_ctx: { [key: string]: unknown } = {}
+  ) {}
 
   public addBaseCtx(ctx: Record<string, unknown>) {
     this.base_ctx = { ...this.base_ctx, ...ctx };

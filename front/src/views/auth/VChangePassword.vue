@@ -47,7 +47,7 @@
             <div id="input-recovery-key-help" class="form-text">
               {{
                 $t(
-                  "views.auth.change_password.labels.recovery_key_is_not_case_sensitive"
+                  "views.auth.change_password.labels.recovery_key_is_not_case_sensitive",
                 )
               }}
             </div>
@@ -68,7 +68,7 @@
             <div id="input-password-help" class="form-text">
               {{
                 $t(
-                  "views.auth.change_password.labels.password_is_case_sensitive"
+                  "views.auth.change_password.labels.password_is_case_sensitive",
                 )
               }}
             </div>

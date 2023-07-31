@@ -3,7 +3,10 @@
     <template v-if="current_data.books[0].sections">
       <template v-if="current_data.books[0].sections[0].items">
         <template
-          v-if="(current_data.books[0].sections[0].items[0].itemable as ItemText).item_text_versions"
+          v-if="
+            (current_data.books[0].sections[0].items[0].itemable as ItemText)
+              .item_text_versions
+          "
         >
           <CHr
             :color="'dark'"
@@ -64,7 +67,7 @@
                   <b
                     >({{
                       $t(
-                        "views.translations.items.edit.labels.is_main_selected"
+                        "views.translations.items.edit.labels.is_main_selected",
                       )
                     }}
                     {{ is_main }})</b
