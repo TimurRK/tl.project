@@ -1,5 +1,5 @@
 <template>
-  <div class="row justify-content-md-center mb-2">
+  <div class="row mb-2">
     <div class="headline mt-2">
       <div class="headline-left" :class="[props.color]"></div>
       <div class="headline-center" :class="[props.color]">
@@ -39,7 +39,6 @@ function clickButton() {
 <style lang="scss">
 .headline {
   height: 30px;
-  padding: 0;
 
   &-left,
   &-center,

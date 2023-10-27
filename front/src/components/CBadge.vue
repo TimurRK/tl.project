@@ -1,7 +1,10 @@
 <template>
-  <span class="badge mr-base c-badge" :class="'color-' + props.color">{{
-    props.title
-  }}</span>
+  <span
+    class="badge mlr-base c-badge c-badge-normal"
+    :class="'color-' + props.color"
+  >
+    {{ props.title }}
+  </span>
 </template>
 
 <script setup lang="ts">
@@ -13,6 +16,20 @@ const props = defineProps({
 
 <style lang="scss">
 @import "@/assets/main.css";
+
+.c-badge {
+  text-align: center;
+  vertical-align: middle;
+
+  &-small {
+    height: 17.84px;
+  }
+
+  &-normal {
+    height: 20.38px;
+  }
+}
+
 .color {
   &-dark {
     background-color: rgba(52, 58, 64, 0.25);

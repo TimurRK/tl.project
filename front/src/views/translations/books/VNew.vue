@@ -3,7 +3,7 @@
 
   <CPreloader v-if="disable_upload" />
 
-  <div class="row justify-content-md-center" v-else>
+  <div class="row" v-else>
     <form @submit="onUploadFile" autocomplete="off" id="change-password-form">
       <div class="mb-3">
         <label for="ebook-file" class="form-label">{{

@@ -28,6 +28,22 @@ export const ru = {
     thrown: "Брошено",
     queue: "В очереди",
   },
+  gender: {
+    male: "муж",
+    female: "жен",
+  },
+  age: {
+    year: "год",
+    of_the_year: "года",
+    years: "лет",
+  },
+  bookmark_statuses: {
+    planned: "Запланировано",
+    watching: "Читаю",
+    completed: "Прочитано",
+    on_hold: "Отложено",
+    dropped: "Брошено",
+  },
   views: {
     auth: {
       common: {
@@ -160,8 +176,29 @@ export const ru = {
       },
     },
     community: {
-      user_profile: {},
+      user_profile: {
+        labels: {
+          info: "Информация",
+          history: "История",
+          created_at: "на сайте с",
+          created_at_year: "г.",
+        },
+        buttons: {},
+      },
       user_bookmarks: {},
+    },
+    books: {
+      book: {
+        labels: {
+          author: "Автор",
+          annotation: "Описание",
+          status: "Статус перевода",
+          info: "Информация",
+          rating: "Рейтинги",
+          marks: "Оценки",
+        },
+        buttons: {},
+      },
     },
   },
 };

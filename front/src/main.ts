@@ -29,6 +29,10 @@ app.use(Toast, {
 const toast = useToast();
 app.use(api, { currentUserStore, router, toast });
 
+import FloatingVue from "floating-vue";
+import "floating-vue/dist/style.css";
+app.use(FloatingVue);
+
 import { i18n } from "@/locales/i18n";
 app.use(i18n);
 

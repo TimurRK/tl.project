@@ -2,7 +2,7 @@
   <template v-if="current_data && current_data.translators.length">
     <CHr :color="'dark'" :title="current_data.books[0].title" />
 
-    <div class="row justify-content-md-center mb-2">
+    <div class="row mb-2">
       <div class="col-sm-12 col-md-6 mb-2">
         <ul class="list-group">
           <li class="list-group-item disabled" aria-disabled="true">
@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <div class="row justify-content-md-center mb-2">
+    <div class="row mb-2">
       <div class="col-sm-12 col-md-6 mb-2">
         <ul class="list-group">
           <li class="list-group-item disabled" aria-disabled="true">
@@ -50,7 +50,7 @@
       </div>
     </div>
 
-    <div class="row justify-content-md-center mb-2">
+    <div class="row mb-2">
       <div class="col-12 mb-2">
         <div class="form-check form-switch">
           <input
@@ -79,7 +79,7 @@
       :title="$t('views.translations.books.edit.labels.sections_list')"
     />
 
-    <div class="row justify-content-md-center mb-2 table-responsive">
+    <div class="table-responsive">
       <table class="table table-hover table-sm">
         <thead>
           <tr class="row m-0">

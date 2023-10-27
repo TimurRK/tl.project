@@ -97,17 +97,29 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref } from "vue";
+import { onBeforeMount, ref, type Ref } from "vue";
 import { useToast } from "vue-toastification";
 
 import { useApi } from "@/api/api";
+import { breadcrumbsStore } from "@/stores/breadcrumb";
 
 const api = useApi();
 const toast = useToast();
+const breadcrumbs_store = breadcrumbsStore();
 
 const recovery_key: Ref<string | null> = ref(null);
 const new_password: Ref<string | null> = ref(null);
 const password_changed: Ref<boolean> = ref(false);
+
+onBeforeMount(() => {
+  breadcrumbs_store.setBreadcrumbs([
+    {
+      name: "routers.auth.change_password",
+      is_current: true,
+      is_i18n: true,
+    },
+  ]);
+});
 
 async function onChangePassword(event: Event) {
   event.preventDefault();

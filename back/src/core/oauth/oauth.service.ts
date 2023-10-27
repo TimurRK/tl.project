@@ -112,7 +112,7 @@ export class OAuthService {
   }
 
   private async genereteJwt(user: User) {
-    const refresh = await this.dataSource.getRepository(RefreshToken).save({ user_id: user.id });
+    const refresh = await this.dataSource.getRepository(RefreshToken).save({ user_id: user.id }, { transaction: false });
 
     const access_token = sign({ current_user: user.json_for_jwt(), token_type: 'access' }, JWT_SETTINGS.secret_key, {
       jwtid: nanoid(16),
@@ -147,7 +147,7 @@ export class OAuthService {
       keys.push({ user_id: user_id });
     }
 
-    return (await this.dataSource.getRepository(RecoveryKey).save(keys)).map((r) => r.id);
+    return (await this.dataSource.getRepository(RecoveryKey).save(keys, { transaction: false })).map((r) => r.id);
   }
 
   public verifyToken<T>(jwt_token: string, is_access_token = true) {

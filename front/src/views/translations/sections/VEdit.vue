@@ -3,7 +3,7 @@
     <template v-if="current_data.books[0].sections">
       <CHr :color="'dark'" :title="current_data.books[0].sections[0].title" />
 
-      <div class="row justify-content-md-center mb-2">
+      <div class="row mb-2">
         <div class="col-sm-12 col-md-6 mb-2">
           <ul class="list-group">
             <li class="list-group-item disabled" aria-disabled="true">
@@ -39,7 +39,7 @@
         :title="$t('views.translations.sections.edit.labels.items_list')"
       />
 
-      <div class="row justify-content-md-center mb-2 table-responsive">
+      <div class="table-responsive">
         <table class="table table-hover table-sm table-striped">
           <thead>
             <tr class="row m-0">

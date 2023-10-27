@@ -6,10 +6,7 @@
     @click-button="newBook"
   />
 
-  <div
-    class="row justify-content-md-center"
-    v-if="current_data?.translators?.length"
-  >
+  <template v-if="current_data?.translators?.length">
     <div
       class="card mb-2"
       v-for="(translator, index) of current_data.translators"
@@ -110,7 +107,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </template>
 </template>
 
 <script setup lang="ts">

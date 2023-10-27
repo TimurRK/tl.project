@@ -1,4 +1,4 @@
-import { ID, Int } from '@nestjs/graphql';
+import { ID } from '@nestjs/graphql';
 
 import { BeforeInsert, BeforeUpdate, Index, OneToMany } from 'typeorm';
 import {
@@ -101,17 +101,9 @@ export class User {
   @Column({ nullable: true })
   public avatar?: string;
 
-  @Field(() => Int, { nullable: true })
-  @Column('integer', { nullable: true })
-  public birth_day?: number;
-
-  @Field(() => Int, { nullable: true })
-  @Column('integer', { nullable: true })
-  public birth_month?: number;
-
-  @Field(() => Int, { nullable: true })
-  @Column('integer', { nullable: true })
-  public birth_year?: number;
+  @Field(() => Date, { nullable: true })
+  @Column('timestamp without time zone', { nullable: true })
+  public birthdate?: Date;
 
   @Field(() => Boolean, { nullable: false })
   @Column({

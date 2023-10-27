@@ -111,19 +111,32 @@
 </template>
 
 <script setup lang="ts">
-import { useApi } from "@/api/api";
-import { ref, type Ref } from "vue";
+import { onBeforeMount, ref, type Ref } from "vue";
 import { useToast } from "vue-toastification";
 import { saveAs } from "file-saver";
 
+import { useApi } from "@/api/api";
+import { breadcrumbsStore } from "@/stores/breadcrumb";
+
 const api = useApi();
 const toast = useToast();
+const breadcrumbs_store = breadcrumbsStore();
 
 const login: Ref<string | null> = ref(null);
 const password: Ref<string | null> = ref(null);
 const recovery_keys: Ref<string[] | null> = ref(null);
 
 const cookie_domain = import.meta.env.VITE_APP_COOKIE_DOMAIN;
+
+onBeforeMount(() => {
+  breadcrumbs_store.setBreadcrumbs([
+    {
+      name: "routers.auth.sign_up",
+      is_current: true,
+      is_i18n: true,
+    },
+  ]);
+});
 
 async function onSignUp(event: Event) {
   event.preventDefault();

@@ -19,7 +19,7 @@ export class ItemTextVersionService {
       await this.dataSource.getRepository(ItemTextVersion).update({ item_text_id: data.item_text_id }, { is_main: false });
     }
 
-    return await this.dataSource.getRepository(ItemTextVersion).save(data);
+    return await this.dataSource.getRepository(ItemTextVersion).save(data, { transaction: false });
   }
 
   public async update(id: string, data: UpdateItemTextVersionDTO) {

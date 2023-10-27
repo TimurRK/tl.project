@@ -111,14 +111,16 @@
 
 <script setup lang="ts">
 import { Modal } from "bootstrap";
-import { onMounted, ref, type Ref } from "vue";
+import { onBeforeMount, onMounted, ref, type Ref } from "vue";
 import { useToast } from "vue-toastification";
 
 import router from "@/router";
 import { useApi } from "@/api/api";
+import { breadcrumbsStore } from "@/stores/breadcrumb";
 
 const api = useApi();
 const toast = useToast();
+const breadcrumbs_store = breadcrumbsStore();
 
 const use_cookie_modal_ref: Ref<HTMLDivElement | null> = ref(null);
 let use_cookie_modal_value: Modal | null = null;
@@ -127,6 +129,16 @@ const login: Ref<string | null> = ref(null);
 const password: Ref<string | null> = ref(null);
 
 const accept_cookie: Ref<boolean> = ref(false);
+
+onBeforeMount(() => {
+  breadcrumbs_store.setBreadcrumbs([
+    {
+      name: "routers.auth.sign_in",
+      is_current: true,
+      is_i18n: true,
+    },
+  ]);
+});
 
 onMounted(() => {
   if (use_cookie_modal_ref.value instanceof HTMLDivElement) {

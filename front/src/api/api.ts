@@ -9,7 +9,7 @@ import type {
   AxiosRequestHeaders,
 } from "axios";
 import axios from "axios";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { stringify } from "qs";
 import { print, type DocumentNode } from "graphql";
 

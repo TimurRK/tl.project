@@ -154,7 +154,7 @@ export const book_routers: RouteRecordRaw[] = [
     props: true,
     component: () => import("../views/books/VBook.vue"),
     meta: {
-      name: "routers.books.self",
+      name: "routers.books.target",
       icon: "book",
       protected: false,
     },

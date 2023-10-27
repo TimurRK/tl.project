@@ -7,9 +7,7 @@ query UserProfile($login: String!) {
     locale
     gender
     avatar
-    birth_day
-    birth_month
-    birth_year
+    birthdate
     show_birthdate
   }
 }

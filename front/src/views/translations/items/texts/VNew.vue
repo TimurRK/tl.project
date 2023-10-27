@@ -4,7 +4,7 @@
       <template v-if="current_data.books[0].sections[0].items">
         <CHr :color="'dark'" :title="$t('routers.translations.new')" />
 
-        <div class="row justify-content-md-center mb-2 table-responsive">
+        <div class="mb-2 table-responsive">
           <table class="table table-hover table-sm">
             <thead>
               <tr class="row m-0">
@@ -38,7 +38,7 @@
           </table>
         </div>
 
-        <div class="row justify-content-md-center mb-2">
+        <div class="row mb-2">
           <div class="col-sm-12 col-md-6"></div>
 
           <div class="col-sm-12 col-md-6">
@@ -63,7 +63,7 @@
           </div>
         </div>
 
-        <div class="row justify-content-md-center">
+        <div class="row">
           <div class="col-sm-12 col-md-6"></div>
           <div class="col-sm-12 col-md-6">
             <button
